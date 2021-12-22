@@ -1,0 +1,102 @@
+= render partial: 'versions/banner', locals: {application: @sba_application} unless @sba_application.version_number == 1
+
+.usa-width-one-whole.review_outer
+  .usa-width-one-fourth.review_nav
+    = render partial: 'sba_analyst/reviews/nav', locals: {active: :determinations}
+  .usa-width-three-fourths.review_main
+    h1 Determination
+    = form_for @determination, as: :determination, url: sba_analyst_review_determinations_path, method: :post do |f|
+      h2 Status
+      fieldset.usa-fieldset-inputs.usa-sans
+        ul.usa-unstyled-list
+          - Review::NON_8A_REVIEW_STATES.each do |state|
+            - if state.eql?('determination_made')
+              - if (can? :make_case_review_determination, current_user)
+                li
+                  = radio_button_tag 'review[workflow_state]', state, @review.send(:"#{state}?")
+                  = label_tag 'review_workflow_state_'+state, Review.status_label(state)
+                  = label_tag(:decision, 'Decision')
+                  - if @review.determination_made?
+                    = select_tag 'determination[decision]', options_for_select( Determination.decisions.map {|name, index| [name, index.to_i]},
+                            Determination.decisions[@review.determination.decision].to_s),
+                            disabled: !(can? :change_decision_after_determination_made, current_user)
+                  - else
+                    = select_tag 'determination[decision]', options_for_select( Determination.decisions.map {|name, index| [name, index.to_i]},
+                            Determination.decisions[@review.determination.decision].to_s),
+                            disabled: true
+              - else
+                /= hidden_field_tag 'review[workflow_state]', state.to_s
+            - else
+              li
+                = radio_button_tag 'review[workflow_state]', state, @review.send(:"#{state}?")
+                = label_tag 'review_workflow_state_'+state, Review.status_label(state)
+
+      - if can? :assign_or_change_current_case_reviewer, current_user
+        h3
+          ' Change assignment
+          i.usa-text-small
+          | (optional)
+
+        = label_tag(:current_reviewer, 'Current Reviewer')
+        - if @review.determination_made?
+          = select_tag :reviewer_id,
+                  options_for_select(@analysts, "#{@review.current_assignment.reviewer_id.to_s}"),
+                  disabled: !(can? :change_assignments_on_review_with_determination_made_status, current_user)
+        - else
+          = select_tag :reviewer_id,
+                  options_for_select(@analysts, "#{@review.current_assignment.reviewer_id.to_s}"),
+                  disabled: false
+          = hidden_field_tag 'determination[decider_id]', @user.id
+          = hidden_field_tag :original_reviewer_id, @review.current_assignment.reviewer_id
+
+      - if (can? :manage_assessment, current_user)
+        h3
+          ' Add a note
+          i.usa-text-small
+          | (optional)
+        = fields_for :assessment, @assessment do |ass|
+          = ass.text_area :note_body, maxlength: 500
+          br
+          - unless @assessments.empty?
+            h3 Determination notes log
+
+            - @assessments.each do |assessment|
+              b
+                = assessment.assessed_by.name
+                ',
+              = l assessment.created_at
+              br
+              b
+              ' Status:
+              = assessment.display_status
+              - if assessment.determination_decision
+                ', Decision:
+                = assessment.determination_decision
+              - unless assessment.new_reviewer_id.blank?
+                br
+                b
+                  = "Changed assignment to #{User.find(assessment.new_reviewer_id).name}"
+              = simple_format assessment.note.body if assessment.note
+              br
+              br
+      = submit_tag 'Save and commit', class: 'save-button', disabled: @review.determination_made?
+
+      img src="#{find_asset_path('save-loader.gif')}" class="save-loader" alt="Save wait button"
+
+
+javascript:
+  $(document).ready(function () {
+    $('#review_workflow_state_determination_made').click(function () {
+      if ($('#review_workflow_state_determination_made').is(':checked')) {
+        $('#determination_decision').prop('disabled', false);
+        $('#decision').css('display', 'block');
+        $('#assessment_note').css('display', 'block');
+      }
+    });
+
+    $(".save-loader").hide();
+    $(".save-button").click(function () {
+      $(".save-button").hide();
+      $(".save-loader").show();
+    });
+  });

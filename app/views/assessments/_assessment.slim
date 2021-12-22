@@ -1,0 +1,12 @@
+strong = assessment.assessed_by.name
+br
+strong = l assessment.created_at
+br
+strong = assessment.status
+br
+p
+  - if brief
+    = truncate(assessment.note.try(:body), length: Note::LENGTH, separator: ' ')
+  - else
+    = assessment.note.try(:body)
+    br

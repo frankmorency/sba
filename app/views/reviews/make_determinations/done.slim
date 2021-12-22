@@ -1,0 +1,10 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        h1 ="#{@sba_application.organization.name} has been determined #{@determination.decision}"
+    p.usa-font-lead = "You submitted your determination for #{@sba_application.organization.name} at #{Time.now.strftime("%H:%m on %m/%d/%Y")}. The firm has been notified. No other action is required."
+    p
+      = link_to "Dashboard", sba_application_application_dashboard_overview_index_path(@sba_application.id), class: "usa-button usa-button-big"

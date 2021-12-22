@@ -1,0 +1,107 @@
+h1 Request access to view records
+
+p
+  | In order to locate your business's records, please enter the DUNS number and click search.
+
+.usa-width-one-whole
+  form.usa-search
+    div role="search"
+      = label_tag 'duns_number', 'DUNS number'
+      = text_field_tag 'duns_number', params[:duns_number], minlength: 9, maxlength: 9, type: 'search'
+      = hidden_field_tag 'role', params[:role]
+      .button_wrapper
+        button#find_business type="submit" Search
+      br
+
+
+.usa-width-one-whole
+  = form_tag vendor_admin_role_access_requests_path, id: 'request_access', method: 'post', class: 'usa-form' do
+    .vendor_search_results.hidden
+      hr
+      h2 Search Results
+
+      .usa-width-one-whole.business_search_result.hidden#no_vendor_found
+        div
+          ' No vendor exists in certify.SBA.gov for the DUNS number you have entered. Please return to the previous screen to select
+          strong
+            ' Vendor Admin for a business that is new to certify.SBA.gov
+      .usa-width-one-whole.business_search_result.hidden#vendor_found
+        table.usa-table-borderless
+          thead
+            tr
+              th scope="col"   DUNS#
+              th scope="col"   Vendor
+          tbody
+            tr
+              td#vendor_duns_number
+              td#vendor_name
+        p
+          | By submitting a request to access certify.SBA.gov as an #{@role}, I affirm,
+
+        ol
+          li#warning
+              |
+          li
+              |
+                You are accessing a U.S. Government information system which is provided for U.S. Government-authorized use only. By submitting a request for access, you are confirming that you are authorized to represent your firm to access data in this system. Unauthorized or improper use of this system may result in disciplinary action, as well as civil and criminal penalties.
+        ul.usa-unstyled-list
+          li
+            = check_box_tag :request, :agreement
+            = label_tag 'I agree'
+
+        = submit_tag "Request access", html_options: :disabled
+
+
+
+javascript:
+  $(document).ready(function () {
+
+    // Click Search button
+    $("button#find_business").on("click", function(event) {
+      event.preventDefault();
+
+      var duns_number = $("#duns_number").val();
+      var role = $("#role").val();
+
+      $.ajax({
+        url: '#{search_vendor_admin_role_access_requests_path}',
+        type: 'POST',
+        beforeSend: function(jqXHR) {jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        dataType: "json",
+        data: {duns_number: duns_number, role_name: role},
+        success: function(data, textStatus, jqXHR) {
+          var organization_id = jqXHR.responseJSON["id"]
+
+            console.log("Success")
+          console.log(organization_id)
+
+          $('.vendor_search_results').css('display','inline');
+
+          if (organization_id == null) {
+            $('#no_vendor_found').css('display','inline');
+            $('#vendor_found').css('display','none');
+          }
+          else {
+            $('#warning').html(' That I am employed by ' + jqXHR.responseJSON['name'] + ' to serve as an #{@role};');
+            $('#no_vendor_found').css('display','none');
+            $('#vendor_found').css('display','inline');
+            $('td#vendor_duns_number').html(jqXHR.responseJSON['duns_number']);
+            $('td#vendor_name').html(jqXHR.responseJSON['name']);
+            $("<input type='hidden'/>").attr("name", 'access_request[organization_id]').val(jqXHR.responseJSON['id']).appendTo('#request_access');
+            $("<input type='hidden'/>").attr("name", 'access_request[user_id]').val('#{current_user.id}').appendTo('#request_access');
+            $("<input type='hidden'/>").attr("name", 'access_request[role_id]').val(jqXHR.responseJSON['role_id']).appendTo('#request_access');
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          if(jqXHR.status == 401){
+            // Redirect to Login
+            window.location.href = "/users/sign_in";
+          }else {
+            $("span#upload-error-message").text(jqXHR.responseJSON["message"]);
+            $("span#upload-error-message").show();
+          }
+        }
+      });
+
+    });
+  });

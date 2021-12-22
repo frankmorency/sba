@@ -1,0 +1,49 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+.usa-grid-full style="max-width:1250px"
+  .certify-page-header
+    .certify-page-header__primary
+      - if @sba_application.is_a? SbaApplication::EightAInfoRequest
+        h1 8(a) Info Request
+      - else
+        h1 Application Overview
+
+.usa-grid-full
+  .usa-width-one-whole
+    .usa-width-one-whole
+    - unless @sba_application.is_a? SbaApplication::EightAInfoRequest
+      = render partial: 'contributors/application_dashboard/overview/card_content'
+    - else
+      - sub_section = @sba_application.first_section.children.where(type: 'Section::SubApplication').first
+
+      .usa-width-two-thirds.cards
+        br
+        .usa-width-one-half
+          section
+            .card
+              .card__header
+                h3.card__primary-heading
+                  - sba_application = sub_section.sub_application
+                  = link_to 'Additional Information Request', edit_sba_application_questionnaire_question_section_path(sba_application, sba_application.questionnaire, sba_application.first_section.name)
+              .card__content
+                table.quick-details
+                  tbody
+                    tr.larger
+                      th Status:
+                      td
+                        span.usa-color-green #{sub_section.status.humanize}
+                    tr
+                      th Last Update:
+                      td #{sub_section.updated_at.strftime("%m/%d/%y")}
+                    tr
+                      th Started:
+                      td #{sub_section.created_at.strftime("%m/%d/%y")}
+                    tr
+                      th Assigned To:
+                      td #{sub_section.sba_application.creator.try(:first_name)} #{sub_section.sba_application.creator.try(:last_name)}
+
+      .usa-width-one-third
+        - if @sba_application.show_signature_section?
+          = render partial: 'vendor_admin/application_dashboard/overview/sign'
+
+= render partial: 'application_dashboard/tab_javascript'

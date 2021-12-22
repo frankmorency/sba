@@ -1,0 +1,12 @@
+section.usa-grid-full
+  article#main-content
+    h1 Assign This Application
+    p.usa-font-lead Select a District Office Analyst to review this case. After the case is assigned, the review status will go screening in progress.
+    = render partial: 'unassigned_cases_table', locals: {applications: @applications}
+    
+    = form_tag  create_assignment_district_office_sba_supervisor_dashboard_index_url
+      = render partial: 'assign_case_form', locals: {app: @applications.first}
+      .actions
+        .actions__main
+          = submit_tag "Assign"
+          = link_to "Cancel", eight_a_initial_sba_supervisor_dashboard_index_path

@@ -1,0 +1,125 @@
+//Homepage
+#homepage {
+  a {
+    color: #0071bc;
+  }
+
+  h2,
+  h3 {
+    margin-top: 0;
+    font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto",
+      "Arial", sans-serif;
+    color: black;
+  }
+
+  form [type="submit"] {
+    width: 100%;
+    display: inline;
+    margin-bottom: 8px;
+  }
+
+  .find-out-button {
+    width: auto;
+  }
+
+  .usa-color-gold {
+    background-color: #f98244;
+    width: 100%;
+  }
+
+  .usa-color-gold:hover {
+    background-color: #db7233;
+  }
+
+  .usa-heading {
+    color: #205493;
+  }
+
+  .currently-grey-box {
+    background-color: #d6d7d9;
+    text-align: center;
+    padding: 0 30px 0px 30px;
+    p {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .row_block {
+    background-color: #f1f1f1;
+    color: black;
+    padding: 20px 30px 30px 20px;
+    text-align: center;
+  }
+
+  .back-img {
+    background-image: url("landing-icons/banner.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding-top: 250px;
+    @media screen and (max-width: 600px) {
+      min-height: 100px;
+    }
+  }
+
+  .welcome-block {
+    padding: 21px;
+    margin-left: 25px;
+    color: black;
+    width: 95%;
+    background-color: rgba(255, 255, 255, 0.9);
+    min-height: 235px;
+    @media screen and (max-width: 1215px) {
+      padding: 5px;
+    }
+    @media screen and (max-width: 975px) {
+      padding: 10px;
+    }
+  }
+
+  .login-block {
+    padding: 5px 25px 25px 25px;
+    margin-bottom: 10px;
+    width: 95%;
+    background-color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    p {
+      line-height: 0.1em;
+    }
+  }
+
+  .currently-div {
+    width: 750px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .am-i-block {
+    width: 100%;
+    text-align: center;
+    margin: auto;
+  }
+
+  @media screen and (min-width: 850px) {
+    .back-img-mobile {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 850px) {
+    .back-img {
+      background-image: none;
+      padding-top: 0;
+    }
+    .welcome-block,
+    .login-block {
+      margin-top: 0;
+    }
+    .welcome-block {
+      width: 100%;
+      margin-left: 0;
+      padding: 25px 0 0 0;
+    }
+  }
+}

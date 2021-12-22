@@ -1,0 +1,93 @@
+.jsgrid-header-bold{
+  font-weight:bold;
+}
+
+.jsgrid-header-grey, .jsgrid-header-row > .jsgrid-header-cell{
+  background-color: #f1f1f1;
+  border: 0;
+  border-bottom: 1px solid black;
+}
+
+.jsgrid-insert-row > .jsgrid-cell{
+  background-color: white;
+  border: 0;
+  border-bottom: 1px solid black;
+}
+
+.jsgrid-cell{
+  border: 0;
+  border-bottom: 1px solid black;
+  white-space: -moz-pre-wrap !important;
+  white-space: -webkit-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: normal;
+}
+
+.jsgrid-nodata-row{
+  .jsgrid-cell{
+    border: 0;
+  }
+}
+
+.jsgrid-grid-body{
+  border: 0;
+}
+
+table.jsgrid-table{
+  margin: 0
+}
+
+.jsgrid-grid-header,
+.jsgrid-grid-body{
+  overflow: auto;
+}
+
+#jsgrid-insert{
+  margin-top: 15px;
+}
+
+#jsGrid{
+  margin-top: 25px;
+}
+
+.jsgrid-table{
+  button, button:hover{
+    background-color: transparent;
+    width: 5px;
+    padding: 10px;
+    font-family: FontAwesome;
+  }
+
+  .jsgrid-edit-button-fa, .jsgrid-edit-button-fa:hover {
+    color: #0071bc;
+  }
+
+  .jsgrid-delete-button-fa, .jsgrid-delete-button-fa:hover{
+    color: #e31c3d;
+  }
+
+
+  .jsgrid-update-button-fa, .jsgrid-update-button-fa:hover{
+    color: #0071bc;
+  }
+
+  .jsgrid-cancel-edit-button-fa, .jsgrid-cancel-edit-button-fa:hover{
+    color: #e31c3d;
+  }
+
+}
+
+.jsgrid-edit-button{
+  content: "\f004";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.jsgrid-row{
+  max-height: 70px;
+}

@@ -1,0 +1,43 @@
+div[style="margin-left: 12em;"]
+  span class="sba-c-spinner sba-u-color--primary" id="page-spinner" aria-valuetext="Loading" role="progressbar" style="display: none;"
+- unless @sba_application.submitted?
+  h2 Sections of the Application
+
+- @first_section.sub_application_sections(current_user).in_groups_of(2, false).each_with_index do |section_array, index|
+  - group = 0
+  .usa-width-one-whole.cards
+    br
+    - section_array.each do |section|
+      .usa-width-one-half
+        = render partial: 'shared/eight_a/overview/section_card', locals: {group: group, index: index, section: section}
+        - group = group + 1
+
+  - unless current_user.is_vendor? && !@sba_application.submitted?
+    - section_array.each do |section|
+      .usa-width-one-whole.hide id="#{section.name}_content"
+        div
+          h2
+            = @sba_application.answer_title section
+          a href="javascript:void(0);" id="#{section.name}_show_cards" class="close_8a_detail"
+            |  close
+        - unless section.sub_application.nil? || @sba_application.in_last_reconsideration_section_during_appeal?(section)
+          div id="#{section.name}_content_holder"
+
+- if @sba_application.submitted? || @sba_application.returned?
+  - @first_section.children.where(type: 'Section::ContributorSection').each do |section|
+    - section.children.each_with_index do |sub_section, index|
+      - if sub_section.has_children?
+        .usa-width-one-whole.cards
+          - if @sba_application.submitted? || @sba_application.returned?
+            br
+            h2 = sub_section.overview_tile_display_title
+            = render partial: 'shared/eight_a/overview/individual_contributor_card', locals: {index: index, section: section, sub_section: sub_section}
+          - else
+            = render partial: 'contributors/application_dashboard/overview/individual_contributor_card', locals: {index: index, section: section, sub_section: sub_section, contributor_section: sub_section.children.first}
+    = render partial: 'shared/eight_a/sub_section_children', locals: {section: section, path: 'shared/eight_a/overview/section_answers'}
+
+- if (is_vendor? current_user) && !@sba_application.submitted?
+  - if @sba_application.can_be_submitted?
+    = button_to 'Review and sign', edit_sba_application_questionnaire_signature_section_path(@sba_application, @sba_application.questionnaire, 'signature'), method: :get
+  - else
+    = button_to 'Review and sign', '', disabled: true

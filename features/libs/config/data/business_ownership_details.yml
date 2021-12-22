@@ -1,0 +1,73 @@
+Business Ownership Details: Firm Ownership as yes,Ownership Details as yes,Corporations,Review Submit
+Business Ownership with no LLC Details: Firm Ownership as no,Ownership Details as yes,Corporations,Review Submit 
+Business Ownership with LLC Details: Firm Ownership as no,Ownership Details as yes,Corporations,LLCs,Partnerships,Sole Proprietors,Review Submit
+
+
+Firm Ownership as no:
+ Who owns the applicant firm: Individuals,30,Other firms,30,American Indian Tribe (AIT),10, Alaska Native Corporation (ANC),10,Community Development Corporation (CDC),10,Native Hawaiian Organization (NHO),10 
+ 51% or more unconditionally owned by another entity_as_no: Is the applicant firm at least 51% or more unconditionally owned by another entity?
+ Save and Continue:
+ Complete Status: eight_a_business_ownership_entity,Firm Ownership
+
+Firm Ownership as yes:
+ Who owns the applicant firm: Individuals,40,Other firms,40,American Indian Tribe (AIT),5, Alaska Native Corporation (ANC),5,Community Development Corporation (CDC),5,Native Hawaiian Organization (NHO),5
+ 51% or more unconditionally owned by another entity_as_yes: Is the applicant firm at least 51% or more unconditionally owned by another entity?
+ 51% or more unconditionally owned by another entity_as_yes_document: Is the applicant firm at least 51% or more unconditionally owned by another entity?
+ Please explain why you made this choice.: User can enter his comments here
+ Save and Continue:
+ Complete Status: eight_a_business_ownership_entity,Firm Ownership
+
+Ownership Details as no: 
+ How did the Principal Owner(s) acquire the applicant firm?: Started the applicant firm
+ legal structure, or name changed in the past two years_as_no: Has the applicant firm’s ownership, legal structure, or name changed in the past two years?
+ unconditional ownership of the disadvantaged individuals_as_no: Does the applicant firm have any buy-sell agreements, shareholder agreements, or other similar arrangements which may impact the unconditional ownership of the disadvantaged individuals?
+ currently have ownership interest in any other firm_as_no: Does the applicant firm currently have ownership interest in any other firm?
+ more than 10% ownership interest in the applicant firm_as_no: Does another firm or other organization have more than 10% ownership interest in the applicant firm?
+ Save and Continue:
+ Complete Status: eight_a_business_ownership_details,Ownership Details
+
+Ownership Details as yes: 
+ How did the Principal Owner(s) acquire the applicant firm?: Bought the applicant firm
+ legal structure, or name changed in the past two years_as_yes: Has the applicant firm’s ownership, legal structure, or name changed in the past two years?
+ legal structure, or name changed in the past two years_as_yes_as_document: Has the applicant firm’s ownership, legal structure, or name changed in the past two years?
+ Please explain why you made this choice.: User can enter his comments here
+ unconditional ownership of the disadvantaged individuals_as_yes: Does the applicant firm have any buy-sell agreements, shareholder agreements, or other similar arrangements which may impact the unconditional ownership of the disadvantaged individuals?
+ unconditional ownership of the disadvantaged individuals_as_yes_as_document: Does the applicant firm have any buy-sell agreements, shareholder agreements, or other similar arrangements which may impact the unconditional ownership of the disadvantaged individuals?
+ currently have ownership interest in any other firm_as_yes: Does the applicant firm currently have ownership interest in any other firm?
+ currently have ownership interest in any other firm_as_yes_as_document: Does the applicant firm currently have ownership interest in any other firm?
+ more than 10% ownership interest in the applicant firm_as_yes: Does another firm or other organization have more than 10% ownership interest in the applicant firm?
+ more than 10% ownership interest in the applicant firm_as_yes_as_document: Does another firm or other organization have more than 10% ownership interest in the applicant firm?
+ Save and Continue:
+ Complete Status: eight_a_business_ownership_details,Ownership Details
+
+Corporations: 
+ Please upload all relevant documents from the following list for Articles of Incorporation: The most recent Stockholder or Board Member Meeting Minutes showing the election of officers and directors
+ Please upload all relevant documents from the following list for Stock certificates: Registers
+ Please upload all relevant documents for current Certificate of Good Standing: Please upload the applicant firm’s current Certificate of Good Standing.
+ Save and Continue:
+ Complete Status: eight_a_business_ownership_corporation,Corporations
+
+LLCs:
+ LLCs Articles of Organization documents: 0
+ LLCs current Certificate of Good Standing: Please upload the applicant firm’s current Certificate of Good Standing.
+ Save and Continue:
+ Complete Status: eight_a_business_ownership_llc,LLCs
+
+Partnerships:
+ Current Partnership Agreement: Please upload the applicant firm’s current Partnership Agreement.
+ Save and Continue:
+ Complete Status: eight_a_business_ownership_partnership,Partnerships
+
+Sole Proprietors:
+ Doing Business As DBA Name_as_yes: Does the applicant firm have a Doing Business As (DBA) Name?
+ Doing Business As DBA Name_as_yes_document: Does the applicant firm have a Doing Business As (DBA) Name?
+ Please explain why you made this choice.: User can enter the details of the DBA Name
+ Save and Continue:
+ Complete Status: eight_a_business_ownership_sole_proprietor,Sole Proprietors
+
+Review Submit:
+ Submit Business Ownership: 
+ Success: 8(a) Business Ownership section is complete
+
+ 
+ 

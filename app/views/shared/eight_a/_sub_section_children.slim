@@ -1,0 +1,9 @@
+- section.children.each do |sub_section|
+  - if sub_section.has_children?
+    - sub_section.children.each do |contributor_section|
+      .usa-width-one-whole.hide id="#{contributor_section.name}_content"
+        h2 #{sub_section.title}
+        a href="javascript:void(0);" id="#{contributor_section.name}_show_cards" class="close_8a_detail"
+          |  close
+        - if contributor_section.sub_application.present?
+          = render partial: path, locals: {editable: false, business_partner_summaries: [], sba_application: contributor_section.sub_application, role: nil}

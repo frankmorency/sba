@@ -1,0 +1,59 @@
+//Retirement Account, Life Insurance
+.usa-grid-full
+  - unless (params.has_key?(:review_id) && current_page?(new_sba_analyst_review_financial_review_path))
+
+  - if editable
+    .usa-width-three-fourths
+      = sanitize(questionp.title, tags: %w(ul li), attributes: nil)
+  - else
+    = sanitize(questionp.title, tags: %w(ul li), attributes: nil)
+
+  - if editable && !current_user.is_sba?
+    .usa-width-one-fourth
+      | &nbsp;
+      = link_to 'Change answer', section_path_helper(@sba_application, section, editable)
+.usa-grid-full
+  = render partial: 'answers/show', locals: {answer: answer, section: section, editable: editable, sba_application: @sba_application, questionp: nil}
+  - if answer
+    - if answer.value["value"] == "yes"
+      - business_partner = answer unless business_partner
+      - unique_id = questionp.dom_id("details_#{business_partner.id}").parameterize.underscore
+      = render partial: 'datatables/readonly_table_layout', locals: {unique_id: unique_id, layout: questionp.question.strategy}
+      .datatable id="#{questionp.dom_id("datatable_wrap_#{business_partner.id}").parameterize.underscore}"
+        .hide style="display:none"
+          = text_area_tag questionp.dom_id("details_#{business_partner.id}"), (answer.details.to_json unless answer.details == "null")
+        = render partial: "question_types/table/#{questionp.question.strategy.underscore}", locals: {question: questionp, unique_id: unique_id}
+
+    - if answer.comment?
+      div
+        p
+          b Comments:
+          '
+          = answer.comment
+      br
+    - if answer.documents.any?
+      div
+        p
+          b
+            | Attachments:
+        table
+          thead
+            tr
+              th
+                | File Name
+              th
+                | Document Type
+              th
+                | Upload Date
+          - answer.documents.each do | doc |
+            tr
+              td
+                - if doc.av_status == 'OK'
+                  = link_to doc.original_file_name, pdf_viewer_organization_document_path(id: doc.id, organization_id: current_organization.id), method: :get, class: "usa-button-outline",target: "_blank"
+                - else
+                  = doc.original_file_name
+              td
+                = doc.document_type.name
+              td
+                = l doc.created_at.to_date
+    br

@@ -1,0 +1,13 @@
+- if section.has_adhoc_questionnaires?
+  .card__footer data-status-item="returned-section"
+    = link_to "View additions to this section", sba_application_application_dashboard_sub_application_adhoc_questionnaires_path(section.sba_application, section.sub_application)
+    - if section.has_adhoc_questionnaires_to_complete?
+      br
+      small
+        - if current_user.is_vendor_or_contributor?
+          ' You have
+        - else
+          ' The firm has
+        strong.usa-color-red #{pluralize(section.adhoc_questionnaires_to_complete.size, 'item')}
+        '
+        ' left to complete.

@@ -1,0 +1,81 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_self
+ */
+
+// Third Party
+@import "normalize";
+@import "bourbon";
+@import "neat";
+@import "dropzone";
+@import "refill/modal";
+@import "refill/horizontal_tabs";
+@import "refill/vertical_tabs";
+@import "refill/search-bar";
+@import "refill/navigation";
+@import "google-fonts";
+@import "font-awesome";
+@import "jquery-ui";
+@import "jquery.dataTables";
+@import "datatable/editor.dataTables.min";
+@import "jsgrid/jsgrid";
+@import "jsgrid/jsgrid-theme";
+@import "jsgrid-custom";
+@import "voluntary_suspension";
+
+// USWDS - 1.3.1
+@import "uswds-1.3.1/scss/uswds";
+
+// Let's start testing some of the new V2 components
+@import "style_guide/stylesheets/v2-settings/uswds-variables";
+
+// Shame
+@import "uswds-fix";
+
+// SBA
+@import "sba/homepage";
+@import "sba/table";
+@import "sba/pagination";
+@import "sba/questionnaire";
+@import "sba/assessments";
+@import "sba/am_i_eligible";
+@import "sba/attachment";
+@import "sba/eight_a";
+@import "components/pagination";
+@import "sba/datepicker_shame";
+@import "sba/login_fix.scss";
+
+// Messaging
+@import "quill.core";
+@import "quill.snow";
+@import "quill.bubble";
+@import "variables";
+@import "messages";
+@import "conversations";
+@import "notifications";
+
+// Certify Design Gem
+@import "cds";
+@import "uswds-font-fix";
+@import "cds-gem-shame/combobox";
+@import "cds-gem-shame/taskpanel-dropdown";
+
+.sba-red {
+    color: #cc0000;
+}
+.sba-blue {
+    color: #002e6d;
+}
+.sba-gray {
+    color: #969696;
+}

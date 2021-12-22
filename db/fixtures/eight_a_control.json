@@ -1,0 +1,66 @@
+[
+  {
+    "section": "eight_a_firm_control",
+    "answers": {
+      "eight_a_control_existing_agreements": {
+        "question_name": "eight_a_control_existing_agreements",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      },
+      "eight_a_control_support": {
+        "question_text": "Do any other firms or individuals provide financial support or bonding support to the applicant firm?",
+        "question_name": "eight_a_control_support",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed",
+        "comment": ""
+      },
+      "eight_a_control_permits": {
+        "question_text": "Do any other firms or individuals provide licensing, certifications, or permits to the applicant firm?",
+        "question_name": "eight_a_control_permits",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed",
+        "comment": ""
+      },
+      "eight_a_control_high_compensation": {
+        "question_text": "Is the individual claiming disadvantaged status the highest compensated in the applicant firm?",
+        "question_name": "eight_a_control_high_compensation",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "comment": "as dfasdf asdfasdf"
+      },
+      "eight_a_control_signature_cards": {
+        "question_text": "Please upload all business bank account signature cards.",
+        "question_name": "eight_a_control_signature_cards",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "yes",
+        "attachment": "has_attachments",
+        "document_ids": [
+          "12"
+        ]
+      },
+      "eight_a_control_share_resources": {
+        "question_text": "Is the applicant firm co-located with another firm at any of its locations or does it share any resources with any other firms?",
+        "question_name": "eight_a_control_share_resources",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      },
+      "eight_a_control_lease": {
+        "question_text": "Does the applicant firm lease or use office space or other facilities from any other firm?",
+        "question_name": "eight_a_control_lease",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no"
+      }
+    }
+  }
+]

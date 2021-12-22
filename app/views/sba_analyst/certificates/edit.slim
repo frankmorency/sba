@@ -1,0 +1,8 @@
+h3 = @certificate.organization.name
+h4 = @certificate.certificate_type.title
+
+= form_for @certificate, url: sba_analyst_certificate_path do |f|
+  b Status
+  - Certificate.workflow_spec.states.keys.each do |state|
+    = f.radio_button :workflow_state, state
+    = f.label_tag state

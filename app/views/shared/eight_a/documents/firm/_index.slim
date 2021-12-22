@@ -1,0 +1,19 @@
+- if @active_and_inactive_documents.blank? || @active_and_inactive_documents.nil?
+  | There are currently no firm documents associated with this application
+- else
+  #active_documents class=(@is_active ? 'show-block' : 'hide')
+    - if @active_firm_documents.blank? || @active_firm_documents.nil?
+      | There are currently no active firm documents associated with this application
+    - else
+      = render partial: 'shared/eight_a/documents/firm/firm_documents_table', locals: {firm_documents: @active_firm_documents, current_organization: @organization}
+    p
+      a#view_archived_documents[href="#"]
+        | View archived documents
+  #inactive_documents class=(@is_active ? 'hide' : 'show-block')
+    - if @inactive_firm_documents.blank? || @inactive_firm_documents.nil?
+      | There are currently no archived firm documents associated with this application
+    - else
+      = render partial: 'shared/eight_a/documents/firm/firm_documents_table', locals: {firm_documents: @inactive_firm_documents, current_organization: @organization}
+    p
+      a#view_active_documents[href="#"]
+        | View active documents

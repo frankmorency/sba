@@ -1,0 +1,26 @@
+doctype html
+html
+  body bgcolor="#f1f1f1"
+    table cellpadding="10px" cellspacing="0" width="100%"
+      tr
+        td bgcolor="#333a46"
+          span style="color:#02bfe7;font-size:30px;font-family:'Merriweather','Georgia','Times New Roman',serif"  certify.
+          span style="color:white;font-size:40px;font-family:'Merriweather','Georgia','Times New Roman',serif"  SBA
+          span style="color:white;font-size:30px;font-family:'Merriweather','Georgia','Times New Roman',serif"  .gov
+      tr
+        td bgcolor="white"
+          = yield
+          br/
+    table cellpadding="10px" cellspacing="0" width="100%"
+      tr
+        td bgcolor="#d6d7d9"
+          a href="http://www.sba.gov"
+            = image_tag "sba_logo_new.png", alt: "SBA Logo", border: "0", height: "60%"
+        td bgcolor="#d6d7d9" style="text-align:right;vertical-align:top"
+          a href="https://www.twitter.com/sbagov"
+            img border="0" alt="SBA Twitter" height="20px" src="https://s3.amazonaws.com/sba-static-web-pages/twitter16.png" width="30px" /
+          a href="https://www.facebook.com/SBAgov"
+            img border="0" alt="SBA Facebook" height="20px" src="https://s3.amazonaws.com/sba-static-web-pages/facebook25.png" width="30px" /
+    table cellpadding="10px" cellspacing="0" width="100%"
+      tr
+        td bgcolor="black"

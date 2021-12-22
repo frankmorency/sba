@@ -1,0 +1,89 @@
+# config/application.yml
+defaults: &defaults
+  ez_encryptor:
+    key_b64: ssGnAFtmc7SBihej7oF01tfjp4Kh3UCgs0__jzXcQAE=
+    iv_b64: kXbE_h-sgRcNBLY-
+    salt_b64: 2qQDAM0UUPXAwF_0bLEnbg==
+  elasticsearch:
+    url: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+    pagination_size: 20
+  elasticsearch_index: 'cases_v2' ##updated to test out demo filters 
+
+development:
+  <<: *defaults
+  elasticsearch:
+    url: http://localhost:9200
+    pagination_size: 20
+  elasticsearch_index: 'cases_v2'
+
+docker:
+  <<: *defaults
+  elasticsearch:
+    url: http://elasticsearch:9200
+    pagination_size: 20
+
+test:
+  <<: *defaults
+  elasticsearch:
+    journal: false
+    url: http://localhost:9200
+    pagination_size: 20
+  elasticsearch_index: 'cases_v2'
+
+build:
+  <<: *defaults
+  elasticsearch_index: 'build_cases'
+
+build_admin:
+  <<: *defaults
+  elasticsearch_index: 'build_cases'
+
+stage:
+  <<: *defaults
+  ez_encryptor:
+    key_b64:  <%= ENV["EZENCRYPTOR_KEYb64"] %>
+    iv_b64:   <%= ENV["EZENCRYPTOR_IVb64"] %>
+    salt_b64: <%= ENV["EZENCRYPTOR_SALTb64"] %>
+
+stage_admin:
+  <<: *defaults
+  ez_encryptor:
+    key_b64:  <%= ENV["EZENCRYPTOR_KEYb64"] %>
+    iv_b64:   <%= ENV["EZENCRYPTOR_IVb64"] %>
+    salt_b64: <%= ENV["EZENCRYPTOR_SALTb64"] %>
+
+training:
+  <<: *defaults
+
+training_admin:
+  <<: *defaults
+
+demo:
+  <<: *defaults
+  elasticsearch_index: 'demo_cases'
+  ez_encryptor:
+    key_b64:  <%= ENV["EZENCRYPTOR_KEYb64"] %>
+    iv_b64:   <%= ENV["EZENCRYPTOR_IVb64"] %>
+    salt_b64: <%= ENV["EZENCRYPTOR_SALTb64"] %>
+
+demo_admin:
+  <<: *defaults
+  elasticsearch_index: 'demo_cases'
+  ez_encryptor:
+    key_b64:  <%= ENV["EZENCRYPTOR_KEYb64"] %>
+    iv_b64:   <%= ENV["EZENCRYPTOR_IVb64"] %>
+    salt_b64: <%= ENV["EZENCRYPTOR_SALTb64"] %>
+
+production:
+  <<: *defaults
+  ez_encryptor:
+    key_b64:  <%= ENV["EZENCRYPTOR_KEYb64"] %>
+    iv_b64:   <%= ENV["EZENCRYPTOR_IVb64"] %>
+    salt_b64: <%= ENV["EZENCRYPTOR_SALTb64"] %>
+
+production_admin:
+  <<: *defaults
+  ez_encryptor:
+    key_b64:  <%= ENV["EZENCRYPTOR_KEYb64"] %>
+    iv_b64:   <%= ENV["EZENCRYPTOR_IVb64"] %>
+    salt_b64: <%= ENV["EZENCRYPTOR_SALTb64"] %>

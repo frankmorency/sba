@@ -1,0 +1,38 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+.usa-grid-full style="max-width:1250px"
+  .certify-page-header
+    .certify-page-header__primary
+      h1 = @sba_application.app_overview_title
+      div[style="margin-left: 12em;"]
+        span class="sba-c-spinner sba-u-color--primary" id="page-spinner" aria-valuetext="Loading" role="progressbar" style="display: none;"
+.usa-grid-full
+  div class='usa-width-one-whole'
+    = render partial: 'vendor_admin/application_dashboard/overview/card_content'
+
+javascript:
+  $('#overview_tab').addClass('current');
+
+  $(document.body).on("click", "[id$=_show_content]", function (event) {
+    var card_id = $(this).attr("id")
+    var content_id = card_id.replace("_show_content", "_content");
+    $('#' + content_id).removeClass("hide");
+    $(".cards").addClass("hide")
+  });
+
+  $(document.body).on("click", "[id$=_show_cards]", function (event) {
+    var content_id = $(this).attr("id")
+    var card_id = content_id.replace("_show_cards", "_content");
+    $('#' + card_id).addClass("hide");
+    $(".cards").removeClass("hide")
+  });
+
+  var sendSectionRequestVendor = function(sectionId, sbaAppId) {
+    document.getElementById("page-spinner").style.display = "inline-block";
+    $.ajax({
+      url: "/sba_application/"+sbaAppId+"/application_dashboard/overview/section_info?id="+sectionId,
+      type: "GET"
+    })
+    .then(function (x){
+    });
+  }

@@ -1,0 +1,6 @@
+- arr = MvwSamOrganization.get_naics_by_duns(@sba_application.organization.duns_number)
+= select_tag question.dom_id, options_for_select(arr, selected: question.value), {:include_blank => true, :required => true}
+= label_tag question.dom_id, "Please enter your NAICS code", class: 'hide last'
+- if arr.blank?
+  div.error
+    | This business does not have a NAICS code associated with it. You must add one on SAM.gov and wait up to <b><u>72 hours</b></u> for it to update here in order to continue this application.

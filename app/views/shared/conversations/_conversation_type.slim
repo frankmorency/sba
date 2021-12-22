@@ -1,0 +1,7 @@
+.conversation-type
+  - if message['conversation_type'] == 'official'
+    = image_tag "sba_seal.svg", alt: t('messages.sba-seal')
+    span &nbsp;
+  - else
+    i.fa.fa-comments
+    span &nbsp;

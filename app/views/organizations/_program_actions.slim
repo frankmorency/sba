@@ -1,0 +1,24 @@
+.sba-c-task-panel[style='float: right;']
+  button.sba-c-button.sba-c-task-panel__toggle.sba-c-task-panel__toggle--big aria-controls="panel2" aria-expanded="false" type="button"
+    | Program Actions
+    svg.sba-c-icon.sba-c-icon--lg.sba-u-margin-left--3.sba-u-border-left--1.sba-u-padding-left--2 aria-hidden="true"
+      use xlink:href=("#{find_asset_path('svg-sprite/sprite.svg')}#caret-down") xmlns:xlink="http://www.w3.org/1999/xlink"
+  #panel2.sba-c-task-panel__content
+    ul.sba-c-task-panel__menu[style='font-size: 16px;']
+      - if Feature.active?(:adverse_actions)
+        - unless org.has_terminal_8a_cert?
+          li.sba-c-task-panel__menu__item
+            = link_to 'Initiate an adverse action', new_organization_adverse_action_review_path(organization_id: org.id), {class: 'sba-c-task-panel__menu__link href'}
+        / li.sba-c-task-panel__menu__item
+        /   = link_to 'Early graduate this firm', program_request_for_info_path(:start, information_request: {organization_id: org.id}), {class: 'task-panel-menu__link'}
+        / li.sba-c-task-panel__menu__item
+        /   = link_to 'Send a Letter of Intent to Graduate Early', program_request_for_info_path(:start, information_request: {organization_id: org.id}), {class: 'task-panel-menu__link'}
+        / li.sba-c-task-panel__menu__item
+        /   = link_to 'Send a Letter of Intent to Terminate', program_request_for_info_path(:start, information_request: {organization_id: org.id}), {class: 'task-panel-menu__link'}
+        / li.sba-c-task-panel__menu__item
+        /   = link_to 'Suspend this firm', program_request_for_info_path(:start, information_request: {organization_id: org.id}), {class: 'task-panel-menu__link'}
+        / li.sba-c-task-panel__menu__item
+        /   = link_to 'Voluntarily withdraw this firm', program_request_for_info_path(:start, information_request: {organization_id: org.id}), {class: 'task-panel-menu__link'}
+      li.sba-c-task-panel__menu__item
+        = link_to 'Request additional information', program_request_for_info_path(:start, information_request: {organization_id: org.id}), {class: 'task-panel-menu__link'}
+  br

@@ -1,0 +1,45 @@
+- @certificate = @sba_application.certificate
+
+div.usa-grid-full
+  aside.usa-width-one-whole
+    ul.usa-sidenav-list
+      li
+        = link_to_case_overview @sba_application, active, @review
+      li
+        = link_to_question_review @sba_application, active, @review
+      - if @certificate.certificate_type.has_financial_review_section?
+        li
+          = link_to_financial_review @sba_application, active, @review, @owners
+      li
+        = link_to_signature_review @sba_application, active, @review
+      li
+        = link_to_determination @sba_application, active, @review
+      - if @sba_application.is_current?
+        li
+          = link_to_revision_history @sba_application, active, @review
+br
+br
+= @certificate.organization.legal_business_name
+br
+| DUNS:
+| &nbsp;
+= @certificate.organization.duns
+br
+= @certificate.certificate_type.short_name
+- if !@review.new_record?
+    br
+    br
+    ' Owner:
+    = @review.current_assignment.owner.name
+    br
+    ' Supervisor:
+    = @review.current_assignment.supervisor.name
+    br
+    br
+    ' Status:
+    = @certificate.display_status
+    br
+    ' Decision:
+    = @certificate.decision
+p
+  = link_to "<i class='fa fa-chevron-left'>&nbsp;</i>Vendor Overview".html_safe, sba_analyst_dashboard_show_path(enc: $encryptor.encrypt("duns_number=#{@certificate.organization.duns}&tax_identifier=#{@certificate.organization.tax_identifier_number}"))

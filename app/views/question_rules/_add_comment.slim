@@ -1,0 +1,67 @@
+.comment id="comment_#{question.unique_id}" class=('required' if rule.mandatory?) style=("display:none" unless (rule.value == question.value || rule.always_show?))
+  | Please explain why you made this choice.
+  / Per ticket APP-1165
+  = text_area_tag question.dom_id('comment'), question.comment
+
+javascript:
+  $(document).ready(function () {
+    var config = {
+      radio_choice: "input[name='#{question.dom_id}']",
+      value: "#{rule.value}",
+      comment_area: "#comment_#{question.unique_id}"
+    };
+
+    if (#{question.question_type.currency_with_comment_required_on_positive_value?}) {
+      $(config['comment_area']).css('margin-left', 10);
+      if ($("input[type='number'][name='#{question.dom_id}']").val() > 0) {
+          $(config['comment_area']).show();
+      } else {
+          $(config['comment_area']).hide();
+      }
+    }
+
+    $(config['radio_choice']).keyup(function () {
+        if (#{question.question_type.currency_with_comment_required_on_positive_value?}) {
+            if ($("input[type='number'][name='#{question.dom_id}']").val() > 0) {
+                $(config['comment_area']).show();
+            } else {
+                $(config['comment_area']).hide();
+            }
+        }
+    });
+
+    $(config['radio_choice']).change(function() {
+      if (#{question.question_type.picklist_with_radio_buttons?}) {
+          if ($("input:radio[name='#{question.dom_id}']:last").is(':checked')) {
+              $(config['comment_area']).show();
+          } else {
+              $(config['comment_area']).hide();
+          }
+      } else if (#{question.question_type.currency_with_comment_required_on_positive_value?}) {
+        if ($("input[type='number'][name='#{question.dom_id}']").val() > 0) {
+            $(config['comment_area']).show();
+        } else {
+            $(config['comment_area']).hide();
+        }
+      } else if (this.value == config['value'] || #{question.question_type.yesno_with_comment_required?} || #{question.question_type.picklist_with_comment_required?}) {
+        $(config['comment_area']).show();
+      } else {
+        $(config['comment_area']).hide();
+      }
+    });
+
+    if (#{question.question_type.currency_with_comment_required_on_positive_value?}) {
+      $("#questionnaire_form").validate({
+          rules: {
+              "#{question.dom_id('comment')}": {
+                  required: {
+                      depends: function (element) {
+                          return $("input[type='number'][name='#{question.dom_id}']").val() > 0;
+                      }
+                  }
+              }
+          },
+          errorElement: 'span'
+      });
+    }
+  });

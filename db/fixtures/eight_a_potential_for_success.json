@@ -1,0 +1,92 @@
+[
+  {
+    "section": "eight_a_pos_taxes",
+    "answers": {
+      "eight_a_pos_taxes": {
+        "question_text": "Please upload the applicant firm’s Federal tax returns filed in the last three years, including all schedules and attachments.",
+        "question_name": "eight_a_pos_taxes",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "yes",
+        "attachment": "has_attachments",
+        "document_ids": [
+          "10"
+        ]
+      }
+    }
+  },
+  {
+    "section": "eight_a_pos_revenue",
+    "answers": {
+      "eight_a_pos_revenue_a": {
+        "question_text": "Is NAICS code for which the applicant firm is applying to the 8(a) Business Development Program the same as the applicant firm’s primary NAICS code listed in SAM.gov?",
+        "question_name": "eight_a_pos_revenue_a",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "yes",
+        "comment": ""
+      },
+      "eight_a_pos_revenue_b": {
+        "question_text": "Has the applicant firm earned revenues in its primary NAICS code for at least two years?",
+        "question_name": "eight_a_pos_revenue_b",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "yes",
+        "attachment": "no_attachments_needed"
+      },
+      "eight_a_pos_revenue_c": {
+        "question_text": "What percentage of revenues were earned in the applicant firm’s primary NAICS code during the most recently completed fiscal year?",
+        "question_name": "eight_a_pos_revenue_c",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "23"
+      },
+      "eight_a_pos_revenue_d": {
+        "question_text": "Please list current and past Federal and non-Federal awarded contracts within the last 12 months.",
+        "question_name": "eight_a_pos_revenue_d",
+        "answered_for_type": "",
+        "answered_for_id": ""
+      },
+      "eight_a_pos_revenue_e": {
+        "question_text": "Please upload an interim or year-end balance sheet and profit and loss statement.",
+        "question_name": "eight_a_pos_revenue_e",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "yes",
+        "attachment": "has_attachments",
+        "document_ids": [
+          "10"
+        ]
+      }
+    }
+  },
+  {
+    "section": "eight_a_pos_pos",
+    "answers": {
+      "eight_a_pos_other": {
+        "question_text": "Do you have any loan agreements that are not commercial bank loans?",
+        "question_name": "eight_a_pos_other",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      },
+      "eight_a_pos_pos_a": {
+        "question_text": "Do you have any special licenses under which the applicant firm operates?",
+        "question_name": "eight_a_pos_pos_a",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      },
+      "eight_a_pos_pos_b": {
+        "question_text": "Do you have statements of bonding ability from the applicant firm’s surety?",
+        "question_name": "eight_a_pos_pos_b",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      }
+    }
+  }
+]

@@ -1,0 +1,21 @@
+.usa-width-one-whole
+  h1 Government user profile
+  h2 #{@user.name}
+
+  .div.usa-width-one-third
+    ul#selector
+      li 
+        strong Email: 
+        | #{@user.email}
+      li 
+        strong Phone: 
+        | #{@user.phone_number}
+
+  .div.usa-width-one-third
+    ul#selector
+      li 
+        strong Agency: 
+        | #{@user.max_agency}
+      li 
+        strong Responsibility: 
+        | #{@user.roles.map{|r| r.name}.join(",")}

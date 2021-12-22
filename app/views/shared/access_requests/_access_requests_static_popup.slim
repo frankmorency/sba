@@ -1,0 +1,14 @@
+- if !access_requests.where(status: "requested").empty? && current_user.assign_role?
+  .usa-grid-full#access_requests.usa-alert.usa-alert-info
+    .usa-width-three-fourths
+      .usa-alert-body
+        h3.usa-alert-heading New Access Requests
+        p.usa-alert-text
+          | You have received
+          '
+          strong = access_requests.where(status: "requested").size
+          '
+          | request to access to certify.SBA.gov
+    .usa-width-one-fourth.right.vmiddle
+      = link_to 'View requests', sba_analyst_role_access_requests_path, class: 'usa-button'
+  br

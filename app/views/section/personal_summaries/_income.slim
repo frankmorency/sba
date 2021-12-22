@@ -1,0 +1,10 @@
+- if income
+  - 1.upto(4).each do |i|
+    tr
+      td class=(income[i][:class] if income[i][:class])
+        - if income[i]
+          = income[i][:label] unless defined? reviewer_mode
+          = link_to income[i][:label], "##{income[i][:question_name]}" if defined? reviewer_mode
+      td class=(income[i][:class] if income[i][:class])
+        - if income[i]
+          = number_to_currency(income[i][:value]) if income[i][:value]

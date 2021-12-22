@@ -1,0 +1,64 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+- @referral = Referral.new(params[:referral])
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        h1 Add SBA Note
+        p.usa-font-lead
+          ' Your note will explain why you referred this case to
+          span[data-print="refer"] #{@referral.individual.name}
+          | .
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_for @referral,  url: wizard_path, id: 'new-note-form', class: 'new-note-form', method: :put do |f|
+          = f.hidden_field :office_id, value: @referral.office.id
+          = f.hidden_field :individual_id, value: @referral.individual.id
+
+          fieldset.questions
+            legend.usa-sr-only New Note
+            label[for="note_subject"] Title
+            input#note_subject type="text" name="note_subject"
+            label[for="note_message"] Note
+            textarea#note_message name="note_message"
+
+          fieldset.question.tags
+            h4.validation-error Tags
+            = generate_note_tags(@sba_application, 2, false)
+          .certify-quick-note
+            p
+              | This note will be submitted when you finish referring the case.
+          .actions
+            .actions__main
+              = f.submit "Next"
+              = link_to 'Start Over', sba_application_application_dashboard_overview_index_path(@sba_application.id)
+
+javascript:
+  $(function() {
+      $("#new_referral").validate({
+          errorPlacement: function (error, element) {
+            if (element.is($(".tag"))) {
+              $(".validation-error").after(error);
+            } else {
+              element.after(error);
+            }
+          },
+          rules: {
+              "note_subject": {
+                  required: true
+              },
+              "note_message": {
+                  required: true
+              },
+              "note_tags[]": {
+                required: true
+              }
+          },
+          messages: {
+              "note_subject": "A subject is required.",
+              "note_message": "A message is required.",
+              "note_tags[]": "Select at least one tag."
+          }
+      });
+  });

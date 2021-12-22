@@ -1,0 +1,18 @@
+h3 Welcome to your certify.SBA.gov dashboard. You have successfully connected your business from SAM.gov.
+.usa-font-lead
+  | To get started on an application, select which program you'd like to join below. You may only upload documents to certify.SBA.gov during the application process. While completing the online questionnaire, you will be instructed to upload documents to support your answers. These online applications replace any forms released by SBA for these contracting programs in the past.
+br
+.usa-font-lead
+  ' Get started now on your
+  /= link_to 'WOSB self-certification', new_certificate_type_sba_application_url(certificate_type_id: 'wosb')
+  /' ,
+  /= link_to 'EDWOSB self-certification', new_certificate_type_sba_application_url(certificate_type_id: 'edwosb')
+  /' ,
+  /   num_of_results param for link_to_new_initial_app() is used only for 'eight_a'. 0 is put in for other programs as a placeholder.
+  = link_to 'All Small Business Mentor-Protégé agreement', new_certificate_type_sba_application_url(certificate_type_id: 'mpp')
+  - if Feature.active?(:asmpp)
+    ' ,
+    = link_to_new_initial_app('asmpp', 0)
+  ' , or
+  = link_to_new_initial_app('eight_a', 0)
+  | .

@@ -1,0 +1,8 @@
+.sba-c-guidance
+  .sba-c-guidance__header
+    h2.sba-c-guidance__primary-heading
+      = submission_guidance(sba_application)[:title]
+  .sba-c-guidance__section
+    p
+      = submission_guidance(sba_application)[:text]
+    = button_to 'Sign and submit', edit_sba_application_questionnaire_signature_section_path(sba_application, sba_application.questionnaire, 'signature'), method: :get

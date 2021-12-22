@@ -1,0 +1,33 @@
+.signature-section
+  h2 Signature
+
+  = form_for *questionnaire_form_params(@sba_application, @section) do |f|
+    = render partial: 'section/logo_heading', locals: {title: "#{@sba_application.certificate_type.title} Self-Certification Authorization"}
+
+    div
+      div
+      - @signature_terms.each_with_index do |term, i|
+        input.signed type="checkbox" id="legal_#{i}"
+        label for="legal_#{i}" #{simple_format term.process(binding)}
+
+      div
+        = submit_tag @section.submit_text, class: "usa-button", id: 'accept-button'
+        img id="accept-loader" src="#{find_asset_path('continue-loader.gif')}" alt="Continue wait button" width="120px" height="40px" style="margin-top: 1.5rem"
+        - if @sba_application.is_a?(SbaApplication::MasterApplication)
+          | &nbsp;
+          | &nbsp;
+          = link_to "Go Back", "/sba_applications/#{@sba_application.id}/questionnaires/eight_a_initial/master_application_sections/eight_a_master/edit"
+
+javascript:
+  $(function() {
+    $("#accept-loader").hide();
+    $('#accept-button').click(function(e) {
+      if ($('.signed:checked').length != $('.signed').length) {
+        e.preventDefault();
+        alert("In order to submit your application, you must accept all of the conditions of authorization.");
+      }else {
+        $("#accept-button").hide();
+        $("#accept-loader").show();
+      }
+    });
+  });

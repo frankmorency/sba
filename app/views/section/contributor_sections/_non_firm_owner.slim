@@ -1,0 +1,12 @@
+- sub_section.children.order(position: :asc).each_with_index do |questionnaire_section, i|
+  - user = Struct.new(:name, :email).new(questionnaire_section.title, questionnaire_section.description)
+  div style="border: 1px solid grey; min-width: 300px; padding: 20px"
+    = render partial: 'section/contributor_sections/user_details', locals: {heading: "#{sub_section.title} ##{i+1}", user: user, status: questionnaire_section.status}
+    br
+    .left
+      - if current_user.email != user.email
+        = link_to "Send a reminder", reminder_contributors_path(email: user.email), method: :post
+    .right style="margin-top: -24px"
+      = link_to 'Remove', sba_application_section_contributor_path(@sba_application, sub_section.name, questionnaire_section.name, email: user.email), method: :delete
+br
+

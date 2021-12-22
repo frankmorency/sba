@@ -1,0 +1,83 @@
+aside.questionnaire-sidenav {
+  ul.usa-sidenav-list {
+    li {
+      cursor: pointer;
+
+      a.completed {
+        position: relative;
+      }
+
+      a.completed:after {
+        content: "\f00c";
+        font-family: FontAwesome;
+        right: 20px;
+        position: absolute;
+        display: inline-block;
+        top: 8px;
+        color: green;
+      }
+    }
+
+    margin-right: 35px;
+  }
+}
+
+ul.usa-sidenav-list {
+  li {
+    // reused for reviews as well
+    a.notapplicable {
+      color: #999999;
+    }
+  }
+}
+
+.questions {
+  fieldset {
+    margin-bottom: 50px;
+  }
+
+  .comment {
+    margin-top: 30px;
+  }
+
+  .block {
+    width: 100%;
+    display: block;
+    input {
+      display: inline;
+      width: 90%;
+    }
+    .dollar_sign {
+      margin-right: 5px;
+    }
+    .block_fields {
+      display: inline
+    }
+  }
+
+  .hide {
+    display: none;
+  }
+}
+
+.review_questions {
+  .hide {
+    display: none;
+  }
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.composite_question {
+  .sba-c-question-container {
+    border-bottom: none;
+  }
+  .sba-c-response {
+    margin-top: 1.2rem;
+  }
+  .questions fieldset {
+      margin-bottom: 20px;
+  }
+}

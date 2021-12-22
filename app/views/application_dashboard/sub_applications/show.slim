@@ -1,0 +1,47 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization}
+= render partial: 'shared/eight_a/fun_bar', locals: {application: @sba_application }
+
+.usa-grid-full style="max-width:1250px"
+  .certify-page-header
+    .certify-page-header__primary
+      h1
+        - if @section.is_dvd_vendor?
+          = @organization.users.with_role(:vendor_admin).take.name
+        - else
+          = @section.sub_application.creator.name
+
+      - if @section.sub_application.questionnaire.has_financial?
+        a#showAllAnswers href="#" Individual Contributor Answers
+        '
+        '  &bull;
+        '
+        a#showFinancialSummary href="#" Financial Summary
+        '
+        ' &bull;
+        '
+        = link_to 'Back to Application', sba_application_application_dashboard_overview_index_path(@sba_application.id)
+
+  #answers
+    = render partial: 'shared/answers', locals: {app: @section.sub_application, editable: false}
+
+  - if @section.sub_application.questionnaire.has_financial?
+    #financial_summary style="display: none"
+      = render partial: 'application_dashboard/sub_applications/financial_summary', locals: { assets: @financials.assets.answers, liabilities: @financials.liabilities.answers, income: @financials.income.answers, notes_receivable: @financials.notes_receivable, notes_payable: @financials.notes_payable, stocks_bonds: @financials.stocks_bonds, real_estate: @financials.real_estate, other_property: @financials.other_property, unpaid_taxes: @financials.unpaid_taxes, life_insurance: @financials.life_insurance}
+
+  .usa-grid-full
+    div.usa-width-one-whole
+      br
+
+      = link_to 'Back to Application', sba_application_application_dashboard_overview_index_path(@sba_application.id)
+  = render partial: 'application_dashboard/js.slim'
+
+  javascript:
+    $('a#showAllAnswers').click(function () {
+        $('#financial_summary').hide();
+        $('#answers').show();
+    });
+
+    $('a#showFinancialSummary').click(function () {
+        $('#financial_summary').show();
+        $('#answers').hide();
+    });

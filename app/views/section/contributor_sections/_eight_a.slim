@@ -1,0 +1,65 @@
+- vendor_admin = @section.children.find_by(name: 'vendor_admin')
+- eight_a_disadvantaged_individual = @section.children.find_by(name: 'eight_a_disadvantaged_individual')
+- eight_a_spouse = @section.children.find_by(name: 'eight_a_spouse')
+- eight_a_business_partner = @section.children.find_by(name: 'eight_a_business_partner')
+
+a href='/sba_application/#{@section.sba_application.id}/application_dashboard/overview' << Back to application overview
+
+.usa-grid-full
+  .usa-width-two-thirds
+    h1 style="margin-top: 20px" Individual Contributors
+    p Please complete your firm owner questionnaire and invite your contributors to complete theirs. Each person you invite to contribute will receive an email with instructions for creating their profile and submitting their information.
+    div style="color:red" <b>ATTENTION!</b> – Your Individual Contributors will have only <b>24 hours </b> from the time you send your invitation to access the link they will receive in an email sent to the address you enter. 
+                          Thereafter, the applicant must submit a help ticket the <a href="/help">Certify Help Desk</a>.
+    p 
+      b Entity-owned firms:
+      '
+      ' You are not required to answer all of these sections or questions. Please follow the supplemental instructions for entity-owned firms.
+
+    div style="border: 1px solid grey; max-width: 750px; padding: 20px"
+      h4#dvdid-1 style="margin-top: 0px" #{@organization.vendor_admin_user.name} - firm owner (disadvantaged individual)
+
+      p As the firm owner applying for the 8(a) program, you are claiming economic disadvantage and must submit this section about your personal financial information.
+
+      ' Status:
+      '
+      b = vendor_admin.status
+      br
+      - sub_app = vendor_admin.children.first.sub_application
+      = button_to '  Go to questionnaire  ', edit_sba_application_questionnaire_question_section_path(sub_app, sub_app.questionnaire, sub_app.link_to_section(vendor_admin.children.first.status)), method: :get
+
+    div style="margin-top: 30px; border: 1px solid grey; max-width: 750px; padding: 20px"
+      h4#dvdid-2 style="margin-top: 0px" Other disadvantaged owners (disadvantaged individual)
+
+      p Your firm must be at least 51% owned by one or more economically disadvantaged individuals to qualify for the 8(a) program. If you do not own 51% or more of the firm, send the other owner(s) who are claiming economic disadvantage an invitation to submit this section.
+      p Note: An individual can only claim disadvantage for 8(a) certification once in their lifetime. If you own 51% or more of the firm, the other owner(s) do not need to submit this section.
+
+      = render partial: "section/contributor_sections/form.slim", locals: {sba_application: @sba_application, section: eight_a_disadvantaged_individual, link: 'Invite other disadvantaged owners'}
+
+    div style="margin-top: 30px; border: 1px solid grey; max-width: 750px; padding: 20px"
+      h4#dvdid-3 style="margin-top: 0px" Spouses
+
+      p The spouse(s) of every owner claiming economic disadvantage — currently married or legally separated — must submit this section.
+      p If all disadvantaged owners are unmarried, skip this question.
+
+      = render partial: "section/contributor_sections/form.slim", locals: {sba_application: @sba_application, section: eight_a_spouse, link: 'Invite spouses'}
+
+    div style="margin-top: 30px; border: 1px solid grey; max-width: 750px; padding: 20px"
+      h4#dvdid-4 style="margin-top: 0px" People involved with your firm
+
+      p Each of the following people involved with your firm must complete this section. Note: Spouses of disadvantaged owners only need to complete the spouse section.
+
+      ul
+        li Everyone who owns at least 10% of your firm
+        li Officers
+        li Directors
+        li Board members
+        li Managers
+        li Partners
+
+      = render partial: "section/contributor_sections/form.slim", locals: {sba_application: @sba_application, section: eight_a_business_partner, link: 'Invite people involved with your firm'}
+
+  .usa-width-one-third
+    h2 style="margin-top: 30px" Your contributors
+    - [eight_a_disadvantaged_individual, eight_a_spouse, eight_a_business_partner].each do |sub|
+      = render partial: 'non_firm_owner', locals: {sub_section: sub}

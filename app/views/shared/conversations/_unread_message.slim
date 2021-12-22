@@ -1,0 +1,29 @@
+.conversation-item.unread-message
+  .unread-message-marker
+  = render partial: 'shared/conversations/conversation_type', locals: {message: unread_message}
+  .conversation-container
+    .conversation-subject
+      = link_to sba_application_conversation_messages_path(conversation_id: unread_message['id']) do
+        h3
+          = unread_message["subject"]
+    .conversation-details
+      .conversation-name
+        - if current_user.is_vendor_or_contributor?
+          - if current_recipient
+            .conversation-name="#{current_recipient.first_name} #{current_recipient.last_name}"
+          - else
+            .conversation-name="SBA"
+        - else
+          - if unread_message["most_recent_message"]
+            .conversation-name="#{(User.find unread_message["most_recent_message"]["recipient_id"]).name}"
+      .conversation-updated
+        = l(Time.parse(unread_message["updated_at"]), format: :default)
+    .conversation-snippet
+      = link_to sba_application_conversation_messages_path(conversation_id: unread_message['id']) do
+        - if unread_message['most_recent_message'].blank?
+          p.no-message-placeholder
+            = t('messages.no_messages')
+        - else
+          p
+            = truncate("#{ConversationsHelper.safe_html(unread_message['most_recent_message']['body'])}", length: 140, omission: '...', escape: false)
+

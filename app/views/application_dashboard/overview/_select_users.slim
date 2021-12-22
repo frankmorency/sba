@@ -1,0 +1,16 @@
+h4
+  = "Select a BOS from the #{duty_station.name} District Office"
+- @users = User.filter_by_duty_stations_and_roles([duty_station.name], ['sba_supervisor_8a_district_office', 'sba_analyst_8a_district_office'])
+- if @users && @users.length > 0
+  - @users.in_groups_of(2, false).each_with_index do |user_group|
+    .usa-width-one-whole
+      - user_group.each do |user|
+        .usa-width-one-half
+          ul.usa-unstyled-list
+            li
+              input name="user_id" required="" type="radio" value=("#{user.id}") id="#{duty_station.short_name}_#{user.id}" /
+              label.radio_label for="#{duty_station.short_name}_#{user.id}"
+                = present(user).name_with_assigned_cases_count
+- else
+  br
+  | There are no users assigned to this Duty Station

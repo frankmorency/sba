@@ -1,0 +1,37 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+.usa-grid-full
+
+  h1 Request additional info
+
+  p.usa-font-lead Use this form for simple requests for information or documents from the firm. The firm's responses will be attached to the section.
+
+  = form_for @adhoc_request, url: wizard_path, method: :put do |f|
+    = f.hidden_field :sub_section_name
+
+    = f.label :topic, 'Title'
+    = f.text_field  :topic, required: true
+
+    = f.label :message_to_firm_owner, 'Information requested'
+    = f.text_area :message_to_firm_owner, required: true
+
+    h5 Type of response required from firm:
+
+    = f.check_box :text
+    = f.label :text
+    = f.check_box :attachment
+    = f.label :attachment
+
+    br
+
+    = f.submit "Request info"
+    = link_to 'Start Over', new_sba_analyst_sba_application_review_path(sba_application_id: @sba_application.id)
+
+
+javascript:
+  $('#new_adhoc_request').submit(function () {
+      if ($('#adhoc_request_text').is(':checked') == false && $('#adhoc_request_attachment').is(':checked') == false) {
+          alert("You must select a text or attachment response");
+          return false;
+      }
+  });

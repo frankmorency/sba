@@ -1,0 +1,96 @@
+#header_nav
+  header.usa-header.usa-header-extended.navigation role="banner"
+    .usa-banner
+      .usa-accordion
+        header.usa-banner-header
+          .usa-grid-full
+            img alt=("U.S. flag") src="#{find_asset_path('img/favicons/favicon-57.png')}"
+            p An official website of the United States government
+            .usa-accordion-button.usa-banner-button aria-controls="gov-banner" aria-expanded="false"
+              span.usa-banner-button-text Here's how you know
+        #gov-banner.usa-banner-content.usa-grid.usa-accordion-content aria-hidden="true"
+          .usa-banner-guidance-gov.usa-width-one-half
+            img.usa-banner-icon.usa-media_block-img alt=("Dot gov") src="#{find_asset_path('img/icon-dot-gov.svg')}"
+            .usa-media_block-body
+              p
+                strong The .gov means it’s official.
+                br
+                | Federal government websites always use a .gov or .mil domain. Before sharing sensitive information online, make sure you’re on a .gov or .mil site by inspecting your browser’s address (or “location”) bar.
+          .usa-banner-guidance-ssl.usa-width-one-half
+            img.usa-banner-icon.usa-media_block-img alt="SSL" src="#{find_asset_path('img/icon-https.svg')}"
+            .usa-media_block-body
+              p
+                | This site is also protected by an SSL (Secure Sockets Layer) certificate that’s been signed by the U.S. government. The
+                '
+                strong https://
+                '
+                | means all transmitted data is encrypted &nbsp;— in other words, any information or browsing history that you provide is transmitted securely.
+
+    #nav_analyst
+      .usa-grid-full.usa-grid-full-vendor-nav
+        .usa-navbar
+          button.usa-menu-btn Menu
+          .usa-width-two-thirds
+            ul.usa-nav-primary.usa-accordion
+              li.logo-img
+                img  width="146px" alt="certify.SBA.gov logo" src="#{find_asset_path('landing-icons/certify-sba-gov-logo_on-dark.png')}"
+
+              - if @public
+                = render partial: 'layouts/application/navbar/public'
+              - elsif current_user.can?( :ensure_vendor )
+                = render partial: 'layouts/application/navbar/vendor'
+              - elsif current_user.can?( :ensure_contributor )
+                = render partial: 'layouts/application/navbar/contributor'
+              - elsif current_user.can?(:ensure_8a_initial_sba_analyst)
+                = render partial: 'layouts/application/navbar/eight_a_initial_sba_analyst'
+              - elsif current_user.can?(:ensure_8a_initial_sba_supervisor)
+                = render partial: 'layouts/application/navbar/eight_a_initial_sba_supervisor'
+              - elsif current_user.can? :sba_user
+                = render partial: 'layouts/application/navbar/sba_analyst'
+              - elsif current_user.can? :ensure_contracting_officer
+                = render partial: 'layouts/application/navbar/contracting_officer'
+              - elsif current_user.max_id && current_user.roles.empty?
+                = render partial: 'layouts/application/navbar/max_gov_role_request'
+              - elsif current_user.max_id.nil? && current_user.roles.empty?
+                = render partial: 'layouts/application/navbar/vendor_role_request'
+              - elsif current_user.can? :ensure_ops_support
+                = render partial: 'layouts/application/navbar/ops_support'
+
+                - if can? :view_search, current_user
+                  li
+                    = form_tag sba_analyst_dashboard_index_path, id: 'analyst-search', method: 'get', class:'usa-search usa-search-small' do
+                      div role="search"
+                        = text_field_tag 'query', params[:query] || nil, type: 'search'
+                        button type="submit"
+                          span.usa-sr-only Search
+
+          .usa-width-one-third
+            ul.usa-nav-primary.usa-accordion
+              li
+                = render partial: "shared/notifications/notification_link"
+              li
+                button.usa-accordion-button.usa-nav-link aria-controls="side-nav-1" aria-expanded="false" id="profileid" My Account
+                ul#side-nav-1.usa-nav-submenu
+                  / li
+                    - if current_organization.voluntary_suspension.present?
+                      = link_to "View My Application", vendor_admin_voluntary_suspension_path, class: "usa-nav-link"
+                    - else
+                      = link_to "Take Action", new_vendor_admin_voluntary_suspension_path, class: "usa-nav-link"
+                  li
+                    - if @public
+                      a.usa-nav-link href="/users/sign_in"  Login
+                    - else
+                      = link_to 'Logout', destroy_user_session_path, method: 'delete', class: 'usa-nav-link'
+              li  class=('current-top-nav ' if params[:action] == 'index' && params['controller'] == "help_pages")
+                = link_to 'Help'.html_safe, 'https://sbaone.atlassian.net/wiki/spaces/CHDB/overview', target: '_blank', class: 'usa-nav-link'
+
+javascript:
+  $('#side-nav-1').hide();
+  $('#profileid').click(function () {
+      $('#side-nav-1').toggle();
+      $('#profileid').toggleClass('usa-nav-link-button-active');
+  });
+  $(".js-search-button").click(function () {
+      $('.usa-search').show();
+      $('.searchtextdiv').addClass('hidden');
+  });

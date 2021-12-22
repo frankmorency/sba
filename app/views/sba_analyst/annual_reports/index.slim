@@ -1,0 +1,21 @@
+h1 MPP Annual Reports
+p Firms in the All Small MPP Program submitted these annual reports as a condition of their participation. 
+
+.usa-grid-full
+table
+  tr
+    th Organization
+    th Status
+    th Reviewer
+
+  - @annual_reports.each do |annual_report|
+    tr
+      td
+        - if annual_report.status == AnnualReport::RETURNED
+          = annual_report.certificate.organization.name
+        - else
+          = link_to annual_report.certificate.organization.name, sba_analyst_annual_report_path(annual_report)
+      td
+        = annual_report.status
+      td
+        = annual_report.reviewer.try(:email)

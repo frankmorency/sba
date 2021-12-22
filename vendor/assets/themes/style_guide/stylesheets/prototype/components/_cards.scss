@@ -1,0 +1,182 @@
+.card-set {
+  @include display(flex);
+  @include flex-direction(column);
+  @include flex-wrap(wrap);
+}
+
+.card {
+  background: white;
+  border: 1px solid $color-gray-lighter;
+  border-radius: 2px;
+  box-shadow: 0 2px 3px 0 rgba(0,0,0,.1);
+  margin: 0 0 6rem 0;
+  min-height: 0;
+  position: relative;
+  width: 100%;
+}
+
+
+
+// Card Headings
+.card__header {
+  margin: 0;
+  padding: 2rem 2rem 0;
+
+  @include media($nav-width) {
+    padding: 3rem 3rem 0;
+  }
+}
+
+.card__primary-heading {
+  margin: 0;
+}
+
+.card__sub-head {
+  color: $color-gray;
+  margin: 0;
+}
+
+// Card Content
+.card__content {
+  padding: 2rem;
+
+  @include media($nav-width) {
+    padding: 3rem;
+  }
+}
+
+// Card Bulk Actions
+.card__bulk-actions {
+  position: absolute;
+  right: .5rem;
+  top: 1rem;
+
+  @include media($nav-width) {
+    right: 1rem;
+    top: 1.5rem;
+  }
+}
+
+// Card Meta Info
+.card__meta,
+.card__footer {
+  background: $color-gray-lightest;
+  border-top: 1px solid $color-gray-lighter;
+  padding: 1rem 2rem;
+
+  @include media($nav-width) {
+    padding: 1.5rem 3rem;
+  }
+}
+
+// Shows two cards in a row arranged horizontally and flows downward
+.card-set--halves {
+  @include flex-direction(row);
+
+  .card__footer {
+    @include media($nav-width) {
+      padding: 1rem 2rem;
+    }
+  }
+}
+
+.card-set--halves .card:nth-child(odd) {
+  @include media($nav-width) {
+    width: 50%;
+    width: calc(50% - 1.5rem);
+    margin: 0 0 6rem 0;
+    margin: 0 calc(1.5rem) 6rem 0;
+  }
+}
+
+.card-set--halves .card:nth-child(even) {
+  @include media($nav-width) {
+    width: 50%;
+    width: calc(50% - 1.5rem);
+    margin: 0 0 6rem 0;
+    margin: 0 0 6rem calc(1.5rem);
+  }
+}
+
+
+.card-set--halves .card__header {
+  padding: 2rem 2rem 0;
+}
+
+.card-set--halves .card__content {
+  padding: 2rem;
+}
+
+.card-set--halves .card__bulk-actions {
+
+  @include media($nav-width) {
+    right: .5rem;
+    top: 1rem;
+  }
+}
+
+// Standalone Cards
+.standalone-card {
+
+  @include media($nav-width) {
+    background-color: white;
+    border: 1px solid $color-gray-lighter;
+    border-radius: 4px;
+    box-shadow: 0 0 20px rgba(0,0,0,.05);
+    float: none;
+    margin: 6rem auto 0 !important;
+    padding: 4rem;
+  }
+}
+
+// Status Cards
+.status-card {
+  background: $color-primary-alt-lightest;
+  border: 1px solid $color-primary-darkest;
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.status-card__header {
+  margin-bottom: 2rem;
+}
+
+.status-card__primary-heading {
+  font-size: 2.4rem;
+  margin: 0;
+}
+
+.status-card__section {
+  border-top: 1px solid $color-primary-darkest;
+
+  &:last-child > p:last-child{
+    margin-bottom: 0;
+  }
+}
+
+.status-card--warning {
+  background: $color-gold-lightest;
+  border-color: $color-gold;
+
+  .status-card__section {
+    border-color: $color-gold;
+  }
+}
+
+.status-card--success {
+  background: $color-green-lightest;
+  border-color: $color-green;
+
+  .status-card__section {
+    border-color: $color-green;
+  }
+}
+
+.status-card--error {
+  background: $color-secondary-lightest;
+  border-color: $color-secondary;
+
+  .status-card__section {
+    border-color: $color-secondary;
+  }
+}

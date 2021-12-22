@@ -1,0 +1,33 @@
+= render partial: 'shared/access_requests/access_requests_static_popup', locals: {access_requests: @access_requests}
+
+div#business_search
+  .usa-width-one-whole.business_search_result
+  .usa-width-one-whole.results
+    - if @sam_organizations.nil?
+      // NOTE: candidate for refactoring as this is duplicate with the logic in the partial
+      h3 No Match Found
+      .usa-width-one-whole.business_search_result
+        h5 Sorry, no businesses matched your search terms. Please check the name or DUNS number and try again.
+    - else
+      = render partial: 'sba_analyst/dashboard/business_search_result', locals: {sam_organizations: @sam_organizations}
+      = will_paginate @sam_organizations
+
+javascript:
+
+  $(document).ready(function(event) {
+    $('#analyst-search').submit(function(){
+     if ($.trim($('#query').val()).length == 0) {
+       alert('Please enter valid search string.');
+       return false;
+     }
+    });
+
+    $("#analyst-search").validate({
+      rules: {
+        "query": {
+          required: false
+        }
+      },
+      errorElement: 'span'
+    });
+  });

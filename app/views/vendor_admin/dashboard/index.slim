@@ -1,0 +1,34 @@
+section.usa-width-one-whole
+  article.usa-width-three-fourths
+    .usa-width-one-whole
+      - if @results.empty?
+        = render partial: 'empty_results'
+      - if can? :view_business_profile, current_user
+        = render partial: 'tile_business_profile'
+
+    .usa-width-one-whole
+      - unless @results.empty?
+        - if current_user.can? :work_on_edwosb_wosb_application
+          br
+          - @results.programs.each do |result_set|
+            h2 = result_set.program.title if result_set.present? || (!result_set.present? && result_set.program.title != "Women-Owned Small Business")
+            = render partial: 'shared/status_badges', locals: {states: result_set.displayable_states}
+            = render partial: "header_#{result_set.program.name}" , locals: {program: result_set.program, num_of_results: result_set.certificates.length} if display_create_app_link?(result_set)
+            - if result_set.present?
+              h4 style="margin-bottom: 0px; padding-bottom: 0px" Application packages
+              - if current_user.can? :work_on_edwosb_wosb_application
+                = render partial: 'table', locals: {apps: result_set.applications_without_info_requests, certs: result_set.certificates, annual_reports: result_set.annual_reports, info_requests: result_set.info_requests}
+
+    .usa-width-one-whole
+      - unless @results.empty?
+        - if current_user.can? :view_document_library
+          br
+          h2
+            = link_to 'My documents', vendor_admin_my_documents_url
+          = render partial: 'tile_document', locals: {documents: @results.documents}
+
+  article.usa-width-one-fourth
+    h3
+    p Welcome #{current_user.first_name}
+    | Last logged in at #{current_user.last_sign_in_at}
+

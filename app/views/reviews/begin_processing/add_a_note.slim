@@ -1,0 +1,56 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        h1 Add SBA Note
+    p.usa-font-lead
+    .certify-grid-wrap
+      .certify-width-two-thirds
+
+        = form_tag wizard_path, id: 'new-note-form', class: 'new-note-form', method: :put do
+          fieldset.questions
+            legend.usa-sr-only New Note
+            label[for="note_subject"] Title
+            input#note_subject type="text" name="note_subject"
+            label[for="note_message"] Note
+            textarea#note_message name="note_message"
+
+          fieldset.question.tags
+            h4.validation-error Tags
+            = generate_note_tags(@sba_application, 2, false)
+          .actions
+            .actions__main
+              button[type="submit"]
+                | Create note
+              = link_to 'Start Over', previous_wizard_path
+
+javascript:
+  $(function() {
+      $("#new-note-form").validate({
+          errorPlacement: function (error, element) {
+            if (element.is($(".tag"))) {
+              $(".validation-error").after(error);
+            } else {
+              element.after(error);
+            }
+          },
+          rules: {
+              "note_subject": {
+                  required: true
+              },
+              "note_message": {
+                  required: true
+              },
+              "note_tags[]": {
+                required: true
+              }
+          },
+          messages: {
+              "note_subject": "A subject is required.",
+              "note_message": "A message is required.",
+              "note_tags[]": "Select at least one tag."
+          }
+      });
+  });

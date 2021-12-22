@@ -1,0 +1,6 @@
+article#main-content
+  h1 Dashboard
+  = render partial: 'shared/access_requests/access_requests_static_popup', locals: {access_requests: @access_requests}
+  = render partial: 'unassigned_cases', locals: {applications: @applications} if current_user.can?(:assign_8a_cases)
+  = render partial: 'shared/eight_a/dashboard/current_workload' if current_user.can?(:view_8a_migrated_sba_supervisor_dashboard)
+a.usa-button.usa-button-big[href="/sba_analyst/cases"] View all cases

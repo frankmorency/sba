@@ -1,0 +1,10 @@
+- if certificate.visible_to_vendor?
+  tr
+    td = certificate_title_link certificate, current_user, current_organization
+    td = certificate.display_kind
+    td = certificate.display_status
+    td = certificate.formatted_submission_date
+    td = certificate.formatted_expiry_date
+    td = certificate.display_decision
+    td
+      = render partial: 'shared/dashboard/certificate_actions', locals: {certificate: certificate}

@@ -1,0 +1,90 @@
+- if sam_organizations.blank?
+  h3.no-match-found No Match Found
+  .usa-width-one-whole.business_search_result
+    h5 Sorry, no businesses matched your search terms. Please check the name or DUNS number and try again.
+- else
+  h2  Search Results
+  - sam_organizations.each do |sam_organization|
+      - organization = sam_organization.to_org
+      .usa-width-one-whole.business_search_result.business_search_result_per_entry
+          div
+            - if organization
+              h4
+                = link_to sam_organization.legal_business_name, sba_analyst_dashboard_show_path( enc: $encryptor.encrypt("duns_number=#{sam_organization.duns}&tax_identifier=#{sam_organization.tax_identifier_number}") )
+            - else
+              span.submit-link-inactive
+                h4
+                  = sam_organization.legal_business_name
+              h5
+                | This business has not been associated to a user
+          div
+            .usa-width-one-third
+              span.bs_field
+                b
+                  ' DBA:
+              span
+                = sam_organization.dba_name
+
+            .usa-width-one-third
+              span.bs_field
+                b
+                  ' Gov Business Contact:
+              span
+                = "#{sam_organization.govt_bus_poc_first_name} #{sam_organization.govt_bus_poc_last_name}"
+
+            .usa-width-one-third
+              span.bs_field
+                b
+                  ' DUNS:
+              span
+                = sam_organization.duns
+
+          div
+            .usa-width-one-third
+              span.bs_field
+                b.bs_field
+                  ' Email:
+              span
+                = sam_organization.govt_bus_poc_email
+
+            .usa-width-one-third
+              span.bs_field
+                b.bs_field
+                  ' Phone:
+              span
+                = sam_organization.govt_bus_poc_us_phone
+
+            .usa-width-one-third
+              span.bs_field
+                b
+                  ' Business Type:
+              span
+                = organization.business_type_display if organization
+          br
+          div
+            .usa-width-two-thirds
+              span.bs_field
+                b Address:
+              br
+              span
+                = sam_organization.sam_address_1
+                = sam_organization.sam_address_2
+                br
+                = "#{sam_organization.sam_city}, #{sam_organization.sam_province_or_state} #{sam_organization.sam_zip_code_5}"
+              br
+              br
+
+            .usa-width-one-third
+              xspan#xcertmargin.xbs_field.xcert_margin_top
+                b Certifications:
+              span
+              - if organization
+                - if organization.displayable_certificates(true).empty?
+                  br
+                  | There are currently no certifications
+                - else
+                  - for certificate in organization.displayable_certificates(true)
+                    br
+                    = certificate.certificate_type.title
+      hr
+  br

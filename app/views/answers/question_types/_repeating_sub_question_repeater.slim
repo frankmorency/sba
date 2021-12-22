@@ -1,0 +1,25 @@
+h6.usa-heading-alt
+  | #{question.repeater_label} ##{index + 1}
+
+- question.sub_questions.each do |sub_question|
+  - sub_question.array_index = index
+  - sub_question.value = answer_set.with_indifferent_access[sub_question.name] if answer_set
+
+  p
+    = sub_question.title
+  p
+    b
+      | Response:
+      | &nbsp;
+    - if question && question.question_type && question.question_type.is_a?(QuestionType::Date)
+      = l Date.parse(sub_question.value) if sub_question.value
+    - elsif question && question.question_type && question.question_type.is_a?(QuestionType::Currency)
+      = number_to_currency(sub_question.value) if sub_question.value
+    - else
+      = sub_question.value.try(:capitalize)
+
+  br
+
+
+
+

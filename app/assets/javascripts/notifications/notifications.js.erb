@@ -1,0 +1,87 @@
+Certify.Notify.Pip = (function(){
+  var intervalHandler;
+
+  // bind event handlers to the notifications nav on load
+  document.addEventListener('DOMContentLoaded', checkForNewNotifications);
+
+  function checkForNewNotifications(){
+    if (Certify.Notify.Config.check_for_new){
+      //console.log("starting timer");
+      Certify.Notify.Pip.checkForNew();
+      intervalHandler = setInterval(Certify.Notify.Pip.checkForNew,600000);
+    }
+  }
+
+  return {
+    checkForNew: function(){
+      if(window.location.href.includes("/dashboard") ){
+        var payload = "?most_recent_notification=" + Certify.Cookies.getItem('most_recent_notification');
+        var request = new XMLHttpRequest();
+        var url = '/notifications/check_for_new' + payload;
+        request.open('GET', url , true);
+        request.onload = Certify.Notify.Pip.catchNotificationResponse;
+        request.onerror = Certify.Notify.Pip.handleNotificationError;
+        request.send();
+      }
+    },
+
+    check_notifications: function(){
+      Certify.Notify.Pip.togglePipOff();
+      if(window.location.href.includes("/dashboard") ){
+        $.ajax({
+        url: "/check_notifications",
+        type: 'GET',
+        beforeSend: function(jqXHR) {jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        dataType: "html",
+        success: function(data, textStatus, jqXHR) {
+          $('.notifications-drawer').html(data);
+          Certify.Notify.MarkRead.update();
+          Certify.Notify.Pip.checkForNew();
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          console.log("Notification Error")
+        }
+      });
+      }
+    },
+    catchNotificationResponse: function(event) {
+      var response;
+      try {
+        response = JSON.parse(event.currentTarget.response); 
+      }
+      catch (err) {
+        response = {'message' : ('unparseable response. error; ' + err.message)};
+      }
+      if (event.currentTarget.status >= 200 && event.currentTarget.status < 400) {
+        Certify.Notify.Pip.handleNewNotifications(response);
+      } else {
+        if (event.currentTarget.status == 403) { // Forbidden -- user not logged in
+          clearInterval(intervalHandler);
+        }
+        Certify.Notify.Pip.handleNotificationError(response);
+      }
+    },
+    handleNotificationError: function(response){
+      console.log('An error occurred polling the notifications db:', response);
+    },
+    handleNewNotifications:function(response){
+      Certify.Cookies.setItem('most_recent_notification', response.most_recent_notification, 86400, '/');
+      if (response.new_notifications){
+        Certify.Notify.Pip.togglePipOn();
+      }
+    },
+    togglePipOff: function(){
+      var elements = document.getElementsByClassName('new-notifications-pip');
+      for (var i = elements.length - 1; i >= 0; i--) {
+        elements[i].classList.add("hidden");
+      }
+    },
+    togglePipOn: function(){
+      var elements = document.getElementsByClassName('new-notifications-pip');
+      for (var i = elements.length - 1; i >= 0; i--) {
+        elements[i].classList.remove("hidden");
+      }
+      Certify.Cookies.setItem('pipVisible', true, 150, '/');
+    },
+  };
+})();

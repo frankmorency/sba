@@ -1,0 +1,14 @@
+tr
+  td = contributor.organization.legal_business_name
+  td
+    - if contributor.new_application? && contributor.new_application_url.present?
+      = link_to 'Start Application', contributor.new_application_url
+    - else
+      - title = application.kind == 'initial' ? "#{application.kind.titleize} Application" : application.kind.titleize
+      = link_to title, sba_application_application_dashboard_overview_index_path(application.id)
+  td = l sub_application&.created_at&.to_date if sub_application
+  td
+    - if sub_application&.section&.has_adhoc_questionnaires_to_complete?
+      | Updates Needed
+    - else
+      = sub_application.workflow_state.humanize if sub_application

@@ -1,0 +1,41 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+  span.subheading Approval: Step 1 of 4
+  h1 Select Adverse Action
+  p.usa-font-lead Please select the adverse action for #{@sba_application.organization.name}?
+
+  = form_tag(wizard_path, {method: :put, id: :adverse_action_form}) do
+    - if @review.workflow_state != "voluntary_withdrawal_recommended"
+        = radio_button_tag(:adverse_action, 'finalize_termination')
+        = label_tag(:adverse_action_finalize_termination, 'Termination')
+
+        = radio_button_tag(:adverse_action, 'finalize_early_graduation')
+        = label_tag(:adverse_action_finalize_early_graduation, 'Early graduation')
+
+    - else
+        = radio_button_tag(:adverse_action, 'finalize_voluntary_withdrawal')
+        = label_tag(:adverse_action_finalize_voluntary_withdrawal, 'Voluntary withdrawal')
+
+    .actions
+      .actions__main
+        = submit_tag 'Next'
+        = link_to 'Cancel', '#', :onclick => 'window.history.back();return false;'
+        p
+          em Next step: Attach documents
+javascript:
+    $(function () {
+        $("#adverse_action_form").validate({
+            errorPlacement: function (error, element) {
+                $("label").last().after(error);
+            },
+            rules: {
+                "adverse_action": {
+                    required: true
+                }
+            },
+            messages: {
+                "adverse_action": "Select an option"
+            }
+        });
+    });

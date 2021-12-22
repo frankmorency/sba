@@ -1,0 +1,22 @@
+h6.usa-heading-alt Firm Owner
+
+b Full name:
+'
+= current_user.name
+br
+
+b Email address:
+'
+= current_user.email
+br
+
+b Application Status:
+'
+= vendor_admin_section.status
+
+br
+br
+br
+
+- sub_app = vendor_admin_section.sub_application
+= link_to 'Firm Owner Questionnaire', edit_sba_application_questionnaire_question_section_path(sub_app, sub_app.questionnaire, sub_app.link_to_section(vendor_admin_section.status))

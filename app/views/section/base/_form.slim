@@ -1,0 +1,17 @@
+= section_form do
+  - if @questions.empty?
+    = hidden_field_tag 'answers[]'
+  - else
+    - @questions.each_with_index do |question, counter|
+      = render_question question, answered_for: @answered_for
+
+javascript:
+  $('#answers_owner_divorced').append('<img src="#{find_asset_path('save-continue-loader.gif')}" class="save-continue-loader" alt="Save and continue wait button" />')
+  $(".save-continue-loader").hide();
+  $(".usa-button").click(function () {
+    // checking that there is somethign in the selector before validating it.
+    if($("#edwosb").size() > 0 && $("#edwosb").valid()){
+      $(".financial-button").hide();
+      $(".save-continue-loader").show();
+    }
+  });

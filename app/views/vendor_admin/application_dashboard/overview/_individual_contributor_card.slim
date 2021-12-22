@@ -1,0 +1,38 @@
+h2 #{sub_section.overview_tile_display_title}
+- if @sba_application.returned?
+  p
+    ' To add new contributors or remove existing contributors please click
+    a href="/sba_applications/#{@sba_application.id}/questionnaires/eight_a_initial/contributor_sections/disadvantaged_individuals/edit" here
+    |.
+
+- sub_section.children.each do |contributor_section|
+  - if contributor_section
+    - if contributor_section.is_dvd_vendor?
+      - user = contributor_section.sba_application.organization.users.with_role(:vendor_admin).take
+    - elsif @sba_application.returned?
+      - user = User.find_by(email: contributor_section.email)
+    .usa-width-one-half
+      section
+        .card
+          .card__header
+            h3.card__primary-heading
+              - if contributor_section.is_dvd_vendor? && user.can_view_answers?(@sba_application)
+                - if @sba_application.submitted? || @sba_application.complete?
+                    a href="javascript:void(0);" id="#{contributor_section.name}_show_content"
+                      | #{user.name}
+                - else @sba_application.returned?
+                  - sba_application = contributor_section.sub_application
+                  - questionnaire = contributor_section.sub_application.questionnaire
+                  - section_question = contributor_section.sub_application.questionnaire.sections.select{|s| s.review_position == 1}
+                  = link_to user.name, edit_sba_application_questionnaire_question_section_path(contributor_section.sub_application, questionnaire, section_question)
+              - elsif user&.can_view_answers?(@sba_application)
+                | #{user ? user.name : contributor_section.email}
+              - else
+                = User.find_by(email: contributor_section.email)&.name
+            - if contributor_section.is_dvd_contributor? || user && user.cannot_view_answers?(@sba_application)
+              small.usa-color-gray
+                | To protect personal information, you will not be able to view your contributor’s info.
+          .card__content
+            = render partial: 'shared/eight_a/overview/quick_details', locals: {section: contributor_section, style: "usa-color-green", display_submitted: false}
+          - if @permissions.can_view_adhoc_footer?(contributor_section)
+            = render partial: 'shared/eight_a/overview/adhoc_footer', locals: {section: contributor_section}

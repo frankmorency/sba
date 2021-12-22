@@ -1,0 +1,40 @@
+= render partial: 'layouts/application/sidenav/contracting_officer'
+
+h1 My requests
+
+h2 Review vendor certifications
+
+div.overflow-auto
+  #table-search
+
+    table.searchable
+      thead
+        tr
+          th scope="col" = sortable 'Solicitation #', model: AccessRequest
+          th scope="col" = sortable 'DUNS #', model: AccessRequest
+          th scope="col" Vendor
+          th scope="col" = sortable 'Status', model: AccessRequest
+          th scope="col" = sortable 'Request expires', model: AccessRequest
+          th scope="col" = sortable 'Access expires', model: AccessRequest
+          th scope="col" View
+
+      - if !@access_requests.empty? && !@access_requests.first.id.blank?
+        - @access_requests.each do |req|
+          tr
+            td = req.solicitation_number
+            td = req.organization.duns_number
+            td = req.organization.name
+            td = req.status.titleize
+            td = l(req.request_expires_on) if req.request_expires_on
+            td = l(req.access_expires_on) if req.access_expires_on
+            td
+              - if req.accepted?
+                - # Only certificates that are wosb/edwosb and that are active are returned here. 
+                - certificates = req.organization.certificates.joins(:certificate_type).where(certificate_types: {name: ['wosb', 'edwosb']}).where( {workflow_state: 'active'})
+                - certificates.each do |cert|
+                  = link_to cert.certificate_type.super_short_name, contracting_officer_organization_sba_application_path(req.organization, cert.current_application)
+                  = ", " unless cert == certificates.last
+
+= will_paginate(@access_requests) if !@access_requests.empty? && !@access_requests.first.id.blank?
+
+br

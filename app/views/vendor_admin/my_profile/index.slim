@@ -1,0 +1,25 @@
+= content_for :sidenav do
+  li
+    = link_to "My profile", '#', class: 'usa-current'
+
+h1 My profile
+h2
+  =" #{@user.first_name} #{@user.last_name}"
+p
+  b FIRST NAME:
+  span.field
+    =" #{@user.first_name}"
+p
+  b LAST NAME:
+  span.field
+    =" #{@user.last_name}"
+p
+  b EMAIL:
+  span.field
+    =" #{@user.email}"
+p
+  b PHONE:
+  span.field
+    =" #{@user.phone_number}"
+= link_to 'Edit Profile', edit_profile_vendor_admin_my_profile_index_path, class: 'usa-button'
+= link_to 'Edit Password', edit_passphrase_vendor_admin_my_profile_index_path , class: 'usa-button'

@@ -1,0 +1,204 @@
+h1 Workflow States
+
+
+h2 Eight A
+
+table
+  thead
+    td App (Initial or Annual)
+    td Review (Initial)
+    td Certificate
+    td Review (Annual Review)
+  tbody
+    tr
+      td
+        ul
+          - @states[:initial][:app][:eight_a].each do |i|
+            li = i
+      td
+        ul
+          - @states[:initial][:review][:eight_a].each do |i|
+            li = i
+      td
+        ul
+          - @states[:initial][:cert][:eight_a].each do |i|
+            li = i
+      td
+        ul
+          - @states[:annual_review][:review][:eight_a].each do |i|
+            li = i
+
+h3 Application (Initial & Annual)
+h4
+  = @classes[:app][:eight_a].to_s
+
+= image_tag workflow_image_path(@classes[:app][:eight_a])
+
+h3 Sub Application
+h4
+  = @classes[:sub_app].to_s
+
+= image_tag workflow_image_path(@classes[:sub_app])
+
+h3 Certificate
+h4
+  = @classes[:cert][:eight_a].to_s
+
+= image_tag workflow_image_path(@classes[:cert][:eight_a])
+
+h3 Review (Initial)
+h4
+  = @classes[:review][:eight_a][:initial].to_s
+
+= image_tag workflow_image_path(@classes[:review][:eight_a][:initial])
+
+h3 Review (Annual)
+h4
+  = @classes[:review][:eight_a][:annual].to_s
+
+= image_tag workflow_image_path(@classes[:review][:eight_a][:annual])
+
+
+h2 WOSB
+
+table
+  thead
+    td Initial Application
+    td Review
+    td Certificate
+  tbody
+    tr
+      td
+        ul
+          - @states[:initial][:app][:wosb].each do |i|
+            li = i
+      td
+        ul
+          - @states[:initial][:review][:wosb].each do |i|
+            li = i
+      td
+        ul
+          - @states[:initial][:cert][:wosb].each do |i|
+            li = i
+
+h3 Application
+h4
+  = @classes[:app][:wosb].to_s
+
+= image_tag workflow_image_path(@classes[:app][:wosb])
+
+h3 Certificate
+h4
+  = @classes[:cert][:wosb].to_s
+
+= image_tag workflow_image_path(@classes[:cert][:wosb])
+
+h3 Review
+h4
+  = @classes[:review][:wosb].to_s
+
+= image_tag workflow_image_path(@classes[:review][:wosb])
+
+
+h2 MPP
+
+table
+  thead
+    td Initial Application
+    td Review
+    td Certificate
+    td
+      | Annual Report
+      br
+      | (no workflow)
+  tbody
+    tr
+      td
+        ul
+          - @states[:initial][:app][:mpp].each do |i|
+            li = i
+      td
+        ul
+          - @states[:initial][:review][:mpp].each do |i|
+            li = i
+      td
+        ul
+          - @states[:initial][:cert][:mpp].each do |i|
+            li = i
+
+      td
+        ul
+          - @states[:mpp_annual_report].each do |i|
+            li = i
+
+h3 Application
+h4
+  = @classes[:app][:mpp].to_s
+
+= image_tag workflow_image_path(@classes[:app][:mpp])
+
+h3 Certificate
+h4
+  = @classes[:cert][:mpp].to_s
+
+= image_tag workflow_image_path(@classes[:cert][:mpp])
+
+h3 Review
+h4
+  = @classes[:review][:mpp].to_s
+
+= image_tag workflow_image_path(@classes[:review][:mpp])
+
+h2 ASMPP
+
+table
+  thead
+    td App (Initial or Annual)
+    td Review (Initial)
+    td Certificate
+    td Review (Annual Review)
+  tbody
+    tr
+      td
+        ul
+          - @states[:initial][:app][:asmpp].each do |i|
+            li = i
+      td
+        ul
+          - @states[:initial][:review][:asmpp].each do |i|
+            li = i
+      td
+        ul
+          - @states[:initial][:cert][:asmpp].each do |i|
+            li = i
+      td
+        i Not implemented
+
+
+h3 Application (Initial & Annual)
+h4
+  = @classes[:app][:asmpp].to_s
+
+= image_tag workflow_image_path(@classes[:app][:asmpp])
+
+h3 Sub Application
+h4
+  = @classes[:sub_app].to_s
+
+= image_tag workflow_image_path(@classes[:sub_app])
+
+h3 Certificate
+h4
+  = @classes[:cert][:asmpp].to_s
+
+= image_tag workflow_image_path(@classes[:cert][:asmpp])
+
+h3 Review (Initial)
+h4
+  = @classes[:review][:asmpp][:initial].to_s
+
+= image_tag workflow_image_path(@classes[:review][:asmpp][:initial])
+
+h3 Review (Annual)
+h4
+  i Not implemented

@@ -1,0 +1,21 @@
+- if @active_and_inactive_documents.blank? || @active_and_inactive_documents.nil?
+  | There are currently no analyst documents associated with this application
+- else
+  #active_documents class=(@is_active ? 'show-block' : 'hide')
+    - if @active_firm_documents.blank? || @active_firm_documents.nil?
+      | There are currently no active analyst documents associated with this application
+    - else
+      p.usa-font-lead Documents in the table below have been added to this application by the SBA.
+      = render partial: 'shared/eight_a/documents/analyst/analyst_documents_table', locals: {firm_documents: @active_firm_documents, current_organization: @organization}
+    /p
+      a#view_archived_documents[href="#"]
+        | View archived documents
+  #inactive_documents class=(@is_active ? 'hide' : 'show-block')
+    - if @inactive_firm_documents.blank? || @inactive_firm_documents.nil?
+      | There are currently no archived analyst documents associated with this application
+    - else
+      p.usa-font-lead Documents in the table below have been added to this application by the SBA.
+      = render partial: 'shared/eight_a/documents/analyst/analyst_documents_table', locals: {firm_documents: @inactive_firm_documents, current_organization: @organization}
+    /p
+      a#view_active_documents[href="#"]
+        | View active documents

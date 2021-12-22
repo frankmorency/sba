@@ -1,0 +1,39 @@
+div.overflow-auto
+  #table-search
+
+    table.searchable class="usa-table-borderless"
+      thead
+        tr
+          th scope="col" Business name
+          th scope="col" DUNS
+          th scope="col" Program
+          th scope="col" Review type
+          th scope="col" Submitted
+          th scope="col" Owner
+          th scope="col" Current reviewer
+          th scope="col" Status
+          th scope="col" Returned By
+
+      - unless @cases.blank?
+        - @cases.each do |my_case|
+          tr
+            td  
+              - if can?(:start_review, current_user)
+                = link_to my_case.current_application.organization.legal_business_name, new_sba_analyst_sba_application_review_path(my_case.current_application) if can?(:start_review, current_user)
+              - else
+                = my_case.current_application.organization.legal_business_name
+            td = link_to my_case.current_application.organization.duns_number, sba_analyst_dashboard_show_path(enc: $encryptor.encrypt("duns_number=#{my_case.current_application.organization.duns_number}&tax_identifier=#{my_case.current_application.organization.tax_identifier_number}"))
+            td = my_case.program.name if my_case && my_case.program
+            td = my_case.get_review_type
+            td = my_case.current_application.formatted_submission_date if my_case && my_case.current_application
+            td = my_case.get_last_owner.name if  my_case && my_case.get_last_owner
+            td = my_case.get_last_reviewer.name if my_case && my_case.get_last_reviewer
+            td = my_case.status.titleize if my_case && my_case.status
+            td = my_case.current_application.returned_by if my_case && my_case.current_application
+      - else
+        tr
+          td colspan=(8) 
+            | No results found.
+
+= will_paginate(@cases) if !@cases.empty?
+br

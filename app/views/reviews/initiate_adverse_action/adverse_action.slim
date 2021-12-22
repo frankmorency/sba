@@ -1,0 +1,41 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+  h1 Which adverse action would you like to initiate?
+
+  p.usa-font-lead Before initiating an adverse action, you must get the necessary approvals using “Refer case within SBA” and send the firm a letter of intent, if applicable.
+
+  h4 Make a recommendation
+
+  = form_tag(wizard_path, {method: :put, id: :adverse_action_form}) do
+    = radio_button_tag(:adverse_action, 'recommended_termination')
+    = label_tag(:adverse_action_recommended_termination, 'Termination')
+
+    = radio_button_tag(:adverse_action, 'recommended_voluntary_withdrawal')
+    = label_tag(:adverse_action_recommended_voluntary_withdrawal, 'Voluntary withdrawal')
+
+    = radio_button_tag(:adverse_action, 'recommended_early_graduation')
+    = label_tag(:adverse_action_recommended_early_graduation, 'Early graduation')
+
+    .actions
+      .actions__main
+        = submit_tag 'Next'
+        = link_to 'Go back', '#', :onclick => 'window.history.back();return false;'
+        p
+          em Next step: Review and complete
+javascript:
+    $(function () {
+        $("#adverse_action_form").validate({
+            errorPlacement: function (error, element) {
+                $("label").last().after(error);
+            },
+            rules: {
+                "adverse_action": {
+                    required: true
+                }
+            },
+            messages: {
+                "adverse_action": "Select an option"
+            }
+        });
+    });

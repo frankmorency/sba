@@ -1,0 +1,35 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+= javascript_include_tag 'messages/new_conversation'
+= javascript_include_tag 'messages/new_message', 'messages/message_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Recommendation: Step 1 of 2
+        h1 Retain this firm
+
+        p Before retaining this firm, you must get the necessary approvals using “Refer case within SBA.” Below, send a message telling the firm it will stay in the 8(a) program.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+
+        = form_tag( wizard_path, {method: :put, id: :new_conversation_form} ) do
+          = hidden_field_tag(:deliver_to, @deliver_to)
+
+          = label_tag(:deliver_to, 'To')
+          = text_field_tag(:deliver_to, @deliver_to, { disabled: true} )
+
+          = label_tag do 
+             span Subject <span class="form-fix">*required text</span>
+          = text_field_tag(:subject, "", {required: true})
+
+          = label_tag(:message, 'Message')
+          = hidden_field_tag "message", nil, {id: 'form_body'}
+          #new_conversation_body
+          .actions
+            .actions__main
+              = submit_tag("Next", class: "usa-button", id: "submition-btn", :data => { disable_with: t('messages.new.send') })
+              = link_to 'Go Back', '#', :onclick => 'window.history.back();return false;'
+
+

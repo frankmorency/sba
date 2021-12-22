@@ -1,0 +1,8 @@
+p Please note - you may have up to two active All Small MPP applications. If you need to make edits or changes to a submitted application, contact the appropriate program office to release your application back to you:
+  <a href="mailto:8aquestions@sba.gov">8aquestions@sba.gov</a>, <a href="mailto:AllSmallMpp@sba.gov">AllSmallMpp@sba.gov</a>
+- if @certificate_type_ids.blank?
+  p You have already started the maximum allowed applications for SBA Contracting Programs. You cannot add a new program at this time.
+- else
+  = render partial: 'certificate_choices', locals: { certificate_type_ids: certificate_type_ids }
+
+

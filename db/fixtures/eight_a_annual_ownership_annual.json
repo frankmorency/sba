@@ -1,0 +1,28 @@
+[
+  {
+    "section": "payments_and_excessive_withdrawals_questions",
+    "answers": {
+      "payments_and_excessive_withdrawals_q1": {
+        "question_name": "payments_and_excessive_withdrawals_q1",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "details": ""
+      },
+      "payments_and_excessive_withdrawals_q2": {
+        "question_name": "payments_and_excessive_withdrawals_q2",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      },
+      "payments_and_excessive_withdrawals_q3": {
+        "question_name": "payments_and_excessive_withdrawals_q3",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "comment": ""
+      }
+    }
+  }
+]

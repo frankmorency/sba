@@ -1,0 +1,34 @@
+.usa-width-one-whole style="border-style: solid; border-width: 1px; padding: 10px;"
+  - sba_application.get_answerable_section_list.each do |sec|
+    - next if sec.answered_for_id || current_user.cannot_view_answers?(sba_application)
+    .review_questions.question-separator
+      - unless sec.question_presentations.empty?
+        h3 style="margin-top: 12px;"
+          | #{sec.title}
+
+
+      - sec.question_presentations.each do |questionp|
+        - if answer = questionp.answers.set_for(sba_application, nil).first
+          .usa-one-whole id="#{questionp.name}"
+            = render partial: "answers/#{questionp.question_type.partial}", locals: {answer: answer, questionp: questionp, editable: editable, section: sec}
+
+  - if sba_application.certificate && @section.is_a?(Section::SignatureSection)
+    h5 Signature
+
+    - sba_application.signature["agreed_terms"].each_with_index do |term, i|
+      p
+        i.fa.fa-check-square
+        | &nbsp; &nbsp;
+        = term
+        br
+        br
+
+// Code for EDWOSB
+- unless business_partner_summaries.empty?
+- business_partner_summaries.each_with_index do |partner, i|
+  .usa-width-one-whole
+    a.tab-link href="#"
+      = "#{partner[:partner].name} Financial"
+    .tab-content
+      = render partial: 'section/personal_summaries/summary', locals: {business_partner: partner[:partner], assets: partner[:assets], liabilities: partner[:liabilities], agi: partner[:agi], income: partner[:income]}
+      = render partial: 'section/personal_summaries/business_partner_details', locals: { editable: editable, business_partner: partner[:partner], sba_application: @sba_application }

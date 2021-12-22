@@ -1,0 +1,62 @@
+.forgot-password {
+  border: 3.5px solid #cc3300;
+  border-radius: 5px;
+  background: #cc3300;
+  color: #fff !important;
+  padding: 0.75rem;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.05rem;
+  &:hover {
+    border: 3.5px solid #cc3300;
+    border-radius: 5px;
+    background: #fff;
+    color: #cc3300 !important;
+  }
+}
+
+.covid-19-link {
+  background-color: #ffcc00;
+  color: #003399 !important;
+  font-weight: 600;
+  &:hover {
+    background-color: #ffcc00;
+    color: #003399 !important;
+    font-weight: 600;
+  }
+}
+
+.eight-a-extension-link {
+  background-color: purple;
+  color: white !important;
+  font-weight: 600;
+  margin-left: 7rem;
+  &:hover {
+    background-color: purple;
+    color: black !important;
+    font-weight: 600;
+  }
+}
+
+.edit-profile-link {
+  background-color: #339966;
+  color: #fff !important;
+  font-weight: 600;
+  margin-left: 5rem;
+  &:hover {
+    cursor: pointer;
+    color: #000 !important;
+    // background-color: #339966 !important;
+  }
+}
+
+.custom-edit-profile {
+  float: right;
+}
+
+.form-fix {
+  display: inline;
+  color: red;
+  font-size: 1.2rem;
+}

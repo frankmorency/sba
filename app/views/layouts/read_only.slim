@@ -1,0 +1,36 @@
+doctype html
+html lang="en"
+  head
+    /! READ_ONLY LAYOUT
+    = render partial: 'layouts/application/header'
+  body.read_only
+    = render partial: 'layouts/application/read_only_header', locals: {message: "You can view the vendor's record but can not make edits"}
+
+    section.usa-grid-full
+
+      - if @full_page
+        = render 'layouts/application/notice'
+        = yield
+      - else
+        aside.usa-width-one-fourth id="aside-content"
+          = render partial: 'layouts/questionnaire/display_section', locals: {section: @sba_application.root_section, root: true}
+
+        article#main-content.usa-width-three-fourths
+          = render 'layouts/application/notice'
+          = yield
+
+    = render partial: 'layouts/application/footer'
+
+    javascript:
+      $(function() {
+
+        $("input[type='submit']").prop('disabled', true);
+        $("input[type='radio']:not(:checked)").prop('disabled', true);
+        $("input[type='text']").prop('disabled', true);
+        $("input[type='number']").prop('disabled', true);
+        $("input[type='checkbox']").prop('disabled', true);
+        $("textarea").prop('disabled', true)
+        $("select").prop('disabled', true);
+        $(".edit_controls").hide();
+        $(".dt-buttons").hide();
+      });

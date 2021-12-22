@@ -1,0 +1,7 @@
+- if can? :view_sba_analyst_dashboard, current_user
+  li class=('current-top-nav' if params[:action] == 'index' && params['controller'] == "sba_analyst/dashboard" )
+    - if can? :assign_8a_role_district_office_supervisor, current_user
+      = link_to 'Dashboard'.html_safe, district_office_sba_supervisor_dashboard_index_path, class: 'usa-nav-link'
+    - else
+      = link_to 'Dashboard'.html_safe, (can? :view_sba_analyst_dashboard, current_user) ? sba_analyst_cases_path : vendor_admin_dashboard_index_path, class: 'usa-nav-link'
+  = render partial: 'layouts/application/navbar/all_sba_user'

@@ -1,0 +1,24 @@
+<h4>Option</h4>
+<p><%= @voluntary_suspension.option %></p>
+
+<h4>Title</h4>
+<p><%= @voluntary_suspension.title %></p>
+
+<h4>Body</h4>
+<p><%= @voluntary_suspension.body %></p>
+
+<h4>Document</h4>
+<%= link_to "Attachment",  @voluntary_suspension.document.expiring_url(10), target: "_blank" %>
+
+
+<% if @voluntary_suspension.persisted? %>
+  <h4>Status</h4>
+  <p><%= @voluntary_suspension.status %></p>
+
+  <h4>Expiry date</h4>
+  <p><%= @voluntary_suspension.certificate.expiry_date %></p>
+<% end %>
+
+
+
+

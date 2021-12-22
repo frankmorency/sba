@@ -1,0 +1,24 @@
+table#certifications-8a style="margin-top: 0px; padding-top: 0px"
+  thead
+    tr
+      th scope="col" nowrap="" Information Requests
+      th scope="col" Program
+      th scope="col" Date Created
+      th scope="col" Date Completed
+      th scope="col" Status
+      th scope="col" Action
+
+  - info_requests.each do |info_request|
+    tr
+      td
+        = info_request&.sub_applications&.first&.adhoc_question_title
+      td
+        = info_request&.certificate&.certificate_type&.title
+      td
+        = info_request&.created_at&.strftime("%m/%d/%Y")
+      td
+        = info_request&.application_submitted_at&.strftime("%m/%d/%Y")
+      td
+        = info_request&.workflow_state.gsub("Reconsideration Or Appeal", "Pending Appeal")&.humanize
+      td
+        = link_to 'View', sba_application_application_dashboard_overview_index_path(info_request)

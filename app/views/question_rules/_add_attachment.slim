@@ -1,0 +1,96 @@
+.attachment id="answers[#{question.id}][attachment]" class=('required' if rule.mandatory?) style="display:none"
+  = hidden_field_tag question.dom_id('attachment')
+  .usa-width-one-whole.attachment-bg
+    .container.attachment
+      .document-upload
+        .add-req-doc#add-req-doc-button name="#{question.id}"
+          = link_to "<i class='fa fa-plus-circle'>&nbsp;</i>Add documents".html_safe, 'javascript:void(0)'
+        .options-box name="#{question.id}"
+          .doc-options name="#{question.id}"
+            button.usa-button-outline.usa-button-active#doc-lib-button name="#{question.id}" Choose from document library
+            '  or
+            '  &nbsp;
+            button.usa-button-outline.usa-button-active#doc-upload-button name="#{question.id}" Upload
+          .box1 name="#{question.id}"
+            = render partial: 'question_rules/document_library', locals: {question_name: Question.find(question.question_id).name, question: question, questionnaire: @questionnaire, rule: question.rules.add_attachment.first}
+          .box2 name="#{question.id}"
+            = render partial: 'question_rules/upload', locals: {question_id: Question.find(question.question_id).id, question_name: Question.find(question.question_id).name, question: question, questionnaire: @questionnaire, rule: question.rules.add_attachment.first}
+
+javascript:
+  $(document).ready(function () {
+
+    // Configure the attachment rules
+    // Original rules config assumes radio button and only one value can trigger attachment
+    var config = {
+      radio_choice: "input:radio[name='#{question.dom_id}']",
+      value: "#{rule.value}",
+      attachment_area: "#answers\\[#{question.id}\\]\\[attachment\\]"
+    }
+
+    // If user selects the answer that requires an attachment, display the required docs section
+    // APP-2127 - add custom_checkbox check
+    if ($('input[name="#{question.dom_id}"]:checked').val() == config['value'] || #{question.question_type.custom_checkbox?}) {
+      $(config['attachment_area']).css('display', 'inline');
+      $('#document_list[name="#{question.id}"]').css('display', 'inline');
+      if ($('input[name="answers[#{question.id}][attachment]"]').val() == "no_attachments_needed") {
+        $('input[name="answers[#{question.id}][attachment]"]').val("");
+      }
+    } else {
+      $(config['attachment_area']).hide();
+      $('input[name="answers[#{question.id}][attachment]"]').val("no_attachments_needed");
+    }
+
+    $(config['radio_choice']).change(function () {
+      if (this.value == config['value']) {
+        $(config['attachment_area']).css('display', 'inline');
+        $('#document_list[name="#{question.id}"]').css('display', 'inline');
+        if ($('input[name="answers[#{question.id}][attachment]"]').val() == "no_attachments_needed") {
+          $('input[name="answers[#{question.id}][attachment]"]').val("");
+        }
+      } else if (#{question.question_type.picklist_with_radio_buttons?}) {
+        if ($("input:radio[name='#{question.dom_id}']:last").is(':checked')) {
+            $(config['attachment_area']).css('display', 'inline');
+            $('#document_list[name="#{question.id}"]').css('display', 'inline');
+            if ($('input[name="answers[#{question.id}][attachment]"]').val() == "no_attachments_needed") {
+                $('input[name="answers[#{question.id}][attachment]"]').val("");
+            }
+        } else {
+            $(config['attachment_area']).hide();
+            $('input[name="answers[#{question.id}][attachment]"]').val("no_attachments_needed");
+        }
+      } else {
+        $(config['attachment_area']).hide();
+        $('input[name="answers[#{question.id}][attachment]"]').val("no_attachments_needed");
+      }
+    });
+
+    $('#add-req-doc-button[name="#{question.id}"]').click(function () {
+      $('.options-box[name="#{question.id}"]').show();
+      $('.doc-options[name="#{question.id}"]').toggle(500);
+      $('.box1[name="#{question.id}"]').hide();
+      $('.box2[name="#{question.id}"]').hide();
+    });
+
+    $('#doc-upload-button[name="#{question.id}"]').click(function (event) {
+      event.preventDefault();
+      $('.box1[name="#{question.id}"]').hide(500);
+      $('.box2[name="#{question.id}"]').show(500);
+    });
+
+    $('#doc-lib-button[name="#{question.id}"]').click(function (event) {
+      event.preventDefault();
+
+      // Deselect any previously selected documents in Document Library
+      jQuery.each($('tr[name="document_library_#{question.id}"]'), function (i, document) {
+        document.querySelector('input[name="selector"]').checked = false;
+      });
+
+      $('.box2[name="#{question.id}"]').hide(500);
+      $('.box1[name="#{question.id}"]').show(500);
+    });
+
+    // if there are currently attached documents, set the hidden input tag value to pass validation
+    if ($('table#currently_attached[name="#{question.id}"] :nth-child(2)').children().length > 0) {
+      $('input[name="answers[#{question.id}][attachment]"]').val("has_attachments");
+    }
+  });

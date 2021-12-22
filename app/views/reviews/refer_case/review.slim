@@ -1,0 +1,44 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+- @referral = Referral.new(params[:referral])
+
+.usa-grid-full
+
+  h1 Review & Complete
+
+  p.usa-font-lead Once you refer this case, it will continue to show on your dashboard as being "Currently with" the person to whom you referred the case.
+
+  .review-info
+    .review-info__item
+      h2.review-info__heading Business Unit
+      p #{@referral.office.title}
+
+    .review-info__item
+      h2.review-info__heading Referred to
+      p #{@referral.individual.name} (#{@referral.office.name})
+
+    .review-info__item
+      .review-info__content
+        h2.review-info__heading Note
+        p
+          strong
+            ' Subject:
+          span[data-print="refer_note_subject"]
+          = session[:refer_subject]
+        p
+          strong
+            ' Message:
+          span[data-print="refer_note_text"]
+          = session[:refer_message]
+        p
+          strong
+            ' Tags:
+          span[data-print="note-tags"]
+          = session[:refer_tags].join(", ")
+
+  = form_for @referral, url: wizard_path, method: :put do |f|
+    = f.hidden_field :office_id, value: @referral.office.id
+    = f.hidden_field :individual_id, value: @referral.individual.id
+
+    = f.submit "Complete referral"
+    = link_to 'Start Over', sba_application_application_dashboard_overview_index_path(@sba_application.id)

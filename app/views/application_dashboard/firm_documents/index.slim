@@ -1,0 +1,65 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+= render partial: 'shared/eight_a/fun_bar', locals: {application: @sba_application }
+
+.usa-grid-full style="max-width:1250px"
+  .certify-page-header
+    .certify-page-header__primary
+      h1 Firm Documents
+
+.usa-grid-full
+  .usa-width-three-fourths
+    = render partial: 'shared/eight_a/documents/firm/index'
+
+  .usa-width-one-fourth
+    h2
+      | Find Documents by Person
+    p
+      | Select a name from the list to see documents uploaded by an owner or principal of the firm.
+
+    = form_tag user_filter_sba_application_application_dashboard_firm_documents_path, id: 'firm_documents_user_filter', method: 'post', class: 'usa-form' do
+      label[for='user_id']
+        | Name
+      - selected_value = @user_id.blank? ? "" : @user_id.to_i
+      = select_tag 'user_id', options_for_select(@sba_application.users.collect{ |u| ["#{u.name} (#{u.vendor_kind})", u.id] }, selected_value), include_blank: true
+      = hidden_field_tag 'is_active', true
+      input#submit_user_filter[type="submit" value="Go"]
+
+= render partial: 'shared/note_popup/index', locals: {application: @sba_application}
+
+javascript:
+    $(document).ready(function () {
+      $('#documents_tab').addClass('current')
+
+      $('#view_archived_documents').on('click', function () {
+        $("#active_documents").removeClass("show-block")
+        $("#active_documents").addClass("hide");
+
+        $("#inactive_documents").addClass("show-block");
+        $("#inactive_documents").removeClass("hide")
+
+        $("#is_active").val(false);
+      });
+
+      $('#view_active_documents').on('click', function () {
+        $("#inactive_documents").removeClass("show-block")
+        $("#inactive_documents").addClass("hide");
+
+        $("#active_documents").removeClass("hide")
+        $("#active_documents").addClass("show-block");
+
+        $("#is_active").val(true);
+      });
+
+      $('#submit_user_filter').on('click', function (event) {
+          event.preventDefault();
+          event.stopPropagation()
+
+          if ($("#active_documents").hasClass("show-block")) {
+              $("#is_active").val(true)
+          } else {
+              $("#is_active").val(false)
+          }
+
+          $('#firm_documents_user_filter').submit();
+      });
+    });

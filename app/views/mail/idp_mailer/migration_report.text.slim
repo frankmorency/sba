@@ -1,0 +1,5 @@
+p IdP Migration Report from Certify #{Rails.env}, dated #{DateTime.now.strftime('%Y-%m-%d %H:%M:%S')}
+
+p Total count of Users imported #{@report[:counts_total]}
+p Total count of Users migrated into IdP #{@report[:counts_migrated]}
+p Count of Users pending migration into IdP #{@report[:counts_pending]}

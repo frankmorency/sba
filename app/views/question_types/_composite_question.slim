@@ -1,0 +1,7 @@
+.composite_questions
+- if question.details
+  - arr = JSON.parse(question.details)
+  - arr.each_with_index do |answer_set, i|
+    = render partial: 'question_types/composite_question_sub_question', locals: {question: question, index: i, answer_set: answer_set}
+- else
+  = render partial: 'question_types/composite_question_sub_question', locals: {question: question, index: 0, answer_set: nil}

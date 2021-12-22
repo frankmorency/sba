@@ -1,0 +1,16 @@
+- unless @read_only
+  = ass.hidden_field :original_status, value: assessment.status
+  = ass.hidden_field :the_assessed_id, value: assessment.the_assessed_id
+  = ass.hidden_field :the_assessed_type, value: assessment.the_assessed_type
+
+  = ass.label :status, "Analyst assessment"
+  = ass.select :status, statuses
+
+  br
+  a#note_link.note_link href="#"
+    i.fa.fa-plus-circle
+    | &nbsp;
+    | Add a note
+    br
+  #note.hide-display
+    = ass.text_area :note_body, maxlength: 500

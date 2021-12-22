@@ -1,0 +1,14 @@
+tr
+  td
+    - link = questionnaire_organization_sba_application_path(questionnaire_id: annual_report.sba_application.questionnaire.id, organization_id: annual_report.sba_application.organization.id, id: annual_report.sba_application.id)
+
+    - if current_user.can_any? :sba_user, :ensure_ops_support
+      = link_to 'MPP Application', link, target: '_blank'
+    - elsif current_user.can? :ensure_vendor
+      = link_to 'MPP Application', link
+  td Annual Report
+  td
+  td = annual_report.formatted_submission_date
+  td
+  td = annual_report.status
+  td

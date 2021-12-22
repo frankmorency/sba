@@ -1,0 +1,36 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+= javascript_include_tag 'messages/new_conversation'
+= javascript_include_tag 'messages/new_message', 'messages/message_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Letter of Intent to Terminate: Step 1 of 2
+        h1 Letter of Intent to Terminate
+        p.usa-font-lead
+          span
+            - if @sba_application.current_review.processing?
+              | Before sending the letter as a message below, you must get the necessary approvals using “Refer Case within SBA.” Additionally, you must request additional information from any sections necessary prior to sending the letter to the firm in order for the firm to provide additional information in Certify.
+            - else
+              | Before sending the letter as a message below, you must get the necessary approvals. You must have an outstanding letter of deficiency at the time you send this letter of intent to terminate.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_tag wizard_path, {method: :put, id: :new_conversation_form} do
+          = hidden_field_tag(:recipient, @recipient)
+
+          = label_tag :recipient, 'To'
+          = text_field_tag :recipient, @recipient, { disabled: true}
+
+          = label_tag do 
+             span Subject <span class="form-fix">*required text</span>
+          = text_field_tag(:subject, "", {required: true})
+
+          = label_tag :message, 'Message'
+          = hidden_field_tag "message", nil, {id: 'form_body'}
+          #new_conversation_body
+          .actions
+            .actions__main
+              = submit_tag("Next", class: "usa-button", id: "submition-btn", :data => { disable_with: t('messages.new.send') })
+              = link_to "Go back", sba_application_application_dashboard_overview_index_path(@sba_application)

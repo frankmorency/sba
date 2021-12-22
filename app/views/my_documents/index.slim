@@ -1,0 +1,37 @@
+h1 My Documents
+
+table#manage.display cellspacing="0" width="100%"
+  thead
+    tr
+      th scope="col" Document Name
+      th scope="col" Document Type
+      th scope="col" Status (Double-click on status to edit. Enter 'active' or 'inactive'.)
+      th scope="col" Date Created
+      th scope="col" Comments (Double-click on comment to edit)
+      th scope="col" Action
+  tbody
+    - @documents.each do |document|
+      tr  id="#{document.id}"
+        td
+          = document.original_file_name
+        td
+          = DocumentType.find(document.document_type_id).name if DocumentType.find(document.document_type_id)
+        td name="status" id="#{document.id}"
+          = document.is_active ? 'active' : 'inactive'
+        td
+          = document.created_at
+        td name="comments" id="#{document.id}"
+          = document.comment
+        td
+          - if document.av_status == "OK"
+            = link_to 'View', pdf_viewer_organization_document_path(id: document.id, organization_id: current_organization.id), method: :get, class: "usa-button-outline",target: "_blank"
+
+javascript:
+  $(document).ready(function () {
+    $('#manage').DataTable({
+      "responsive": true,
+      "oLanguage": {
+        "sLengthMenu": "Display: _MENU_",
+        "sInfo": "Document _START_ through _END_",
+      }
+    });

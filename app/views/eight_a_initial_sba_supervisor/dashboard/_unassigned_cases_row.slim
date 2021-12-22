@@ -1,0 +1,16 @@
+tr
+  td
+    = application.formatted_submission_date || "None"
+  td
+    = application.display_kind
+  td
+    = link_to application.organization.name, sba_application_application_dashboard_overview_index_path(sba_application_id: application.id)
+    br
+    small
+      ' Legal Structure:
+      = application.organization.business_type.upcase
+  td
+    = application.organization.city_state
+  - unless params[:action] == 'assign' || params[:action] == 'create_assignment'
+    td
+      = link_to "Assign", assign_eight_a_initial_sba_supervisor_dashboard_index_path(application_id: application.id)

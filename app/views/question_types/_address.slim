@@ -1,0 +1,6 @@
+.block
+  .block_fields.dollar_sign
+    | &nbsp;
+  .block_fields
+    = text_field_tag question.dom_id, question.value, 'aria-label': question.name
+    = label_tag question.dom_id, question.title, class: 'hide last'

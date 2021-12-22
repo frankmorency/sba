@@ -1,0 +1,4 @@
+li class=('current-top-nav' if params[:action] == "index" && params['controller'] == "access_requests")
+  = link_to '<span>Requests</span>'.html_safe, contracting_officer_access_requests_path, class: 'usa-nav-link'
+li class=('current-top-nav' if params[:action] == "index" && params['controller'] == "help_pages" )
+  = link_to '<span>Training</span>'.html_safe, 'https://sbaone.atlassian.net/wiki/spaces/CHDB/overview', class: 'usa-nav-link'

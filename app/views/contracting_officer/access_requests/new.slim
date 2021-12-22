@@ -1,0 +1,188 @@
+= content_for :sidenav do
+  li
+    = link_to 'My requests', contracting_officer_access_requests_path
+  li
+    = link_to 'Request access', new_contracting_officer_access_request_path, class: 'usa-current'
+
+h1 Request access to view records
+p Use this form to request access to a small business's WOSB or EDWOSB eligibility documentation. Once complete, the form will send an email to the small business that asks them to log in to certify.SBA.gov and approve or reject your request for access. You must provide the following information to request access:
+ul
+  li DUNS number
+  li Solicitation number
+  li Solicitation NAICS
+  li Procurement type
+p Start by searching for a small business by DUNS number to verify eligibility within SBA's certify.SBA.gov system.
+
+.contracting_officer_search_box
+
+h2 Search for a business
+
+.usa-width-one-whole
+  form.usa-search
+    div role="search"
+      = label_tag 'duns_number', 'DUNS number'
+      = text_field_tag 'duns_number', params[:duns_number], minlength: 9, maxlength: 9, type: 'search', size: 70
+      .button_wrapper
+        button#find_business type="submit" Search
+      br
+      hr
+      br
+
+.usa-width-one-whole
+  = form_tag contracting_officer_access_requests_path, id: 'request_access', method: 'post', class: 'usa-form' do
+    .contracting_officer_search_results.hidden
+      h2 Search Results
+
+      .usa-width-one-whole.business_search_result.hidden#no_vendor_found
+        h3 No vendor exists in certify.SBA.gov for the DUNS number you have entered. Please contact the vendor to direct them to self-certify at certify.SBA.gov.
+
+      .usa-width-one-whole.business_search_result.hidden#vendor_found_not_certified
+        h3 The vendor has not completed self-certification in certify.SBA.gov. Please contact the vendor to direct them to complete self-certification.
+
+      .usa-width-one-whole.business_search_result.hidden#vendor_found_certified
+        table
+          thead
+            tr
+              th scope="col"   DUNS#
+              th scope="col"   Vendor
+          tbody
+            tr
+              td#vendor_duns_number
+              td#vendor_name
+
+    .contracting_officer_complete_request.hidden
+      h2 Complete your request
+      p Please enter the Solicitation number, Solicitation NAICS, and procurement type below.
+
+      = label_tag(:solicitation_number, 'Solicitation number')
+      = text_field_tag 'access_request[solicitation_number]'
+
+      = label_tag(:solicitation_naics, 'Solicitation NAICS')
+      = text_field_tag 'access_request[solicitation_naics]'
+
+      p Type of procurement:
+      fieldset.usa-fieldset-inputs.usa-sans
+        ul.usa-unstyled-list
+          li
+            = radio_button_tag('access_request[procurement_type]', 'wosb_set_aside')
+            = label_tag('access_request_procurement_type_wosb_set_aside', 'WOSB set-aside')
+          li
+            = radio_button_tag('access_request[procurement_type]', 'edwosb_set_aside')
+            = label_tag('access_request_procurement_type_edwosb_set_aside', 'EDWOSB set-aside')
+          li
+            = radio_button_tag('access_request[procurement_type]', 'wosb_sole_source')
+            = label_tag('access_request_procurement_type_wosb_sole_source', 'WOSB sole source')
+          li
+            = radio_button_tag('access_request[procurement_type]', 'edwosb_sole_source')
+            = label_tag('access_request_procurement_type_edwosb_sole_source', 'EDWOSB sole source')
+
+      p
+        ' I #{current_user.max_first_name} #{current_user.max_last_name} certify that I am a Federal Contracting Officer or Specialist and am authorized by #{current_user.max_agency} to validate Women-Owned Small Business (WOSB) eligibility in order to award contracts to women-owned small businesses. I understand that the data that I am requesting contains Personal Identifiable Information (PII) and must be protected in accordance with
+        |
+        a href='https://www.whitehouse.gov/sites/default/files/omb/memoranda/fy2007/m07-16.pdf' target='_blank' OMB Memorandum M-07-16 Safeguarding Against and Responding to the Breach of Personally Identifiable Information
+        | .
+      div
+        div
+          span.contracting_officer_certification_err#box This field is required
+          = check_box_tag(:contracting_officer_certification)
+          = label_tag(:contracting_officer_certification, 'I accept')
+
+        div
+          .button_wrapper
+            = submit_tag 'Request Access', id: 'submit_request_access'
+
+javascript:
+  $(document).ready(function () {
+
+    $(".contracting_officer_certification_err").hide();
+
+    // Click Search button
+    $("button#find_business").on("click", function(event) {
+      event.preventDefault();
+
+      var duns_number = $("#duns_number").val();
+
+      $.ajax({
+        url: '#{search_contracting_officer_access_requests_path}',
+        type: 'POST',
+        beforeSend: function(jqXHR) {jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        dataType: "json",
+        data: {duns_number: duns_number},
+        success: function(data, textStatus, jqXHR) {
+          var organization_id = jqXHR.responseJSON["id"]
+          $('.contracting_officer_search_results').css('display','inline');
+
+          if (organization_id == null) {
+            $('#no_vendor_found').css('display', 'inline');
+            $('#vendor_found_certified').css('display', 'none');
+            $('#vendor_found_not_certified').css('display', 'none');
+            $('.contracting_officer_complete_request').css('display','none');
+          } else if (organization_id == 'not_certified') {
+            $('#vendor_found_not_certified').css('display', 'inline');
+            $('#vendor_found_certified').css('display', 'none');
+            $('#no_vendor_found').css('display', 'none');
+            $('.contracting_officer_complete_request').css('display','none');
+          } else {
+            $('#vendor_found_certified').css('display','inline');
+            $('#no_vendor_found').css('display','none');
+            $('#vendor_found_not_certified').css('display', 'none');
+            $('.contracting_officer_complete_request').css('display','inline');
+            $('td#vendor_duns_number').html(jqXHR.responseJSON['duns_number']);
+            $('td#vendor_name').html(jqXHR.responseJSON['name']);
+            $("<input type='hidden'/>").attr("name", 'access_request[organization_id]').val(jqXHR.responseJSON['id']).appendTo('#request_access');
+            $("<input type='hidden'/>").attr("name", 'access_request[user_id]').val('#{current_user.id}').appendTo('#request_access');
+            $("<input type='hidden'/>").attr("name", 'access_request[status]').val('requested').appendTo('#request_access');
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          if(jqXHR.status == 401){
+            // Redirect to Login
+            window.location.href = "/users/sign_in";
+          }else {
+            $("span#upload-error-message").text(jqXHR.responseJSON["message"]);
+            $("span#upload-error-message").show();
+          }
+        }
+      });
+
+      $("#contracting_officer_certification").on("click", function(event) {
+        if( $( "input:checked" ).length  > 1 ){
+          $(".contracting_officer_certification_err").hide();
+        }
+      });
+
+      $("#submit_request_access").on("click", function(event) {
+        event.preventDefault();
+
+        if( $( "input:checked" ).length > 1 ){
+          $(".contracting_officer_certification_err").hide();
+          if( $("#request_access").valid() ){
+                  $( "input:checked" )[0].form.submit();
+          }
+        } else {
+          console.log("Should prevent from submiting.")
+          $(".contracting_officer_certification_err").show();
+        }
+      });
+
+    });
+
+
+    $("#request_access").validate({
+      rules: {
+        "access_request[solicitation_number]": {
+          required: true
+        },
+        "access_request[solicitation_naics]": {
+          required: true,
+          minlength: 6,
+          maxlength: 6
+        },
+        "access_request[procurement_type]": {
+          required: true
+        }
+      },
+      errorElement: 'span'
+    });
+
+  });

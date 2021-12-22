@@ -1,0 +1,10 @@
+
+  .usa-grid-full
+    .usa-alert-warning.usa-alert
+      .usa-alert-body
+        h3.usa-alert-heading
+          ' You are in view-only mode
+          - if @sba_application
+            = "(Version ##{@sba_application.version_number})"
+        p.usa-alert-text
+          = message

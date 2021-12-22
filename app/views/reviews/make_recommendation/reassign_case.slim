@@ -1,0 +1,41 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Recommendation: Step 3 of 4
+        h1 Forward This Case
+    p.usa-font-lead Select the next person who needs to review this case and make a recommendation or approval.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_for @recommendation,  url: wizard_path, method: :put do |f|
+          = f.hidden_field 'recommend_eligible', value: params["recommendation"]["recommend_eligible"]
+          = f.hidden_field 'recommend_eligible_for_appeal', value: params["recommendation"]["recommend_eligible_for_appeal"]
+          = f.hidden_field 'individual_id', value: params["recommendation"]["individual_id"]
+          = forward_this_case_options(f, @review)
+          .actions
+            .actions__main
+              = f.submit "Next", class: "btn-next"
+              = link_to "Back", previous_wizard_path(recommendation: {recommend_eligible: params["recommendation"]["recommend_eligible"],recommend_eligible_for_appeal: params["recommendation"]["recommend_eligible_for_appeal"]})
+              p
+                em Next step: Review and complete
+
+javascript:
+
+  $( document ).ready(function() {
+    $(".btn-next").click(function(event){
+      var is_checked = false;
+      $(".radio-btn").each(function( index ) {
+        if( $($(".radio-btn")[index]).is(':checked'))
+        {
+          is_checked = true;
+        }
+      });
+      if(!is_checked)
+      {
+        event.preventDefault();
+        alert("You must at least select a supervisor.");
+      }
+    });
+  });

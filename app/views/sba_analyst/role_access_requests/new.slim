@@ -1,0 +1,27 @@
+h1 Request access
+.usa-width-one-whole
+  = form_tag sba_analyst_role_access_requests_path, id: 'request_access', class: 'usa-form' do
+    p
+      | By submitting a request to access certify.SBA.gov as an "#{SbaOrganizationMapping::humanize_roles_map(@role_list)}", I affirm,
+      ol
+        li#warning
+          | That I am employed by the U.S. Federal Government by the U.S. Small Business Administration to serve as #{@role_name};
+        li
+          | That I will properly secure any information I view, enter or download, only sharing with fellow government staff members when necessary, because of the information's sensitive nature.
+      ul.usa-unstyled-list
+        li
+          = hidden_field_tag 'access_request[user_id]', current_user.id
+          = hidden_field_tag 'access_request[roles_map]', @role_list
+          = check_box_tag :request, :agreement
+          = label_tag 'I agree'
+          = submit_tag "Request access",  class: 'request-button', html_options: :disabled
+          img src="#{find_asset_path('request-loader.gif')}" class="request-loader" alt="Save wait button"
+
+javascript:
+  $(document).ready(function () {
+    $(".request-loader").hide();
+    $(".request-button").click(function () {
+      $(".request-button").hide();
+      $(".request-loader").show();
+    });
+  });

@@ -1,0 +1,88 @@
+= form_tag registration_path(:user), class: 'new_user', id: 'new_user' do
+  .usa-one-whole
+
+    .new_registration
+
+      h1 Create Password
+
+      p.usa-font-lead
+        ' Your password must be at least 12 characters long & contain one lowercase letter, one uppercase letter, one digit, and one special character.
+
+
+      .usa-width-one-whole.grey-box
+        .usa-width-two-thirds.grey-box
+          .usa-width-two-thirds.left_box_border_right#leftborder
+            .usa-input-grid
+              label for="user_password" Password
+              a.usa-show_multipassword.pass-margin-left title="Show my typing" href="#" aria-controls="password" Show my typing
+              .usa-input-grid
+                input id="user_password" name="user[password]" type="password" autocomplete="off" autofocus="true"
+            .usa-input-grid
+              label for="user_password_confirmation" Confirm Password
+              input id="user_password_confirmation" name="user[password_confirmation]" type="password" autocomplete="off"
+
+          br
+          .usa-width-one-whole
+            .actions
+              .usa-width-one-whole style="margin-left: 1px;"
+                input type="checkbox" id="accept_terms" class="signed" name="thischeckbox"
+                label class="iaccept" for="accept_terms" By submitting this form, I accept the terms and conditions.
+            br
+            = raw recaptcha_tags
+            .usa-width-one-whole.display-none#error-alert-container
+              .usa-alert.usa-alert-error role="alert"
+                .usa-alert-body
+                  h3.usa-alert-heading Error Status
+            .usa-width-one-whole
+              .usa-width-one-third.nr-cancel#submit-cancel1
+                .button_wrapper
+                  button#form_submit type="submit" Create account
+              .usa-width-two-thirds.nr-cancel-button.nr-cancel-margin#submit-cancel2 style="margin-top: 40px"
+                a.error.nr-cancel-button2#cancel style="cursor:pointer" Cancel
+
+            .usa-width-one-whole.usa-content
+              p
+                b Authorized Use of the System
+                br
+                strong I.
+                '
+                | This is a Federal computer system and is the property of the United States Government. It is for authorized use only. Users (authorized or unauthorized) have no explicit or implicit expectation of privacy in anything viewed, created, downloaded, or stored on this system, including email, internet, and intranet use. Any or all uses of this system (including all peripheral devices and output media) and all files on this system may be intercepted, monitored, read, captured, recorded, disclosed, copied, audited, and/or inspected by authorized SBA personnel, the Office of Inspector General (OIG), and/or other law enforcement personnel, as well as authorized officials of other agencies. Access or use of this computer by any person, whether authorized or unauthorized, constitutes consent to such interception, monitoring, reading, capturing, recording, disclosure, copying, auditing, and/or inspection at the discretion of authorized SBA personnel, law enforcement personnel (including OIG), and/or authorized officials other agencies. Unauthorized use of this system is prohibited and may constitute a violation of 18 U.S.C 1030 or other Federal laws and regulations may result in criminal, civil, and/or administrative action. By continuing to use this system, you indicate your awareness of, and consent to, these terms and conditions and acknowledge that there is no reasonable expectation of privacy in the access or use of this computer system.
+
+              p
+                strong II. Privacy Act Routine Uses (5 USC & 522a as amended)
+                br Disclosure (or providing) of information requested in forms contained within this system or provided via email contact is voluntary. By providing the information, the individual assumes all responsibility to ensure the information provided is correct and valid and is so maintained.
+
+              p
+                strong III. Disclosure
+                br
+                | Disclosure: Collected information on individuals may be shared and protected as authorized by law. Except for such authorized activities, we do not share any information we receive with any outside parties.
+
+
+
+    .new_registration
+
+
+javascript:
+    $(document).ready(function () {
+
+
+
+        $('#error-alert-container').hide();
+
+        // Click Cancel button
+        $('#cancel').on("click", function(event) {
+            event.preventDefault();
+            location.href="#{cancel_user_registration_path}";
+        });
+
+        // Click Submit button
+        $('#form_submit').on("click", function(event) {
+          event.preventDefault();
+          $('h3.usa-alert-heading').siblings().remove();
+          $("#new_user").submit();
+        });
+
+        var myPasswordStrengthMeter = new PasswordStrengthMeter();
+        myPasswordStrengthMeter.open('user_password');
+
+    });

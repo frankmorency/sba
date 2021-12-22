@@ -1,0 +1,89 @@
+- if answer
+  b
+    ' Response:
+  - if answer.question && answer.question.question_type && answer.question.question_type.is_a?(QuestionType::Date)
+    - if answer.display_value
+      = l answer.value_as_date
+  - elsif answer.question && answer.question.question_type && answer.question.question_type.is_a?(QuestionType::DateRange)
+    - if answer&.value["value"]
+      br
+      | From: 
+      = l answer.date_range_from rescue answer.date_range_from
+      br
+      | To: 
+      = l answer.date_range_to rescue answer.date_range_to
+  - elsif answer.question && answer.question.question_type && answer.question.question_type.is_a?(QuestionType::CertifyEditableTable) && !answer.value.nil?
+    - unless answer.details.nil?
+      .table-header
+        table
+          thead
+            tr
+              th Name
+              th Title
+              th Equity Interest
+              th Reasons for Payment
+              th Total Payments
+          tbody
+            - answer.details.each_key do |key|
+              tr
+                - answer.details[key].each_pair do |second_key, value|
+                  td
+                    = value
+    - else
+      | No response was provided
+  - elsif answer.question && answer.question.question_type && answer.question.question_type.is_a?(QuestionType::DataEntryGrid) && !answer.value.nil?
+    - unless answer.value['value'].empty?
+      .table-header
+        table
+          thead
+            tr
+              th Award Date
+              th Agency or customer name
+              th NAICS code
+              th Description of Work
+              th Value
+          tbody
+            - answer.value['value'].each do |answer_row|
+              tr
+                td
+                  = answer_row[1]['award_date']
+                td
+                  = answer_row[1]['agency_customer_name']
+                td
+                  = answer_row[1]['naics_code']
+                td
+                  = answer_row[1]['description']
+                td
+                  = answer_row[1]['value']
+  - elsif answer.question && answer.question.question_type && answer.question.question_type.is_a?(QuestionType::Currency)
+    = number_to_currency(answer.display_value) if answer.display_value
+  - elsif answer.question && answer.question.question_type && answer.question.question_type.is_a?(QuestionType::Checkbox)
+    - if answer.display_value
+      br
+      - answer.value['value'].each do |value|
+        = value
+        br
+
+  - elsif answer.question && answer.question.question_type && answer.question.question_type.is_a?(QuestionType::FullAddress)
+    - if answer.display_value
+      br
+      - answer.value['value'].each do |address_value|
+        - case address_value[0]
+        - when 'state'
+          - state_name = us_states.select {|state_hash| state_hash[:code] == address_value[1]}
+          = "#{address_value[0].humanize}: #{state_name[0][:name]}"
+        - when 'country'
+          - country = Country.find_by_iso_alpha2_code(address_value[1])
+          = "#{address_value[0].humanize}: #{country.name}"
+        - else
+          = "#{address_value[0].humanize}: #{address_value[1]}"
+        br
+  - elsif answer.question && answer.question.question_type && answer.question.question_type.is_a?(QuestionType::TextField)
+    = simple_format(answer.display_value) if answer.display_value
+  - else
+    = answer.display_value.try(:capitalize)
+
+  - if questionp && questionp.disqualifier.present? && ['eight_a_eligibility', 'eight_a_annual_review_eligibility'].include?(@questionnaire_id)
+    = render partial: 'disqualifier/show', locals: {question: questionp, questionnaire: @questionnaire, answer: questionp.answers.set_for(@sba_application, nil).first}
+  br
+  br

@@ -1,0 +1,21 @@
+- if sub_app.reconsideration_or_appeal_deadline_passed?
+  = reconsider_section.title
+- elsif sub_app.submitted?
+  = sub_application_edit_link reconsider_section
+- elsif current_review.nil?
+  = link_to reconsider_section.title, questionnaire_organization_sba_application_path(sub_app.questionnaire.name, application.organization, sub_app.id)
+/ - elsif current_review.pending_reconsideration_or_appeal?
+/   = link_to "Reconsideration or Appeal", appeal_or_reconsideration_sba_application_application_dashboard_sub_application_reconsideration_questionnaires_path(application.id, sub_app.id)
+- elsif current_review.pending_reconsideration_or_appeal?
+  = link_to "Appeal", intend_to_appeal_sba_application_application_dashboard_sub_application_reconsideration_questionnaires_path(application.id, sub_app.id)
+
+- elsif current_review.pending_reconsideration?
+  = sub_application_edit_link reconsider_section
+- elsif current_review.reconsideration?
+  = link_to reconsider_section.title, questionnaire_organization_sba_application_path(sub_app.questionnaire.name, application.organization, sub_app.id)
+- elsif current_review.appeal_intent?
+  = link_to 'Intent to Appeal', appeal_reminder_sba_application_application_dashboard_sub_application_reconsideration_questionnaires_path(application.id, sub_app.id)
+- elsif current_review.appeal?
+  = current_review.status.humanize
+- else
+  = link_to reconsider_section.title, questionnaire_organization_sba_application_path(sub_app.questionnaire.name, application.organization, sub_app.id)

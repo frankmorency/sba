@@ -1,0 +1,20 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+- if display_assing_duty_stations?
+  = render partial: 'select_duty_station', locals: {application: @sba_application, title: 'Select a District Office' }
+- else
+  = render partial: 'shared/eight_a/fun_bar', locals: {application: @sba_application }
+
+  .usa-grid-full style="max-width:1250px"
+    .certify-page-header
+      .certify-page-header__primary
+        h1 Application Overview
+  .usa-grid-full
+    div class=((is_vendor? current_user) ? 'usa-width-one-whole' : 'usa-width-two-thirds')
+      = render partial: 'shared/eight_a/overview/card_content'
+
+    div class=((is_vendor? current_user) ? 'hide' : 'usa-width-one-third')
+      = render partial: 'application_dashboard/determination_history_log/log'
+      = render partial: 'application_dashboard/activity_log/activity_log_small'
+      = render partial: 'shared/eight_a/overview/sam_snapshot'
+
+  = render partial: 'application_dashboard/js'

@@ -1,0 +1,29 @@
+.usa-width-one-whole
+  section.usa-width-one-whole
+    article.usa-width-one-whole
+      h1 Certify Help Request
+      p
+        | Please use the form below to create a help request
+        = form_tag
+          fieldset
+                <label for="First_Name">First Name*</label>
+                = text_field_tag "request[first_name]", "", id: "First_Name", type: 'text', autofocus: true, required: true
+                <label for="Last_Name">Last Name*</label>
+                = text_field_tag "request[last_name]", "", id: "Last_Name", type: 'text', autofocus: true, required: true
+                = label_tag 'Email*'
+                = text_field_tag "request[email]", "", id: "Email", type: 'email', autofocus: true, required: true
+                <label for="Duns">DUNS*</label>
+                = text_field_tag "request[duns]", "", id: "Duns", type: 'text', required: true
+                <label for="Login_Email">Certify Login Email*</label>
+                = text_field_tag "request[certify_email]", "", id: "Login_Email", type: 'email', autofocus: true, required: true
+                <label for="Sam_Active">SAM Account Status*</label>
+                = select_tag "request[sam_active]", options_for_select([[],["Active","Active"],["Inactive","Inactive"]]).html_safe, id:"Sam_Active", required: true
+                = label_tag 'Which program does your request relate to?*'
+                = select_tag "request[program]", options_for_select([[],["8(a)","8(a)"],["WOSB/EDWOSB","WOSB/EDWOSB"],["Mentor Protege","Mentor Protege"],["Disaster Relief","Disaster Relief"],["HUBZone","HUBZone"],["Other","Other"]]).html_safe, required: true
+                = label_tag 'What does your issue pertain to?*'
+                = select_tag "request[issue]", options_for_select([[],["Creating account","Creating account"],["Login","Login"],["Uploading Documents","Uploading Documents"],["Submitting Application","Submitting Application"],["Contributor/Spouse Account","Contributor/Spouse Account"],["Update Information","Update Information"],["Other","Other"]]).html_safe, required: true
+                = label_tag 'Describe the issue*'
+                textarea#issue_description name="request[issue_description]" cols="30" rows="4" required=true
+                = submit_tag "Submit", id: "help_request"
+
+

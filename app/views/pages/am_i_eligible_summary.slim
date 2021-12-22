@@ -1,0 +1,14 @@
+
+h2 SBA Women-Owned Small Business (WOSB) <br> Federal Contract Program
+p The WOSB Federal Contract Program is a federal contracting set-aside program which authorizes contracting officers to restrict competition or award sole source federal contracts to eligible WOSBs and Economically Disadvantaged Women-Owned Small Businesses (EDWOSBs) in certain industries. In order to participate in competitions set-aside under this program, a firm must certify that it is an eligible WOSB or EDWOSB and has met the requirements for program participation described in 13 C.F.R. Part 127. This certification can be in the form of self-certification or Third-Party Certification.
+p
+  b
+    i Women-owned firms that do not meet the requirements of the WOSB Program may still compete for other federal contracting opportunities that are not set-aside under the WOSB Program.
+p If you are interested in competing for federal contracts set-aside for WOSBs or EDWOSBs, click “Am I Eligible?” below to determine if your company meets the criteria for the WOSB Program.
+
+= button_to "Am I Eligible?", '/am-i-eligible/app', :class => "button usa-button-primary certifyit", :method => :get
+
+javascript:
+  $(document).ready(function() {
+    $('#wosb_eligibility_amieligible').toggleClass("usa-current");
+  });

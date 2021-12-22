@@ -1,0 +1,43 @@
+- if @active_documents
+  = render partial: 'vendor_admin/my_documents/active'
+- elsif @inactive_documents
+  = render partial: 'vendor_admin/my_documents/inactive'
+
+javascript:
+  // This method is a workaround to sanitize the html and make it safe to display.
+  function stripHTML(text) {
+    var temp_container = document.createElement('div');
+    var text_node = document.createTextNode(text);
+    temp_container.appendChild(text_node);
+    return temp_container.innerHTML; // innerHTML will be a xss safe string
+  }
+
+  $(document).ready(function () {
+    $('#manage').DataTable({
+      "responsive": true,
+      "oLanguage": {
+        "sLengthMenu": "Display: _MENU_",
+        "sInfo": "Document _START_ through _END_",
+      }
+    });
+
+    $(document).on('click','td[name=comments]', function(){
+
+      $(this).editable(function(value, settings){
+          value = stripHTML(value); // Since user input may have harmful html
+          $.ajax({
+              type: "POST",
+              url: "/documents/update_comment",
+              dataType: "json",
+              beforeSend: function (jqXHR) {
+                  jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+              },
+              data: {
+                  "id": $(this).attr('id'),
+                  "value": value
+              }
+          });
+          return value;
+      });
+    });
+  });

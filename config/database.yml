@@ -1,0 +1,80 @@
+# PostgreSQL. Versions 8.2 and up are supported.
+#
+# Install the pg driver:
+#   gem install pg
+# On OS X with Homebrew:
+#   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
+# On OS X with MacPorts:
+#   gem install pg -- --with-pg-config=/opt/local/lib/postgresql84/bin/pg_config
+# On Windows:
+#   gem install pg
+#       Choose the win32 build.
+#       Install PostgreSQL and put its /bin directory on your path.
+#
+# Configure Using Gemfile
+# gem 'pg'
+#
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: 5
+  host: <%= ENV['RDS_URL'] %>
+  database: <%= ENV['RDS_DB_NAME'] %>
+  username: <%= ENV['RDS_USER'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  schema_search_path: "sbaone, audit, reference"
+
+default_admin: &default_admin
+  <<: *default
+  username: <%= ENV['RDS_ADMIN_USER'] %>
+  password: <%= ENV['RDS_ADMIN_PASSWORD'] %>
+
+development:
+  <<: *default
+  database: sba
+  host: localhost
+  username: postgres
+  password: postgres
+
+docker:
+  <<: *default
+
+test:
+  <<: *default
+  host: <%= ENV['RDS_TEST_URL'] %>
+  database: <%= ENV['RDS_TEST_DB_NAME'] %>
+  username: <%= ENV['RDS_TEST_USER'] %>
+  password: <%= ENV['RDS_TEST_PASSWORD'] %>
+
+build_admin:
+  <<: *default_admin
+  database: <%= ENV['RDS_DB_NAME'] %><%= ENV['TEST_ENV_NUMBER'] %>
+
+build:
+  <<: *default
+
+demo_admin:
+  <<: *default_admin
+
+demo:
+  <<: *default
+
+stage_admin:
+  <<: *default_admin
+
+stage:
+  <<: *default
+
+training_admin:
+  <<: *default_admin
+
+training:
+  <<: *default
+
+production_admin:
+  <<: *default_admin
+
+production:
+  <<: *default

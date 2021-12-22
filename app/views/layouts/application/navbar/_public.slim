@@ -1,0 +1,24 @@
+li
+  a.usa-nav-link href="/"
+    span class=('current-top-nav' if params[:id] == 'home') Home
+li
+  a.usa-nav-link href="/prepare"
+    span class=('current-top-nav' if params[:action] == 'prepare') Prepare
+li
+  a.usa-nav-link href="/am-i-eligible"
+    span class=('current-top-nav' if params[:action] == 'new' && params['controller'] == "custom/am_i_eligible" ) Am I eligible?
+li
+  a.usa-nav-link href="https://sbaone.atlassian.net/servicedesk/customer/portal/6" target="_blank"
+    span class=('current-top-nav' if params[:action] == "index" && params['controller'] == "help_pages" ) Help
+
+li
+  a.usa-nav-link.covid-19-link href="https://www.sba.gov/coronavirus" target="_blank"
+    span class=('current-top-nav' if params[:action] == "index" && params['controller'] == "help_pages" ) COVID-19 Guidance
+
+li
+  a.usa-nav-link.eight-a-extension-link href="https://sbaone.atlassian.net/wiki/spaces/CHDB/overview" target="_blank"
+    span class=('current-top-nav' if params[:action] == "index" && params['controller'] == "help_pages" ) 8(a) Participation Extension
+
+li.custom-edit-profile
+  a.usa-nav-link.edit-profile-link href="https://beta.Certify.sba.gov" target="_blank"
+    span class=('current-top-nav' if params[:action] == "index" && params['controller'] == "help_pages" ) Apply for the SBA's WOSB Program

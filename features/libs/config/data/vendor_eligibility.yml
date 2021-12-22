@@ -1,0 +1,55 @@
+Eligibility Information: General Assessment,Prior 8a Involvement,Outside Assistance,BusinessSize,Review Submit
+Eligibility Information with size: General Assessment,Prior 8a Involvement,Outside Assistance,BusinessSize as yes,Size Determination,Review Submit
+
+General Assessment:
+ answers_for_profit_as_yes: Is the applicant firm a for-profit business?
+ answers_is_broker_as_no: Is the applicant firm operating as a broker?
+ answers_generate_revenue_as_yes: Has the firm generated any revenue?
+ answers_disadvantaged_citizens_as_yes: Are all of the individual(s) claiming disadvantaged status in the applicant firm U.S. citizens? 
+ answers_have_dba_as_yes: Does the applicant firm have a Doing Business As (DBA) Name?
+ Please explain why you made this choice.: User can enter any comments here
+ Save and Continue:
+ Complete Status: eight_a_basic_eligibility_screen,General Assessment
+  
+Prior 8a Involvement:
+ applicant firm ever a certified 8a_as_no: Was the applicant firm ever a certified 8(a) Business Development Program Participant?
+ ever submitted an application to the 8a_as_no: Has the applicant firm ever submitted an application to the 8(a) Business Development Program?
+ 50 percent more of applicant firms assets_as_no: Do the assets of a previously certified 8(a) Business Development Program Participant constitute 50% or more of applicant firm’s assets?
+ Save and Continue:
+ Complete Status: eight_a_basic_eligibility_involvement,Prior 8(a) Involvement
+
+Outside Assistance:
+ hire an outside consultant to assist with its 8a application_as_no: Did the applicant firm hire an outside consultant to assist with its 8(a) application? 
+ Save and Continue:
+ Complete Status: eight_a_basic_eligibility_assistance,Outside Assistance
+
+BusinessSize:
+ firm considered NAICS code_as_yes: Is the applicant firm considered small in accordance with its primary North American Industry Classification System (NAICS) code? 
+ received a formal SBA size determination_as_no: Has the applicant firm or any of its affiliates received a formal SBA size determination?
+ Save and Continue:
+ notapplicable: Business Size
+
+BusinessSize as yes:
+ firm considered NAICS code_as_yes: Is the applicant firm considered small in accordance with its primary North American Industry Classification System (NAICS) code? 
+ received a formal SBA size determination_as_yes: Has the applicant firm or any of its affiliates received a formal SBA size determination?
+ Save and Continue: 
+ 
+
+Size Determination:
+ Please upload the size determination or redetermination letter(s) issued by SBA.: 0
+ Which SBA area office sent the most recent letter?: SBA Headquarters
+ What is the determination date stated in the most recent letter?: 11112001
+ Save and Continue:
+ eight_a_basic_eligibility_size: Business Size
+ eight_a_basic_eligibility_size_determination: Size Determination
+ 
+Review Submit:
+ Review left navigation: 
+ Submit Eligibility:
+ Success: 8(a) Basic Eligibility section is complete
+ New Section Added: Business Ownership,Individual Contributors,Character,Potential for Success,Control
+
+Expected sections that are added: Business Ownership,Individual Contributors,Character,Potential for Success,Control
+
+
+

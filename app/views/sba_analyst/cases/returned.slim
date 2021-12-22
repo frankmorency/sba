@@ -1,0 +1,4 @@
+h1 ASMPP Cases Returned to Firm
+p These cases were returned to the firm because the firm needs to provide additional information in its application for the All Small MPP Program. 
+= render partial: 'shared/mpp/supervisors_cases_links' if current_user.can?(:ensure_mpp_user)
+= render partial: 'cases_table', cases: @cases 

@@ -1,0 +1,5 @@
+- if @sba_application.can_be_submitted?
+  = render partial: 'vendor_admin/application_dashboard/overview/submission_ready', locals: {sba_application: @sba_application}
+- else
+  = button_to 'Review and sign', '', disabled: true, class: 'usa-button disabled'
+  span Before you review and sign your application, make sure each section says “Complete.”

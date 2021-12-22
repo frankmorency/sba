@@ -1,0 +1,12 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Send Deficiency Letter: Step 2 of 2
+        h1 The Deficiency Letter has been sent to the firm owner
+
+        p.usa-font-lead You returned this application at #{l Time.now}. The firm has been notified.
+        
+        = button_to 'Return to dashboard', root_path, method: :get

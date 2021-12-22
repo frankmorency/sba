@@ -1,0 +1,40 @@
+-request = @permission_request.first
+-requestor_first_name = request.access_request.user.first_name
+-requestor_last_name = request.access_request.user.last_name
+section.usa-grid-full
+    div
+        h1 Access Request 
+        h3
+         = 'Requestor: ' + requestor_first_name + ' ' + requestor_last_name
+        p
+         = 'Role Type: ' + request.access_request.type.titleize
+        p
+         = 'Requestor Email: ' + request.access_request.user.email
+        p
+         = 'Requested at: ' + l(request.access_request.created_at)
+        p
+         = 'Request Status: ' + request.access_request.status.titleize
+
+    div
+        .table-header
+            table
+                thead
+                    tr
+                        th Created
+                        th Action
+                        th Reviewer
+                        th Reviewer Role
+                        th Reviewer Organization
+                - @permission_request.each do |pr| 
+                    - unless pr.action == 'requested'
+                        tr
+                            td
+                             = l(pr.created_at.to_date)
+                            td 
+                             = pr.action
+                            td
+                             = pr.user.first_name + ' ' + pr.user.last_name
+                            td
+                             = pr.user.roles.map{|r| r.name}.join(", ")
+                            td
+                             = pr.user.business_units.map{|r| r.name if r.present? && r.name.present?}.join(", ")

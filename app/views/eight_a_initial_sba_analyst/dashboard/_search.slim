@@ -1,0 +1,130 @@
+= form_for :my_case, url: eight_a_initial_sba_analyst_dashboard_index_path, html: { id: "my_case_search", method: :get }  do |f|
+  .sba-l-row
+    .sba-u-measure--wide.sba-u-margin-y--3.usa-search.usa-search-big.sba-c-search--large[role="search"]
+      label.usa-sr-only[for="search-field-big"]
+        | Search big
+      input#search-field-big[type="search" name="search" placeholder="Search firm name, firm owner, DUNS, NAICS, etc."]
+      button[type="submit"]
+        span.usa-search-submit-text
+          | Search
+  .sba-l-row.sba-u-margin-x--neg2
+    .sba-l-sm-col--12.sba-l-md-col--golden-sm.sba-l-lg-col--3.sba-u-padding-x--2
+        /h2.sba-u-font-size--h3
+          | Filter Cases
+        /fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+          legend.sba-c-facet-set__legend
+            | Case type
+          ul.sba-c-unstyled-list
+            li
+              input#type1.sba-c-checkbox[type="checkbox" name="type"]
+              label.sba-c-label[for="type1"]
+                | Individually owned
+            li
+              input#type2.sba-c-checkbox[type="checkbox" name="type"]
+              label.sba-c-label[for="type2"]
+                | Entity owned
+            li
+              input#type3.sba-c-checkbox[type="checkbox" name="type"]
+              label.sba-c-label[for="type3"]
+                | Preponderance
+        /fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+          legend.sba-c-facet-set__legend
+            | Activity
+          ul.sba-c-unstyled-list
+            li
+              input#a1.sba-c-checkbox[type="checkbox" name="activities"]
+              label.sba-c-label[for="a1"]
+                | Awaiting firm response
+            li
+              input#a2.sba-c-checkbox[type="checkbox" name="activities"]
+              label.sba-c-label[for="a2"]
+                | Firm has responded
+            li
+              input#a3.sba-c-checkbox[type="checkbox" name="activities"]
+              label.sba-c-label[for="a3"]
+                | Unread messages
+        /fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+          legend.sba-c-facet-set__legend
+            | Application status
+          ul.sba-c-unstyled-list.check-pill
+            li
+              input#eight_a_ia_appeal_intent.sba-c-checkbox[type="checkbox" value="ia_appeal_intent" name="eight_a[ia_appeal_intent]"]
+              label.sba-c-label[for="eight_a_ia_appeal_intent"]
+                | Intent to Appeal
+            li
+              input#eight_a_ia_screening.sba-c-checkbox[type="checkbox" value="ia_screening" name="eight_a[ia_screening]"]
+              label.sba-c-label[for="eight_a_ia_screening"]
+                | Screening
+            li
+              input#eight_a_ia_returned_with_15_day_letter.sba-c-checkbox[type="checkbox" value="ia_returned_with_15_day_letter" name="eight_a[ia_returned_with_15_day_letter]"]
+              label.sba-c-label[for="eight_a_ia_returned_with_15_day_letter"]
+                | Returned with 15 Day Letter
+            li
+              input#eight_a_ia_closed.sba-c-checkbox[type="checkbox" value="ia_closed" name="eight_a[ia_closed]"]
+              label.sba-c-label[for="eight_a_ia_closed"]
+                | Closed
+            li
+              input#eight_a_ia_processing.sba-c-checkbox[type="checkbox" value="ia_processing" name="eight_a[ia_processing]"]
+              label.sba-c-label[for="eight_a_ia_processing"]
+                | Processing
+            li
+              input#eight_a_ia_sba_declined.sba-c-checkbox[type="checkbox" value="ia_sba_declined" name="eight_a[ia_sba_declined]"]
+              label.sba-c-label[for="eight_a_ia_sba_declined"]
+                | SBA Declined
+            li
+              input#eight_a_ia_pending_reconsideration.sba-c-checkbox[type="checkbox" value="ia_pending_reconsideration" name="eight_a[ia_pending_reconsideration]"]
+              label.sba-c-label[for="eight_a_ia_pending_reconsideration"]
+                | Ineligible
+            li
+              input#eight_a_ia_pending_reconsideration_or_appeal.sba-c-checkbox[type="checkbox" value="ia_pending_reconsideration_or_appeal" name="eight_a[ia_pending_reconsideration_or_appeal]"]
+              label.sba-c-label[for="eight_a_ia_pending_reconsideration_or_appeal"]
+                | Pending Appeal
+            li
+              input#eight_a_ia_reconsideration.sba-c-checkbox[type="checkbox" value="ia_reconsideration" name="eight_a[ia_reconsideration]"]
+              label.sba-c-label[for="eight_a_ia_reconsideration"]
+                | Reconsideration
+            li
+              input#eight_a_ia_appeal.sba-c-checkbox[type="checkbox" value="ia_appeal" name="eight_a[ia_appeal]"]
+              label.sba-c-label[for="eight_a_ia_appeal"]
+                | Appeal
+            li
+              input#eight_a_ia_sba_approved.sba-c-checkbox[type="checkbox" value="ia_sba_approved" name="eight_a[ia_sba_approved]"]
+              label.sba-c-label[for="eight_a_ia_sba_approved"]
+                | SBA Approved
+        /fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+          legend.sba-c-facet-set__legend
+            | Currently with
+          ul.sba-c-unstyled-list
+            li
+              input#cw_me.sba-c-checkbox[type="checkbox" name="currently_with"]
+              label.sba-c-label[for="cw_me"]
+                | Me
+            li
+              input#cw_firm.sba-c-checkbox[type="checkbox" name="currently_with"]
+              label.sba-c-label[for="cw_firm"]
+                | Firm
+            li
+              input#cw_another_office.sba-c-checkbox[type="checkbox" name="currently_with"]
+              label.sba-c-label[for="cw_another_office"]
+                | Another office
+    .sba-l-sm-col--12.sba-l-md-col--golden-lg.sba-l-lg-col--9.sba-u-padding-x--2.sba-u-lg-padding-left--6
+      .sba-u-display--flex.sba-u-justify-content--between
+        h2.sba-u-font-size--h3
+          = get_dashboard_total(@cases)
+        div
+          label.sba-u-visibility--screen-reader[for="sort"]
+            | Sort by
+          = select_tag :sort, options_for_select(@sort_options, @sort_order), {include_blank: 'Sort by…', onchange:"my_case_search.submit()"}
+      /.sba-c-facet-pills.sba-u-margin-bottom--3
+        span.sba-c-facet-pill
+          |  Screening
+          button.sba-c-facet-pill__close-button[title="Close"]
+            | X
+        span.sba-c-facet-pill
+          |  Preponderance
+          button.sba-c-facet-pill__close-button[title="Close"]
+            | X
+
+      = render partial: 'eight_a_initial_sba_analyst/dashboard/search_result_card'
+  div.sba-u-text-align--right
+    = link_to 'View all 8(a) cases', eight_a_sba_analyst_cases_path

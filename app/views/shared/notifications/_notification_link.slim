@@ -1,0 +1,23 @@
+
+a.usa-nav-link.notifications-drawer-link href="#"
+  = t('notifications.title')
+  = render 'shared/notifications/new_notifications_pip'
+  div.notifications-drawer
+
+- if Feature.active?(:notifications)
+  javascript:
+    $( document ).ready(function() {
+      Certify.Notify.Pip.checkForNew();
+      Certify.Notify.Pip.check_notifications();
+
+
+      $('.notifications-drawer-link').click(function(event) {
+        Certify.Notify.Pip.check_notifications();
+        Certify.Notify.Pip.checkForNew();
+        $('.notifications-drawer').toggle();
+        Certify.Notify.MarkRead.update();
+      });
+
+    });
+
+

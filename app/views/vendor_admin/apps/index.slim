@@ -1,0 +1,16 @@
+table
+  th Owner
+  th App TYPE
+  th Application ID
+  th Conversations
+
+  - @applications.each do |application|
+    tr
+      td
+        = application.get_vendor_applicant.email
+      td
+        = application.class
+      td
+        = application.id 
+      td
+        = link_to "Conversations (app ID #{application.id})", sba_application_conversations_path(sba_application_id: application.id), method: :get

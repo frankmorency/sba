@@ -1,0 +1,14 @@
+.repeating_questions.repeating_question id="#{question.name}#{index}"
+  .panel
+    - if question.multi
+      h6.usa-heading-alt
+        span #{question.repeater_label}
+        span.number_me #{index.to_i + 1}
+        a.error.edit_controls.table-button.rs-remove onclick='if (confirm("Are you sure?")) { $(this).parent().parent().parent().remove(); }' style="padding-left: 5px;cursor:pointer" Remove
+      br
+
+      - question.sub_questions.each do |sub_question|
+        - sub_question.array_index = index
+        - sub_question.value = answer_set.with_indifferent_access[sub_question.name] if answer_set
+        = render_question sub_question
+      hr

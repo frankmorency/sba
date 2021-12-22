@@ -1,0 +1,16 @@
+tr
+  td
+    - if current_user.is_sba_or_ops?
+      = link_to application.link_label, section_path_helper(application, current_section, true), target: '_blank'
+    - elsif current_user.can_view_answers?(application)
+      = link_to application.link_label, section_path_helper(application, current_section, true)
+    - else
+      = application.link_label
+  td Annual Report
+  td
+  td = application.formatted_submission_date
+  td
+  td
+  td
+    - if application.deleteable? current_user
+      = link_to 'Delete', sba_application_path(application), class: "confirmation delete-cert", method: :delete

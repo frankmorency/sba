@@ -1,0 +1,9 @@
+.full-grey
+  br
+  .masthead
+    = render partial: 'shared/eight_a/masthead/common', locals: {application: @sba_application, organization: @organization}
+
+
+javascript:
+    $('header.navigation').css('margin-bottom', '0');
+    $('section.usa-grid-full').css('max-width', '100%');

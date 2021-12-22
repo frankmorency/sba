@@ -1,0 +1,17 @@
+div id="#{question.dom_id}"
+  div#jsGrid
+  div#jsgrid-validation-error.hidden name="#{question.dom_id}"
+    .usa-alert.usa-alert-error role="alert"
+      .usa-alert-body
+        h3.usa-alert-heading Error Status
+        p.usa-alert-text
+
+== render partial: "question_types/data_entry_grid/#{question.question.strategy.underscore}", locals: {question: question}
+
+javascript:
+  $(document).ready(function(){
+
+    $('#jsGrid').addClass('usa-table-borderless');
+    $('#jsGrid, th').removeClass('jsgrid-header-cell');
+
+  });

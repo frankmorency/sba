@@ -1,0 +1,10 @@
+tr
+  th
+    - if firm_document.original_file_name.downcase.include?('.pdf')
+      = link_to_if firm_document.av_status == "OK", firm_document.original_file_name, pdf_viewer_organization_document_path(id: firm_document.id, organization_id: current_organization.id), method: :get, class: "usa-button-outline", target: "_blank"
+    - if firm_document.is_word_doc? || firm_document.is_excel_doc?
+      = link_to_if firm_document.av_status == "OK", firm_document.original_file_name, download_file_organization_document_path(id: firm_document.id, organization_id: current_organization.id), method: :get, class: "usa-button-outline", target: "_blank"
+  td
+    = firm_document.user.name
+  td
+    = firm_document.created_at.strftime("%m/%d/%Y")

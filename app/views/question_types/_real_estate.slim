@@ -1,0 +1,96 @@
+- if question.details
+  - details = question.details.is_a?(String) ? JSON.parse(question.details) : question.details
+- else
+  - details = []
+
+.real_estate
+  - if question.multi
+    #real_estate_message
+      p
+        i You may add and remove real estate holdings below
+  - elsif details.empty?
+    #real_estate_loading
+      i Loading... (Please Wait)
+
+  - details.each_with_index do |answer_set, i|
+    = render partial: 'question_types/real_estate_sub_question', locals: {question: question, index: i, answer_set: answer_set}
+
+br
+- if question.multi
+  a#add_real_estate.button.secondary.usa-button style="color: white;" Add real estate
+
+javascript:
+  $(function() {
+    var url = "/sba_applications/#{@sba_application.id}/section/#{question.section.name}/questions/#{question.name}/question_presentations/new"
+    var real_estate_type = "#{@real_estate_type}";
+    var real_estate_type_id = "#{@section.qp_id_for_question('has_' + @real_estate_type)}";
+    var toggle = $('#answers_' + real_estate_type);
+    var multi = #{question.multi};
+
+    var n = $('ul.real_estate').size();
+
+    var RealEstate = {
+      add: function() {
+        if (multi) {
+            $("#add_real_estate").addClass("disabled");
+            $("#add_real_estate").prop("disabled", true);
+            $("#add_real_estate").html("Loading... (Please Wait)");
+        }
+        $.get(url + '?index=' + ++n, function (data) {
+          $(".real_estate:last").append(data);
+          $('.answers_real_estate_address input:hidden').removeAttr('required');
+          $('.answers_real_estate_address input[type="text"]').attr('required', 'required');
+          if (multi) {
+              $("#add_real_estate").prop("disabled", false);
+              $("#add_real_estate").html("Add real estate");
+              $("#add_real_estate").removeClass("disabled");
+          } else {
+              $("#real_estate_loading").hide();
+          }
+        });
+      },
+
+      toggle_field_main: function () {
+        var answer = $("input:radio[name='answers[" + real_estate_type_id + "][value]']:checked").val();
+
+        if (answer == "yes") {
+          toggle.show();
+        } else {
+          toggle.hide();
+        }
+      },
+
+      unrequire_all: function() {
+        var answer = $("input:radio[name='answers[" + real_estate_type_id + "][value]']:checked").val();
+
+        if (answer == "no") {
+          $('.real_estate_real input').removeAttr('required');
+          $('.real_estate_real input').val(function () {
+                                                return "";
+                                              });
+        } else if ($('.answers_real_estate_address').size() == 0) {
+          alert('Please answer this question.');
+          return false;
+        } else {
+          $('.answers_real_estate_address input[type="text"]').each(function () {
+            if (this.val == "") {
+            }
+          });
+        }
+
+        return true;
+      }
+    };
+
+    $("input[name='answers[" + real_estate_type_id + "][value]']").click(RealEstate.toggle_field_main);
+
+    RealEstate.toggle_field_main();
+
+    if (multi) {
+      $("#add_real_estate").click(RealEstate.add);
+    } else if ($('.real_estate_real').size() == 0) {
+      RealEstate.add();
+    }
+
+    $('#questionnaire_form input[type="submit"]').click(RealEstate.unrequire_all);
+  });

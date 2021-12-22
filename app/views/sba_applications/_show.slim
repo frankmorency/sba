@@ -1,0 +1,7 @@
+.print-summary
+  = render partial: 'sba_applications/q_and_a', locals: {editable: false, business_partner_summaries: business_partner_summaries, sba_application: sba_application, role: role}
+
+- unless sba_application.kind == 'reconsideration'
+  .sba-button
+    = submit_tag 'Print', class:"usa-button", onclick: 'window.print();return false;'
+    = link_to 'Back', '#', :onclick => 'window.history.back();return false;'

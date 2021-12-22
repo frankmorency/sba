@@ -1,0 +1,50 @@
+footer.usa-footer.usa-footer-medium#footer role="contentinfo"
+  .usa-grid
+  .footer-feedback
+    .usa-grid-full
+      span Your experience is important to us! Please visit the
+      | &nbsp;
+      a class="feedback" href="https://sbaone.atlassian.net/wiki/spaces/CHDB/overview" target="_blank" Certify Knowledge Base
+      | &nbsp;
+      span for assistance.
+  .usa-footer-primary-section
+    .usa-grid-full
+      nav.usa-footer-nav
+        ul.usa-unstyled-list
+          li.usa-width-one-sixth.usa-footer-primary-content
+            a.usa-footer-primary-link href="http://sba.gov/contracting" target="_blank"  SBA.gov/contracting
+          li.usa-width-one-sixth.usa-footer-primary-content
+            a.usa-footer-primary-link href="http://whitehouse.gov/" target="_blank"  WhiteHouse.gov
+          li.usa-width-one-sixth.usa-footer-primary-content
+            a.usa-footer-primary-link href="http://regulations.gov/" target="_blank" Regulations.gov
+          li.usa-width-one-sixth.usa-footer-primary-content
+            a.usa-footer-primary-link href="https://business.usa.gov/" target="_blank"   BusinessUSA.gov
+          li.usa-width-one-sixth.usa-footer-primary-content
+            a.usa-footer-primary-link href="http://usa.gov/" target="_blank"   USA.gov
+  .usa-footer-secondary_section
+    .usa-grid-full
+      .usa-footer-logo.usa-width-one-half
+        a href="http://www.sba.gov" target="_blank"
+          = image_tag "sba_logo_new.png", alt: "U.S. Small Business Administration logo", width: "300px", class: "sba-u-margin-top--2"
+      .usa-footer-contact-links.usa-width-one-half
+        a.usa-link-facebook href="https://www.facebook.com/SBAgov" target="_blank" title="Follow certify.SBA.gov on facebook!"
+        a.usa-link-twitter href="https://www.twitter.com/sbagov" target="_blank" title="Follow certify.SBA.gov on twitter!"
+        a.usa-link-youtube href="https://www.youtube.com/c/sbagov" target="_blank" title="Follow certify.SBA.gov on YouTube!"
+        address
+        h3.usa-footer-contact-heading Contact SBA
+        p
+        a href="/help" Certify Help Desk
+  - unless Rails.env.production?
+    .usa-footer-primary-section#branch-commit
+      .usa-grid-full
+        span.sba-u-margin-y--2.sba-u-font-size--h6.usa-disclaimer-stage
+          = "Branch: #{`git rev-parse --abbrev-ref HEAD`}"
+          = "Commit: #{`git rev-parse --short HEAD`}"
+  .usa-footer-primary-section#version_info hidden=""
+    .usa-grid-full
+      span.usa-text-small.usa-disclaimer-stage = "Version: #{Rails.configuration.version.join(".")}"
+      / commenting out below on Rick's request
+      / script type="text/javascript" src="https://sbaone.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/namncq/b/c/1000.815.2/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=8f0c6247"
+      / a href="#" id="atlwdg-trigger" class="atlwdg-trigger atlwdg-SUBTLE" Need Technical Support?
+      div id="atlwdg-blanket" class="atlwdg-blanket" style="display: none;"
+      div id="atlwdg-container" class="atlwdg-popup atlwdg-hidden"

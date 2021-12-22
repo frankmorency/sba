@@ -1,0 +1,40 @@
+aside.usa-width-one-fourth.sidenav-dashboard.db-grey-background-box#db-left-nav
+  p.white-text Welcome #{current_user.first_name}
+  .small-text-caps.login-text Last logged in at #{current_user.last_sign_in_at}
+
+  header.navigation
+    .navigation-wrapper.nav-background
+      a.navigation-menu-button.nav-white#js-mobile-menu2  href="javascript:void(0)" NAVIGATION
+      nav role="navigation"
+        ul.usa-sidenav-list.navigation-menu#js-navigation-menu2
+          li.default.dashboard-left-nav-links
+            a.fa.fa-dashboard.db-icon-dash.display-inline &nbsp; #{link_to 'Dashboard', vendor_admin_dashboard_index_path}
+
+            //= link_to 'Dashboard', '/dashboard'
+
+            - unless @certificates.displayable.empty?
+              li.default.dashboard-left-nav-links.dashboard-left-nav-cert
+                //img src="#{find_asset_path('landing-icons/certs.png')}" &nbsp;&nbsp;
+
+                span.fa.fa-dashboard.db-icon-certs.cert-dash Certification
+                ul
+                  - for certificate in @certificates.displayable
+                    li.default.dashboard-left-nav-links.dashboard-left-nav-cert.margin-top  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    = link_to "#{certificate.certificate_type.name.upcase} Self-Certification", "#{organization_certificate_path(current_organization.id, certificate.id)}", target: "_blank"
+          - if (can? :view_personal_profile, current_user) || (can? :view_business_profile, current_user)
+            li.default.dashboard-left-nav-links
+              a.fa.fa-dashboard.db-icon-myprofile.display-inline &nbsp; #{link_to 'My Profile', my_profile_path}
+              //img src="#{find_asset_path('landing-icons/profile.png')}" &nbsp;
+              //= link_to 'My Profile', my_profile_path
+          - if can? :view_document_library, current_user
+            li.xdefault.dashboard-left-nav-links
+              a.fa.fa-dashboard.db-icon-documents.display-inline  &nbsp; #{link_to 'My Documents', '/my_documents'}
+              //img src="#{find_asset_path('landing-icons/docs.png')}" &nbsp;
+              //= link_to 'My Documents', '/my_documents'
+
+          - if (can? :ensure_vendor, current_user)
+            li.default.dashboard-left-nav-links
+              = link_to 'My CO requests', vendor_admin_access_requests_path
+            //fa  dashboard
+            //fa  gear
+            // fa  file-text-o

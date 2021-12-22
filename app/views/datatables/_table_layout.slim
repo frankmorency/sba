@@ -1,0 +1,91 @@
+
+//TODO: Still few methods has to be moved to call backs
+javascript:
+
+  var #{unique_id}_editor;
+
+  $(document).ready(function () {
+
+    var #{unique_id}_tabledata = {};
+
+    // Create or update the tabledata localStorage entry
+    if (($("##{unique_id}").val() !== "null") && ($("##{unique_id}").val() !== "")) {
+      #{unique_id}_tabledata = JSON.parse($("##{unique_id}").val());
+    }
+
+    var #{unique_id}_layout = new #{layout}();
+
+    // Set up the editor
+    #{unique_id}_editor = new $.fn.dataTable.Editor({
+      table: "##{unique_id}_table",
+      fields: #{unique_id}_layout.fields(),
+      ajax: function (method, url, d, successCallback, errorCallback) {
+        var output = {data: []};
+
+        if (d.action === 'create') {
+          // Create new row(s), using the current time and loop index as
+          // the row id
+          var dateKey = +new Date();
+
+          $.each(d.data, function (key, value) {
+            value.DT_RowId = dateKey + '' + key;
+            #{unique_id}_layout.pre_process(value);
+            //value.operation = 'create';
+            #{unique_id}_tabledata[value.DT_RowId] = value;
+            output.data.push(value);
+          });
+        }
+        else if (d.action === 'edit') {
+          // Update each edited item with the data submitted
+          $.each(d.data, function (id, value) {
+            value.DT_RowId = id;
+            #{unique_id}_layout.pre_process(value);
+            $.extend(#{unique_id}_tabledata[id], value);
+            output.data.push(#{unique_id}_tabledata[id]);
+          });
+        }
+        else if (d.action === 'remove') {
+          // Remove items from the object
+          $.each(d.data, function (id) {
+            delete #{unique_id}_tabledata[id];
+          });
+        }
+
+        // Store the latest `tabledata` object for next reload
+        data = JSON.stringify(#{unique_id}_tabledata);
+
+        if (data == "{}") {
+          $("##{unique_id}").val("");
+        } else {
+          $("##{unique_id}").val(data);
+        }
+
+        // Show Editor what has changed
+        successCallback(output);
+      }
+    });
+
+    #{unique_id}_editor.on('preSubmit', function ( e, o, action) {
+      return #{unique_id}_layout.pre_submit(this,e,o,action,#{unique_id}_editor);
+    });
+
+    $("##{unique_id}_table").DataTable({
+      dom: "Bfrtip",
+      data: $.map(#{unique_id}_tabledata, function (value, key) {
+        return value;
+      }),
+      columns: #{unique_id}_layout.columns(),
+      select: true,
+      responsive: true,
+      buttons: [
+        {extend: "create", editor: #{unique_id}_editor, className: 'table-button-editor new-record usa-button'},
+        {extend: "edit", editor: #{unique_id}_editor, className: 'table-button-editor edit-record usa-button'},
+        {extend: "remove", editor: #{unique_id}_editor, className: 'table-button-editor delete-record usa-button'}
+      ],
+      searching: false,
+      paging: false,
+      info: false,
+      footerCallback: #{unique_id}_layout.footer_callback
+    });
+
+  });

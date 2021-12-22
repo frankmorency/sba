@@ -1,0 +1,8 @@
+.usa-width-one-whole.connect Business Profile
+= render partial: 'organizations/profile', locals: {org: @organization, search_result: false, sam_snapshot: {}}
+
+- if (can? :work_on_edwosb_wosb_application, current_user) && @certificates.empty? && @applications.empty?
+  .usa-width-one-whole.start-cert-box
+    p.wosb-text Click here to start your <a href="/questionnaires/wosb/sba_applications/new" class="white-color"><b>WOSB</b></a> or <a href="/questionnaires/edwosb/sba_applications/new" style="color:white"><b>EDWOSB</b></a> Self Certification
+  .usa-width-one-whole.business-bg
+    p Start a new Women-Owned Small Business (WOSB) or Economically Disadvantaged Women-Owned Small Business (EDWOSB) certification or update your current certification in our new system. If you have a current WOSB or EDWOSB  certification, your company is required to add new documentation in our current system. If you have any questions, please click <a href="/help">Certify Help Desk</a> for more information.

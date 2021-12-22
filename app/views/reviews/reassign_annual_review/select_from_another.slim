@@ -1,0 +1,43 @@
+.sba-l-container
+  .sba-l-row
+    .sba-l-col--12.sba-u-padding-x--2
+      .certify-page-header
+        .certify-page-header__primary
+          span.subheading--large
+            | Reassign case
+          h1
+            | Reassign this case
+      p.usa-font-lead
+        | Assign this Annual Review to another analyst or supervisor.
+  .sba-l-row
+    .sba-l-sm-col--12.sba-l-md-col--golden-lg.sba-l-lg-col--8.sba-u-padding-x--2
+      = form_tag wizard_path, {method: :put, id: :assign} do
+        = hidden_field_tag :application_id, @sba_application.id
+        .no-hq
+          fieldset.questions
+            legend.usa-sr-only
+              | Please select a BOS or supervisor
+            = render partial: 'reviews/reassign_case/assignment_options', locals: {users: @users_outside_ds, option_id_prefix: 'within', option_list_title: 'Please select a BOS or supervisor'} if @sba_application.annual?
+        .actions
+          .actions__main
+            button.sba-c-button.sba-u-sm-margin-right--3[type="submit"]
+              | Next
+            = link_to 'Cancel', previous_wizard_path
+
+javascript:
+
+    $(function () {
+        $("#assign").validate({
+            errorPlacement: function (error, element) {
+                $(".certify-page-header__primary>h1").after(error);
+            },
+            rules: {
+                "user_id": {
+                    required: true
+                }
+            },
+            messages: {
+                "user_id": "Select an individual"
+            }
+        });
+    });

@@ -1,0 +1,7 @@
+.composite_question
+- if answer.details
+  - answer.details.each_with_index do |answer_set, i|
+    = render partial: 'answers/question_types/composite_question_sub_question', locals: {question: questionp, section: @section, index: i, answer_set: answer_set, editable: editable}
+    - unless i == answer.details.length - 1
+      hr
+br

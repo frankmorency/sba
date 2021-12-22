@@ -1,0 +1,100 @@
+- @cases.each_with_index do |kase, index|
+
+  - certificate = kase.certificates.select {|cert| cert["program"] == "EIGHT_A"}[0]
+  - master_application = kase.sba_applications.select {|app| app["type"] == "SbaApplication::EightAMaster"}[0]
+
+  - next if (certificate.nil? || certificate.blank?)
+
+  - most_recent_review = {"id" => 0, "status" => 'nothing'}
+  - certificate["reviews"].each do |review|
+    - most_recent_review = review if review['id'] > most_recent_review['id']
+
+  - if [certificate['case_owner_id'], certificate['current_reviewer_id']].include?(current_user.id) && ['screening', 'processing', 'returned_with_15_day_letter'].include?(most_recent_review["status"])
+    .sba-c-card.sba-u-display--block.sba-u-padding-y--2.sba-u-padding-x--1
+      .sba-c-container.sba-u-padding-x--2
+        .sba-l-row.sba-u-align-items--center.sba-u-flex-direction--column.sba-u-lg-flex-direction--row
+          .sba-l-col--12.sba-l-lg-col--5.sba-l-xl-col--6
+            h3.sba-u-margin-top--0.sba-u-margin-bottom--1.sba-u-md-margin-bottom--0
+              - if master_application.nil? || !master_application.key?("id")
+                = kase.firm_name
+              - else
+                = link_to kase.firm_name, sba_application_application_dashboard_overview_index_path(sba_application_id: master_application["id"])
+            p.sba-u-color--muted.sba-u-margin--0
+              - if most_recent_review['id'] == 0
+                | No Review
+              - else
+                - if most_recent_review["type"].include?("Initial")
+                  | Initial Application
+                - else
+                  | Annual Review
+                | &nbsp; - &nbsp;
+                = all_cases_review_status most_recent_review["status"]
+            /p.sba-u-margin--0.sba-u-font-size--h5
+              strong
+                span.sba-c-tooltip-wrapper
+                  span.sba-c-tooltip-toggle[data-tooltip-text="7/30/18" aria-describedby="tooltip95290" tabindex="0"]
+                    | 5 days ago
+                  span#tooltip95290.sba-c-tooltip.transition[aria-hidden="true" aria-role="tooltip"]
+                    | 7/30/18
+                |  -
+                span.sba-u-color--error
+                  | You requested info from the firm
+          .sba-l-col--12.sba-l-lg-col--6.sba-l-xl-col--5
+            .sba-l-row.sba-u-align-items--center.sba-u-flex-direction--column.sba-u-sm-flex-direction--row.sba-u-margin-top--2.sba-u-lg-margin-top--0
+              .sba-l-col--12.sba-l-sm-col--6.sba-padding-right--1
+                - if certificate['case_owner_id'] != certificate['current_reviewer_id']
+                  - current_reviewer = User.find_by_id(certificate['current_reviewer_id'])
+                  span.sba-c-tooltip-wrapper
+                    span.sba-u-display--flex.sba-u-align-items--center.sba-u-font-size--h5.sba-c-tooltip-toggle[data-tooltip-text="Currently with #{current_reviewer&.name}" tabindex="0"]
+                      svg.sba-c-icon.sba-c-icon--gray-light.sba-u-margin-right--1[aria-hidden="true"]
+                        use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#arrow-right"]
+                      = current_reviewer&.name
+              /.sba-l-col--12.sba-l-sm-col--2.sba-padding-right--1
+                a[href="javascript:void(0)"]
+                  span.sba-c-tooltip-wrapper
+                    span.sba-u-display--flex.sba-u-align-items--center.sba-u-font-size--h5.sba-c-tooltip-toggle[data-tooltip-text="3 unread messages" aria-describedby="tooltip55279" tabindex="0"]
+                      svg.sba-c-icon.sba-c-icon--blue.sba-u-margin-right--1[aria-hidden="true"]
+                        use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#envelope"]
+                      |  3
+              .sba-l-col--12.sba-l-sm-col--4.sba-padding-right--1
+                - days_to_go = (Date.parse(kase.next_action_due_date) - Date.today).to_i
+                span.sba-c-tooltip-wrapper
+                  span.sba-u-display--flex.sba-u-align-items--center.sba-u-font-size--h5.sba-c-tooltip-toggle class=('sba-u-color--error' if days_to_go < 5) data-tooltip-text="Next action due: #{Date.parse(kase.next_action_due_date).strftime("%m/%d/%Y")}" tabindex="0"
+                    svg.sba-c-icon.sba-c-icon--gray-light.sba-u-margin-right--1[aria-hidden="true"]
+                      use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#clock"]
+                    = days_left_helper(days_to_go)
+          .sba-l-col--1.sba-u-sm-text-align--right
+            span.sba-c-tooltip-wrapper
+              button.sba-c-button.sba-c-button--transparent.sba-c-button--icon-only.sba-c-card__toggle.sba-c-tooltip-toggle[type="button" data-tooltip-text="Show/hide details" aria-expanded="false" aria-controls="expand#{index}" aria-describedby="tooltip88718" tabindex="0"]
+                svg.sba-c-icon[aria-hidden="true"]
+                  use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#angle-down"]
+              span#tooltip88718.sba-c-tooltip[aria-hidden="true" aria-role="tooltip"]
+                | Show/hide details
+        .sba-u-padding-top--1[hidden="" id="expand#{index}"]
+          .sba-l-row
+            .sba-l-col--12.sba-l-sm-col--3.sba-u-padding-right--1
+              h4.sba-u-margin-bottom--0
+                | Firm owner
+              p.sba-u-margin--0
+                = kase.firm_owner unless kase.firm_owner.nil?
+              p.sba-u-margin--0.sba-u-color--muted
+                = number_to_phone(kase.phone_number) unless kase.phone_number.nil?
+              p.sba-u-margin--0
+                = link_to "Send a message", sba_application_conversations_path(sba_application_id: master_application["id"])
+            .sba-l-col--12.sba-l-sm-col--3.sba-u-padding-right--1
+              /h4.sba-u-margin-bottom--0
+                | Type
+              /p.sba-u-margin--0
+                | Entity-owned
+            /.sba-l-col--12.sba-l-sm-col--3.sba-u-padding-right--1
+              h4.sba-u-margin-bottom--0
+                | Forwarded by
+              p.sba-u-margin--0
+                | Ben Shuth on 5/23/18
+            .sba-l-col--12.sba-l-sm-col--3.sba-u-padding-right--1
+              h4.sba-u-margin-bottom--0
+                | District office
+              p.sba-u-margin--0
+                = certificate['district_office']
+          p
+            = link_to "View this firm’s profile", sba_analyst_dashboard_show_path(enc: $encryptor.encrypt("duns_number=#{kase.duns}&tax_identifier=#{kase.entity_number}"))

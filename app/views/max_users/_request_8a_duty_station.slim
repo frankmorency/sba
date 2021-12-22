@@ -1,0 +1,15 @@
+.usa-width-one-half.standalone-card
+  p.subheading Requesting Access
+  h1 Where is your duty station?
+  form.usa-form action="/next_page" method="post"
+    = hidden_field_tag :authenticity_token, form_authenticity_token
+    = hidden_field_tag :hash, @hash.to_json
+    .questions
+      label.usa-sr-only for="duty_station"  Duty Station
+      - if @hash[:business_unit] == "cods"
+        - list = [] <<  DutyStation.find_by(name: 'Philadelphia') << DutyStation.find_by(name: 'San Francisco')
+        = select("duty_station", "duty_station", list.collect {|p| [ p.name, p.id ] }, { include_blank: true }, required: true)
+      - else
+        = select("duty_station", "duty_station", DutyStation.order('name ASC').collect {|p| [ p.name, p.id ] }, { include_blank: true }, required: true)
+    button.usa-button type="submit"  Next
+    a.usa-button.usa-button-knockout href="#" onclick="javascript:window.history.back();"  Go Back

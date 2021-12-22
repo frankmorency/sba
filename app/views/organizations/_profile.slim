@@ -1,0 +1,383 @@
+- sam_snapshot = Hash.new unless defined? sam_snapshot
+
+.usa-width-one-whole
+  h2
+    - if org.duns.nil?
+      span class="sba-red"
+       = "SAM.GOV profile not found for (#{org.duns_number})"
+    - else
+      = "#{org.legal_business_name} (#{org.duns_number})"
+      - if org.is_active? 
+        h4
+          | SAM.gov profile
+          span style="font-size: 0.75em; font-weight: normal; padding-left: 60px;"
+            = "Last update #{l org.updated_at}"
+      - else
+        h4
+          span class="sba-red"  
+           = "Inactive SAM.GOV profile"
+
+  - if org.duns.present?
+    .usa-width-one-third
+      p
+        b DBA:
+        span.field
+          = org.dba_name
+
+      - if @user && search_result
+        p
+          b Vendor Administrator: &nbsp;
+          span.field
+            a href="#" id="ava-pop"
+              = @user.name
+      p
+        b DUNS:
+        span.field
+          = org.duns
+      p
+        b CAGE:
+        span.field
+          = org.cage_code
+      p
+        b Mailing Address:
+        span.field
+          = org.mailing_address_line_1
+          br
+          = org.mailing_address_line_2
+          br
+          = org.mailing_address_city
+          | ,&nbsp;
+          = "#{org.mailing_address_state_or_province} #{org.mailing_address_zip_code_5}#{"-#{org.mailing_address_zip_code_4}" if org.mailing_address_zip_code_4}"
+  - if sam_snapshot.present? && org.nil?
+    .usa-width-one-third
+      p
+        b DBA:
+        span.field
+          = sam_snapshot["dba_name"]
+
+      - if @user && search_result
+        p
+          b Vendor Administrator: &nbsp;
+          span.field
+            a href="#" id="ava-pop"
+              = @user.name
+      p
+        b DUNS:
+        span.field
+          = sam_snapshot["duns"]
+      p
+        b CAGE:
+        span.field
+          = sam_snapshot["cage_code"]
+      p
+        b Mailing Address:
+        span.field
+          = sam_snapshot["mailing_address_line_1"]
+          br
+          = sam_snapshot["mailing_address_line_2"]
+          br
+          = sam_snapshot["mailing_address_city"]
+          | ,&nbsp;
+          = "#{sam_snapshot["mailing_address_state_or_province"]} #{sam_snapshot["mailing_address_zip_code_5"]}#{"-#{sam_snapshot["mailing_address_zip_code_4"]}" if sam_snapshot["mailing_address_zip_code_4"]}"
+
+
+  - if sam_snapshot.nil? || sam_snapshot.empty?
+    .usa-width-one-third
+      p
+        b Business Contact:
+        span.field
+          = "#{org.govt_bus_poc_first_name} #{org.govt_bus_poc_last_name}"
+      p
+        b Email:
+        span.field
+          = org.govt_bus_poc_email
+      p
+        b Phone:
+        span.field
+          = org.govt_bus_poc_us_phone
+      p
+        b Address:
+        span.field
+          = org.sam_address_1
+          |&nbsp;
+          = org.sam_address_2
+          |&nbsp;
+          = org.sam_city
+          | ,&nbsp;
+          = "#{org.sam_province_or_state} #{org.sam_zip_code}"
+  - else
+    .usa-width-one-third
+      p
+        b Business Contact:
+        span.field
+          = "#{sam_snapshot["govt_bus_poc_first_name"]} #{sam_snapshot["govt_bus_poc_last_name"]}"
+      p
+        b Email:
+        span.field
+          = sam_snapshot["govt_bus_poc_email"]
+      p
+        b Phone:
+        span.field
+          = sam_snapshot["govt_bus_poc_us_phone"]
+      p
+        b Address:
+        span.field
+          = sam_snapshot["sam_address_1"]
+          |&nbsp;
+          = sam_snapshot["sam_address_2"]
+          |&nbsp;
+          =sam_snapshot["sam_city"]
+          | ,&nbsp;
+          = "#{sam_snapshot["sam_province_or_state"]} #{sam_snapshot["sam_zip_code_5"]}-#{sam_snapshot["sam_zip_code_4"]}"
+
+
+
+  .usa-width-one-third
+    - if search_result
+      p
+        b Business Type:
+        span.field = " #{BusinessType.get(org.business_type).display_name}" if BusinessType.get(org.business_type)
+    - else
+      p
+        b Corporate URL:
+        span.field
+        - if sam_snapshot.nil? || sam_snapshot.empty?
+          = org.corporate_url
+        - else
+          = sam_snapshot["corporate_url"]
+      p
+        b Current Programs:
+        span &nbsp;
+        - if org.certificates.displayable.empty?
+          br
+          | You have not started an application to join a new program yet. Get started below.
+        - else
+          - for certificate in org.displayable_certificate_names(true)
+            br
+            = certificate.certificate_type.title
+      p
+        b Entity Owned:
+        span.field
+          - if org&.entity_owned == true
+            | Yes
+          - else
+            | No
+.usa-width-one-whole class="#{'business_search_result' if search_result}"
+
+  .usa-accordion
+    ul
+      li
+        button aria-controls="more-details" aria-expanded="false"
+          | More details
+        #more-details.usa-accordion-content
+          - if sam_snapshot.nil? || sam_snapshot.empty?
+            .usa-width-one-third
+              - if search_result
+                p
+                  b Corporate URL:
+                  span.field.word-break
+                    = org.corporate_url
+              - else
+                p
+                  b Business Type:
+                  span.field
+                    = BusinessType.get(org.business_type).display_name if BusinessType.get(org.business_type)
+              p
+                b DODAC:
+                span.field
+                  = org.dodaac
+              p
+                b Congressional District:
+                span.field
+                  = org.sam_congressional_district
+              p
+                b EIN:
+                span.field
+                  = org.tax_identifier_number
+              p
+                b DUNS+4:
+                span.field
+                  = org.duns_4
+              p
+                b Primary NAICS:
+                br
+                span.field.word-break
+                  = org.primary_naics
+              p
+                b Other NAICS:
+                br
+                span.field.word-break
+                  = org.naics_code_string
+
+            .usa-width-one-third
+              p
+                b Alt Gov Business POC First Name:
+                span.field
+                  = org.alt_govt_bus_poc_first_name
+              p
+                b Alt Gov Business POC Last Name:
+                span.field
+                  = org.alt_govt_bus_poc_last_name
+              p
+                b Alt Gov Business POC Title:
+                span.field
+                  = org.alt_govt_bus_poc_title
+              p
+                b Alt Gov Business POC Email:
+                span.field
+                  = org.alt_govt_bus_poc_email
+              p
+                b Alt Gov Business POC Phone:
+                span.field
+                  = org.alt_govt_bus_poc_us_phone
+
+            .usa-width-one-third
+              p
+                b Entity Year Established:
+                span.field
+                  = org.business_start_date
+              p
+                b Entity Fiscal Year End Date:
+                span.field
+                  = org.fiscal_year_end_close_date
+              p
+                b SAM Expiration Date:
+                span.field
+                  = org.expiration_date
+              p
+                b State of Incorporation:
+                span.field
+                  = org.state_of_incorporation
+              p
+                b Country of Incorporation:
+                span.field
+                  = org.country_of_incorporation
+              p
+                b Average Number of Employees:
+                span.field
+                  = org.average_number_of_employees
+              p
+                b Average Annual Revenue:
+                span.field
+                  = number_to_currency(org.average_annual_revenue) if org.average_annual_revenue
+              p
+                b Net Worth:
+                span.field
+              p
+                b AGI:
+                span.field
+          - else
+            .usa-width-one-third
+              - if search_result
+                p
+                  b Corporate URL:
+                  span.field.word-break
+                    = sam_snapshot["corporate_url"]
+              - else
+                p
+                  b Business Type:
+                  span.field
+                    = BusinessType.get(org.business_type).display_name if BusinessType.get(org.business_type)
+              p
+                b DODAC:
+                span.field
+                  = sam_snapshot["dodaac"]
+              p
+                b Congressional District:
+                span.field
+                  = sam_snapshot["sam_congressional_district"]
+              p
+                b EIN:
+                span.field
+                  = sam_snapshot["tax_identifier_number"]
+              p
+                b DUNS+4:
+                span.field
+                  = sam_snapshot["duns_4"]
+              p
+                b Primary NAICS:
+                br
+                span.field.word-break
+                  = sam_snapshot["primary_naics"]
+              p
+                b Other NAICS:
+                br
+                span.field.word-break
+                  = sam_snapshot["naics_code_string"]
+
+            .usa-width-one-third
+              p
+                b Alt Gov Business POC First Name:
+                span.field
+                  = sam_snapshot["alt_govt_bus_poc_first_name"]
+              p
+                b Alt Gov Business POC Last Name:
+                span.field
+                  = sam_snapshot["alt_govt_bus_poc_last_name"]
+              p
+                b Alt Gov Business POC Title:
+                span.field
+                  = sam_snapshot["alt_govt_bus_poc_title"]
+              p
+                b Alt Gov Business POC Email:
+                span.field
+                  = sam_snapshot["alt_govt_bus_poc_email"]
+              p
+                b Alt Gov Business POC Phone:
+                span.field
+                  = sam_snapshot["alt_govt_bus_poc_us_phone"]
+
+            .usa-width-one-third
+              p
+                b Entity Year Established:
+                span.field
+                  - if sam_snapshot["business_start_date"].present? && Date.parse(sam_snapshot["business_start_date"]).present?
+                    = l Date.parse(sam_snapshot["business_start_date"]) if sam_snapshot["business_start_date"]
+                  - else
+                    | N/A
+              p
+                b Entity Fiscal Year End Date:
+                span.field
+                  - if sam_snapshot["fiscal_year_end_close_date"].present? && Date.parse(sam_snapshot["fiscal_year_end_close_date"]).present?
+                    = l Date.parse(sam_snapshot["fiscal_year_end_close_date"]) if sam_snapshot["fiscal_year_end_close_date"]
+                  - else
+                    | N/A
+              p
+                b SAM Expiration Date:
+                span.field
+                  - if sam_snapshot["expiration_date"].present? && Date.parse(sam_snapshot["expiration_date"]).present?
+                    = l Date.parse(sam_snapshot["expiration_date"]) if sam_snapshot["expiration_date"]
+                  - else
+                    | N/A
+              p
+                b State of Incorporation:
+                span.field
+                  = sam_snapshot["state_of_incorporation"]
+              p
+                b Country of Incorporation:
+                span.field
+                  = sam_snapshot["country_of_incorporation"]
+              p
+                b Average Number of Employees:
+                span.field
+                  = sam_snapshot["average_number_of_employees"]
+              p
+                b Average Annual Revenue:
+                span.field
+                  = number_to_currency(sam_snapshot["average_annual_revenue"]) if sam_snapshot["average_annual_revenue"]
+              p
+                b Net Worth:
+                span.field
+              p
+                b AGI:
+                span.field
+
+  - if org.has_non_pending_8a_cert? && current_user.is_servicing_bos?(org)
+    = render partial: "organizations/program_actions", locals: {org: org}
+
+javascript:
+  $(function() {
+    $('.expander-view-more-trigger').click(function () {
+      $(this).toggleClass("expander-view-more-hidden");
+    });
+  });

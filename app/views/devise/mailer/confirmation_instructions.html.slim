@@ -1,0 +1,10 @@
+p style="font-family:'Source Sans Pro','Helvetica','Arial',sans-serif"
+p Thank you for registering with certify.sba.gov. Click on the link below to confirm your email and activate your account.
+p
+  = link_to 'Activate Account', confirmation_url(@resource, confirmation_token: @token)
+
+p We continue to look for ways to make your experience with the system better, so we welcome your feedback at https://certify.sba.gov/help.
+
+
+p Sincerely,
+p The certify.SBA.gov team

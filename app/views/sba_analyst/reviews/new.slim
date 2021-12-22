@@ -1,0 +1,11 @@
+= render partial: 'versions/banner', locals: {application: @sba_application} unless @sba_application.version_number == 1
+
+= render partial: 'sba_analyst/reviews/review',
+        locals: { review: @review,
+                  certificate: @certificate,
+                  analysts: @analysts,
+                  review_types: @review_types,
+                  url: sba_analyst_sba_application_reviews_path(@sba_application),
+                  submit_text: 'Start',
+                  title: 'Start a review',
+                  owner_label: 'Owner and first reviewer'}

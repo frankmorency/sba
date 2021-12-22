@@ -1,0 +1,17 @@
+
+.usa-grid-full
+
+  br
+  = render partial: 'sba_applications/q_and_a', locals: {editable: false, business_partner_summaries: @business_partner_summaries, sba_application: @sba_application, role: :vendor_admin}
+
+
+  - if @annual_report.status
+    h3 = @annual_report.status
+  - elsif current_user.can? :ensure_mpp_user
+    .usa-form
+      .usa-width-one-third
+        = button_to 'Return', return_to_vendor_sba_analyst_annual_report_path(@annual_report)
+      .usa-width-one-third
+        = button_to 'Approve', approve_sba_analyst_annual_report_path(@annual_report)
+      .usa-width-one-third
+        = button_to 'Decline', decline_sba_analyst_annual_report_path(@annual_report)

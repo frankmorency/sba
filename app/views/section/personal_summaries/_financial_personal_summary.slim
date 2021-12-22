@@ -1,0 +1,125 @@
+h2.usa-heading = "Basic Info"
+div
+  .usa-width-one-half
+    p
+      b As of Date:
+      br
+
+      = l business_partner.answer_for('edwosb_cash_as_of_date', app).value_as_date
+
+    p
+      b Name:
+      br
+      | #{business_partner.name}
+
+    p
+      b Address:
+      br
+      | #{business_partner.address}
+
+    p
+      b City, State, Zip:
+      br
+      | #{business_partner.city}, #{business_partner.state}, #{business_partner.postal_code}
+  .usa-width-one-half
+    p
+      b Business Phone:
+      br
+      | #{business_partner.business_phone}
+
+    p
+      b Home Phone:
+      br
+      | #{business_partner.home_phone}
+
+    p
+      b Email:
+      br
+      | #{business_partner.email}
+
+h2.usa-heading = "Financial review"
+h3.usa-heading = "Summary"
+div
+  .usa-width-one-half
+    table
+      thead
+        tr
+          th scope="col" colspan="2" Assets
+      - 1.upto(17).each do |i|
+        - if assets[i]
+          tr
+            td class=(assets[i][:class] if assets[i][:class])
+              = assets[i][:label] if (!(defined? reviewer_mode) || i > 16)
+              = link_to assets[i][:label], "##{assets[i][:question_name]}" if (defined? reviewer_mode) && i < 16
+            td class=(assets[i][:class] if assets[i][:class])
+              = number_to_currency(assets[i][:value]) if assets[i][:value]
+
+  .usa-width-one-half.right_padding#table1-pad
+    table
+      thead
+        tr
+          th scope="col" colspan="2" Liabilities
+      - 17.upto(27).each do |i|
+        - if liabilities[i]
+          tr
+            td class=(liabilities[i][:class] if liabilities[i][:class])
+              = liabilities[i][:label] if (!(defined? reviewer_mode) || i > 25)
+              = link_to liabilities[i][:label], "##{liabilities[i][:question_name]}" if (defined? reviewer_mode) && i < 26
+            td class=(liabilities[i][:class] if liabilities[i][:class])
+              = number_to_currency(liabilities[i][:value]) if liabilities[i][:value]
+
+br
+div
+  .usa-width-one-half
+    table
+      thead
+        tr
+          th scope="col" colspan="2" Sources of Income
+
+      - 1.upto(4).each do |i|
+        tr
+          td class=(income[i][:class] if income[i][:class])
+            - if income[i]
+              = income[i][:label] unless defined? reviewer_mode
+              = link_to income[i][:label], "##{income[i][:question_name]}" if defined? reviewer_mode
+          td class=(income[i][:class] if income[i][:class])
+            - if income[i]
+              = number_to_currency(income[i][:value]) if income[i][:value]
+
+  .usa-width-one-half.right_padding#table2-pad
+    - if agi
+      table
+        thead
+          tr
+            th scope="col" colspan="2"
+              | Adjusted Gross Income (AGI)
+              br
+              | (As shown on Federal Tax Returns)
+
+        - 1.upto(4).each do |i|
+          tr
+            td class=(agi[i][:class] if agi[i][:class])
+              - if agi[i]
+                = agi[i][:label] if (!(defined? reviewer_mode) || i > 3)
+                = link_to agi[i][:label], "##{agi[i][:question_name]}" if (defined? reviewer_mode) && i < 4
+            td class=(agi[i][:class] if agi[i][:class])
+              - if agi[i]
+                = number_to_currency(agi[i][:value]) if agi[i][:value]
+
+br
+
+javascript:
+  $(document).ready(function () {
+    enquire.register("(min-width:300px) and (max-width:1049px)", {
+      match : function() {
+        $("#table1-pad").removeClass("right_padding");
+        $("#table2-pad").removeClass("right_padding");
+      }
+    });
+    enquire.register("(min-width:1050px) and (max-width:2000px)", {
+      match : function() {
+        $("#table1-pad").addClass("right_padding");
+        $("#table2-pad").addClass("right_padding");
+      }
+    });
+  });

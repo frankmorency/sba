@@ -1,0 +1,23 @@
+div class=("message message-#{message['sender'] ? 'sender' : 'recipient'}")
+  .message-header
+    - message_sender = User.find(message['sender_id'])
+    - sender_name = "#{message_sender.first_name.titlecase} #{message_sender.last_name.titlecase}"
+    = l(Time.parse(message['created_at']), format: :full)
+    
+    - if message['read']
+      span.message-status
+        span &nbsp;
+        i.fa.fa-envelope-open-o = t('messages.thread.read')
+    - elsif message['priority_read_receipt'] && message['sender']
+      span &nbsp;
+      span.message-status
+        i.fa.fa-envelope-o = t('messages.thread.unread-with-receipt')
+    - else
+      span &nbsp;
+      span.message-status 
+        i.fa.fa-envelope-o = t('messages.thread.unread') 
+        span &nbsp;
+    = " #{t('messages.thread.from')} "
+    b= sender_name
+  .message-body
+    = message['body'].html_safe

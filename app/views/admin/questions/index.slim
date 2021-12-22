@@ -1,0 +1,27 @@
+h2 Questions
+
+div.overflow-autox
+  #table-search
+
+    = render partial: 'components/searchable_tables/search'
+
+    table.searchable
+      thead
+        tr
+          th scope="col" = sortable 'Name', model: QuestionPresentation
+          th scope="col" = sortable 'Title', model: QuestionPresentation
+          th scope="col" = sortable 'Type', model: QuestionPresentation
+          th scope="col" Usage
+
+      - @questions.each do |q|
+        tr
+          td
+            b = q.name
+          td = q.title
+          td = q.question_type.display_name
+          td
+            b = q.section.questionnaire.title
+            br
+            span = q.section.title
+
+    = will_paginate(@questions) unless @questions.empty?

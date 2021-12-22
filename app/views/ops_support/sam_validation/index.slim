@@ -1,0 +1,18 @@
+div#business_search
+  .usa-width-one-whole.business_search_result
+  .usa-width-one-whole.results
+    h3 Validate SAM Data
+    = form_tag validate_ops_support_sam_validation_index_path, method: 'post' do
+      fieldset.usa-fieldset-inputs.usa-sans
+        h5 First enter the firm's DUNS Number (required).
+        = label_tag(:duns, 'DUNS')
+        = text_field_tag :duns, nil, required: true
+        h5 Then enter either the TIN or MPIN, or both to verify.
+        = label_tag(:tin, 'TIN')
+        = text_field_tag :tin, nil, autocomplete: 'off'
+        = label_tag(:mpin, 'MPIN')
+        = text_field_tag :mpin, nil, autocomplete: 'off'
+      = submit_tag 'Validate'
+  ul.usa-unstyled-list
+    li
+      = link_to 'Back to Dashboard', ops_support_user_index_path, class: 'usa-nav-link'

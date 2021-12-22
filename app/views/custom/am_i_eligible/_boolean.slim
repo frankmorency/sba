@@ -1,0 +1,23 @@
+.question.ans-box id="#{name}"
+  .q.question-boolean-box
+    .usa-width-one-half
+      p.lead-para
+        = text.html_safe
+      .answer
+        .button_wrapper
+          button.yes_button data-value="true" id="yes_button_#{name}" Yes
+          button.no_button data-value="false" id="no_button_#{name}" No
+    .details.usa-width-one-half style="margin-top:-27px"
+      h4  More Details:
+      p
+        = render partial: "helpful_info/#{name}/#{details_file}"
+
+  .a
+    .usa-width-one-whole.bottom-border
+      .usa-width-two-thirds
+        .yes.copy
+          = success.html_safe
+        .no.copy
+          = failure.html_safe
+      .usa-width-one-third style="text-align:center"
+        = link_to " | Restart from here", '#', class: 'change change-ans', id: "#{name}", alt: "Change your answer", title: "Change your answer"

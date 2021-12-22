@@ -1,0 +1,70 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+.sba-l-container
+  .sba-l-row
+    .sba-l-col--12.sba-u-padding-x--2
+      .certify-page-header
+        .certify-page-header__primary
+          h1
+            | Select a servicing BOS
+  .sba-l-row
+    .sba-l-sm-col--12.sba-l-md-col--golden-lg.sba-l-lg-col--8.sba-u-padding-x--2
+      p.usa-font-lead
+        | The servicing BOS will be able to communicate with the firm outside of the Annual Review process.
+      = form_tag assign_servicing_bos_sba_application_application_dashboard_overview_index_url, id: 'update_bos' do
+        fieldset.questions
+          label.usa-sr-only[for="sbos_district_office"]
+            | Choose a District Office to see a list of BOS's
+          h4
+            | Choose a District Office to see a list of BOS's
+          = select_tag @dt, options_for_select(DutyStation.stations_with_district_office_sba_users.collect{ |u| [u.name, u.id] }, @sba_application.duty_station_id), id: "district_office", name: "district_office"
+
+        - @duty_stations.each do |duty_station|
+          - if @sba_application.duty_station_id.nil?
+            fieldset id="#{duty_station.name}" class=(@duty_stations.first.id == duty_station.id ? 'questions fos' : 'questions fos hide')
+              = render partial: 'application_dashboard/overview/select_users', locals: {duty_station: duty_station}
+          - else
+            fieldset id="#{duty_station.name}" class=(@sba_application.duty_station_id == duty_station.id ? 'questions fos' : 'questions fos hide')
+              = render partial: 'application_dashboard/overview/select_users', locals: {duty_station: duty_station}
+
+        fieldset.questions
+          h4
+            | Or, if you would like to remove the servicing BOS…
+          ul.usa-unstyled-list
+            li
+              input#None[type="radio" name="user_id" value="None" required=""]
+              label.radio_label[for="None"]
+                | Remove servicing BOS
+        .actions
+          .actions__main
+            button[type="submit"]
+              | Select servicing BOS
+            = link_to 'Cancel', sba_application_application_dashboard_overview_index_path(@sba_application)
+    .sba-l-sm-col--12.sba-l-md-col--golden-sm.sba-l-lg-col--4.sba-u-padding-x--2.sba-u-lg-padding-left--4
+
+javascript:
+    $(document).ready(function () {
+        $('#overview_tab').addClass('current');
+
+        $('#district_office').on('change', function () {
+            selected_do = $( "#district_office option:selected" ).text();
+            $('fieldset.fos[id="'+selected_do+'"]').removeClass('hide');
+            $( "fieldset.fos" ).not( '[id="'+selected_do+'"]').addClass('hide');
+        });
+
+        $(function () {
+            $("#update_bos").validate({
+                errorPlacement: function (error, element) {
+                    $(".radio_label").last().after(error);
+                },
+                rules: {
+                    "user_id": {
+                        required: true
+                    }
+                },
+                messages: {
+                    "user_id": "Please select an individual."
+                }
+            });
+        });
+
+    });

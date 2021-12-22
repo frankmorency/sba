@@ -1,0 +1,11 @@
+= render partial: 'versions/banner', locals: {application: @sba_application} unless @sba_application.version_number == 1
+
+= render partial: 'sba_analyst/reviews/review',
+        locals: {review: @review, certificate: @certificate, analysts: @analysts, review_types: @review_types, url: sba_analyst_review_path(@review), submit_text: 'Save and commit', title: 'Assignments', owner_label: 'Owner'}
+
+javascript:
+  $(function() {
+    $("#submit_button").click(function() {
+      $("form#edit_review").submit();
+    });
+  });

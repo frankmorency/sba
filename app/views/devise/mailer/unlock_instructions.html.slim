@@ -1,0 +1,13 @@
+p
+  | Hello #{@resource.email}!
+p Your account has been locked due to an excessive number of unsuccessful sign in attempts.
+p Click the link below to unlock your account:
+p
+  = link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token)
+
+p We continue to look for ways to make your experience with the system better, so we welcome your feedback at https://certify.sba.gov/help.
+
+br
+
+p Sincerely,
+p The certify.SBA.gov team

@@ -1,0 +1,80 @@
+#document_list name="#{question.id}" style=((answer && answer.documents.size > 0) ? 'display:inline':'display:none')
+  #currently_attached name="#{question.id}"
+    - if answer && answer.documents.size > 0
+      h4 Documents previously added
+      input type='hidden' id="answers_#{question.id}_answer_id" name="answers[#{question.id}][answer_id]" value="#{answer.id}"
+      table name="#{question.id}" id='currently_attached'
+        thead
+          tr
+            th scope="col"  Name
+            th scope="col"  Type
+            th scope="col"  Date
+            th scope="col"  Comments
+            th scope="col"  Edit
+        tbody
+          - answer.documents.each do |document|
+            tr id="#{document.id}"
+              td#document_library_file_name
+                = document.original_file_name
+              td
+                - document_type = DocumentType.find(document.document_type_id)
+                = document_type.name if document_type
+              td
+                = document.created_at.strftime("%m/%d/%Y")
+              td
+                = document.comment
+              td
+                a.remove id="#{document.id}" href='javascript:void(0)' Remove
+
+  #to_be_attached name="#{question.id}" style='display:none'
+    h4 Documents to be added
+    table name="#{question.id}" id='tentatively_attached'
+      thead
+        tr
+          th scope='col'  Name
+          th scope='col'  Type
+          th scope='col'  Date
+          th scope='col'  Comments
+          th scope='col'  Edit
+      tbody
+
+javascript:
+  $(document).ready(function () {
+
+    // Click Remove link
+    $('#document_list[name="#{question.id}"]').on('click', '.remove', function (event) {
+      event.preventDefault();
+
+      // add hidden field if removing currently attached docs
+      if ($(this).closest("table").attr("id") == 'currently_attached'){
+        $(this).closest("table").after("<input type=\"hidden\" id=\"answers_#{question.id}_delete_document_ids_\" name=\"answers[#{question.id}][delete_document_ids][]\" value=\""+$(this).attr("id")+"\">");
+      }
+
+      // remove hidden field if removing tentatively attached docs
+      if ($(this).closest("table").attr("id") == 'tentatively_attached') {
+        var hidden_field = 'input[id="answers_#{question.id}_document_ids_"][type="hidden"][value=\"'+$(this).attr("id")+'\"]';
+        $(hidden_field).remove();
+      }
+
+      // remove enclosing tr tag
+      $(this).closest("tr").remove();
+
+      // calculate current number of attached docs
+      var num_tentatively_attached = $('table#tentatively_attached[name="#{question.id}"]').children('tbody').children('tr').length;
+      if (num_tentatively_attached < 1) {
+        $('#to_be_attached[name="#{question.id}"]').css('display','none');
+      }
+
+      var num_currently_attached = $('table#currently_attached[name="#{question.id}"]').children('tbody').children('tr').length;
+      if (num_currently_attached < 1) {
+        $('#currently_attached[name="#{question.id}"]').css('display','none');
+      }
+
+      // if we have removed all docs, set attachment validation attribute to empty
+      if (num_tentatively_attached+num_currently_attached < 1){
+        $('#document_list[name="#{question.id}"]').css('display','none');
+        $('input[name="answers[#{question.id}][attachment]"]').val("");
+      }
+
+    });
+  });

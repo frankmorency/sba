@@ -1,0 +1,23 @@
+.usa-width-one-whole.connect  My Profile
+.usa-width-one-whole.business-bg
+  .usa-grid
+    h4
+      = "#{@user.first_name} #{@user.last_name}"
+    .usa-width-one-third
+      p
+        b FIRST NAME:
+        span.field
+          = "#{@user.first_name}"
+      p
+        b LAST NAME:
+        span.field
+          = "#{@user.last_name}"
+      p
+        b EMAIL:
+        span.field
+          = "#{@user.email}"
+      p
+        b PHONE:
+        span.field
+          = "#{@user.phone_number}"
+      = link_to "Edit Password", edit_user_registration_path, class: "center_button usa-button"

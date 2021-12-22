@@ -1,0 +1,11 @@
+table
+  thead
+    tr
+      th Firm
+      th Type
+      th Status
+      th Due Date
+      th Currently with
+  tbody
+    - workload.each do |application|
+      = render partial: 'shared/eight_a/dashboard/current_workload_row', locals: {application: application}

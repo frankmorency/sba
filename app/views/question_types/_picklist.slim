@@ -1,0 +1,12 @@
+.block
+  .block_fields.dollar_sign
+    | &nbsp;&nbsp;
+  .block_fields
+    // If new picklist with radio button is created add name to picklist_with_radio_buttons? method below
+    - if question.question_type.picklist_with_radio_buttons?
+      - question.possible_values.each do |selection|
+        = radio_button_tag question.dom_id, selection.to_s, question.value == selection.to_s, name: question.dom_id, required: 'required'
+        = label_tag "#{question.dom_id}_#{selection}", selection, class: (selection == question.possible_values.last ? 'last' : ''), required: (selection == question.possible_values.last ? 'true' : 'false')
+    - else
+      = select_tag question.dom_id, options_for_select(question.possible_values, question.value), prompt: 'Please select', required: true
+      = label_tag question.dom_id, question.title, class: 'hide last'

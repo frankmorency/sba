@@ -1,0 +1,38 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+= javascript_include_tag 'messages/new_conversation'
+= javascript_include_tag 'messages/new_message', 'messages/message_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Recommendation: Step 5 of 5
+        h1 Send Message to Firm
+
+        p Write a message to the firm to let them know the agency determination and what their next steps need to be. This will be visible to SBA.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+
+        = form_tag( wizard_path, {method: :put, id: :new_conversation_form} ) do
+          = hidden_field_tag(:individual_id, @determination.individual_id)
+          = hidden_field_tag(:determine_eligible, @determination.determine_eligible)
+          = hidden_field_tag(:determine_eligible_for_appeal, @determination.determine_eligible_for_appeal)
+
+          
+          = label_tag(:deliver_to, 'To')
+          = text_field_tag(:deliver_to, @determination.deliver_to, { disabled: true} )
+
+          = label_tag do 
+             span Subject <span class="form-fix">*required text</span>
+          = text_field_tag(:subject, "", {required: true})
+
+          = label_tag(:message, 'Message')
+          = hidden_field_tag "message", nil, {id: 'form_body'}
+          #new_conversation_body
+          .actions
+            .actions__main
+              = submit_tag("Next", class: "usa-button", id: "submition-btn", :data => { disable_with: t('messages.new.send') })
+              = link_to "Start over", sba_application_application_dashboard_overview_index_path(@sba_application)
+
+

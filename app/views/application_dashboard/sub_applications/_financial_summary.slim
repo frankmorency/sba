@@ -1,0 +1,119 @@
+.usa-grid-full
+  div.usa-width-one-half
+    table
+      thead
+        tr
+          td colspan="2"
+            b Assets
+      = render partial: 'section/personal_summaries/assets', locals: {assets: assets}
+
+    table
+      thead
+        tr
+          td colspan="2"
+            b Sources of Income
+      = render partial: 'section/personal_summaries/income', locals: {income: income}
+  div.usa-width-one-half
+    table
+      thead
+        tr
+          td colspan="2"
+            b Liabilities
+
+      = render partial: 'section/personal_summaries/liabilities', locals: {liabilities: liabilities}
+.usa-grid-full
+  div.usa-width-one-whole
+    br
+    h3 Notes Receivable
+    - if ! notes_receivable.present?
+      | N/A
+      br
+    - else
+      = notes_receivable.to_table
+    br
+    h3 Notes Payable and Other Liabilities
+    - if ! notes_payable.present?
+      | N/A
+      br
+    - else
+      = notes_payable.to_table
+    h3 Stocks and Bonds
+    - if ! stocks_bonds.present?
+      | N/A
+      br
+    - else
+      = stocks_bonds.to_table
+
+    h3 Real Estate Owned
+    - if ! real_estate.present?
+      | N/A
+      br
+    - else
+      table
+        thead
+          tr
+            th
+            - real_estate.answers.each_with_index do |re, i|
+              th
+                - if re['real_estate_type']
+                  = "Other Property #{i}"
+                - else
+                  | Primary Property
+        tbody
+          tr
+            th style="background: #f1f1f1; font-weight: bold;" Type of Real Estate
+            - real_estate.answers.each do |re|
+              td = re['real_estate_type'] || "Primary"
+          tr
+            th style="background: #f1f1f1; font-weight: bold;"  Address
+            - real_estate.answers.each do |re|
+              td = re['real_estate_address']
+          tr
+            th style="background: #f1f1f1; font-weight: bold;"  Present Market Value
+            - real_estate.answers.each do |re|
+              td = number_to_currency(re['real_estate_value']) if re['real_estate_value']
+          tr
+            th style="background: #f1f1f1; font-weight: bold;"  Mortgate Balance
+            - real_estate.answers.each do |re|
+              td = number_to_currency(re['real_estate_mortgage_balance']) if re['real_estate_mortgage_balance']
+
+
+    h3 Other Personal Property and Other Assets
+    - if ! other_property.present?
+      | N/A
+      br
+    - else
+      table
+        thead
+          tr
+            th
+            - other_property.answers.each_with_index do |re, i|
+              th = "Property #{i + 1}"
+
+        tbody
+          tr
+            th style="background: #f1f1f1; font-weight: bold;" Asset
+            - other_property.answers.each do |re|
+              td = re['asset_description']
+          tr
+            th style="background: #f1f1f1; font-weight: bold;" Current Value
+            - other_property.answers.each do |re|
+              td = number_to_currency(re['current_value']) if re['current_value']
+          tr
+            th style="background: #f1f1f1; font-weight: bold;" Loan Balance
+            - other_property.answers.each do |re|
+              td = number_to_currency(re['loan_balance']) if re['loan_balance']
+
+
+    h3 Unpaid Taxes
+    - if ! unpaid_taxes.present?
+      | N/A
+      br
+    - else
+      = unpaid_taxes.to_table
+    h3 Life Insurance Held
+    - if ! life_insurance.present?
+      | N/A
+      br
+    - else
+      = life_insurance.to_table

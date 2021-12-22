@@ -1,0 +1,24 @@
+= javascript_include_tag 'messages/new_conversation'
+.new-message
+  h2= t('messages.new.title')
+  = form_tag(sba_application_conversations_path, {id: :new_conversation_form}) do
+    = hidden_field_tag "sba_application_id", current_application.id
+    = hidden_field_tag "sender_id", current_user.id
+    = hidden_field_tag "body", nil, {id: 'form_body'}
+    = t('messages.new.subhead')
+    - if current_user.is_vendor_or_contributor?
+      = " #{current_recipient.first_name} #{current_recipient.last_name}"
+      = hidden_field_tag "recipient_id", current_recipient.id
+      = hidden_field_tag "user_1", current_application.get_current_analyst_owner.id
+      = hidden_field_tag "user_2", current_user.id
+    - else
+      = select_tag "user_2", options_for_select(@dropdown), {include_blank: 'Select a recipient', required: 'required' }
+      = hidden_field_tag "user_1", current_user.id
+    = label_tag(:subject_label, t('messages.new.topic'))
+    = text_field_tag(:subject, nil, placeholder: t('messages.new.placeholder'), required: true)
+    = label_tag(:message_label, t('messages.new.message'))
+    #new_conversation_body
+    - unless current_user.is_vendor_or_contributor?
+      = check_box_tag(:priority_read_receipt, "true")
+      = label_tag(:priority_read_receipt, t('messages.new.notify-when-read'))
+    = submit_tag(t('messages.new.send'), id: :post_conversation, :data => { disable_with: t('messages.new.send') })

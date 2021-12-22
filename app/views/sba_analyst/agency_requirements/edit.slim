@@ -1,0 +1,205 @@
+.full-grey
+  .masthead
+    .usa-grid-full.masthead__content.sba-u-flex-direction--column
+      .usa-width-one-fourth.masthead__content__primary.sba-u-border--0
+        h1.masthead__primary-heading
+        	| Requirement
+        p = "Req ID: " + @agency_requirement.unique_number
+    .usa-grid-full.certify-local-nav
+      ul.usa-nav-primary.usa-accordion
+        li
+          = link_to "General Information", edit_sba_analyst_agency_requirement_path(@agency_requirement), class: "usa-nav-link current"
+        li
+          = link_to "Documents", new_sba_analyst_agency_requirement_agency_requirement_document_path(@agency_requirement), class: "usa-nav-link"
+        li
+          = link_to "Firms", new_sba_analyst_agency_requirement_agency_requirement_organization_path(@agency_requirement), class: "usa-nav-link"
+
+.sba-l-container.sba-u-padding-x--2
+	.sba-l-row.sba-u-padding-x--0
+		.sba-u-padding-x--2.sba-l-col--12
+			h3.sba-u-font-size--h3.sba-u-border-bottom--1 Edit Requirement(s)
+			= form_for @agency_requirement, url: "/sba_analyst/agency_requirements/#{@agency_requirement.id}", method: "PUT", html: { id: "new_agency_requirement" } do |f|
+				fieldset.sba-c-fieldset.sba-c-fieldset--inputs
+					= f.hidden_field :user_id, value: current_user.id
+					= f.hidden_field :agency_naics_code_id
+					= f.hidden_field :agency_co_id
+				.sba-l-row
+					ul.sba-c-unstyled-list.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+						li
+							= f.label :title, "Title(Required):", class: "sba-c-label"
+							= f.text_field :title, class: "sba-c-input"
+						li
+							= f.label :description, "Description:", class: "sba-c-label"
+							= f.text_area :description, { class: "sba-c-input" }
+						li
+						  = f.label :received_on, "Received Date:", class: "sba-c-label"
+						  = f.text_field :received_on, {class: "sba-c-input js-calendar-picker js-format-as-date", placeholder: "mm/dd/yyyy", value: @agency_requirement.received_on&.strftime('%m/%d/%Y')}
+						li
+						  label.sba-c-label for="add_naics" NAICS Code:
+						  div.sba-u-display--flex[style="max-width: 46rem;"]
+						  	input#add_naics.sba-c-input name="add_naics" maxlength="6" placeholder="Enter NAICS Code" value="#{@agency_requirement&.agency_naics_code&.code}"/
+						  	button#add_naics_button.sba-c-button.sba-c-button--inverse type="button" disabled="disabled" onclick="submitNAICS(this)" style="margin: 0; min-width: 11em;" Lookup
+						li
+							= f.label :agency_offer_code_id, "Code:", class: "sba-c-label"
+							= f.select :agency_offer_code_id, @offer_code_options, {:include_blank => 'Select Code'}
+					ul.sba-c-unstyled-list.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+						li
+							= f.label :duty_station_id, "District Office:", class: "sba-c-label"
+							= f.select :duty_station_id, @duty_station_options, { include_blank: "Select Office"}
+						li
+							label.sba-c-label[for="agency_requirement_estimated_contract_value"] Estimated Contract Value:
+							.sba-c-input-ornament-container
+							  .sba-c-input-ornament.sba-c-input-ornament--left
+							    svg.sba-c-icon aria-hidden="true"
+							      use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#dollar-sign" xmlns:xlink="http://www.w3.org/1999/xlink"
+							  input#agency_requirement_estimated_contract_value.sba-c-input style="max-width: 42rem;" value="#{@agency_requirement.estimated_contract_value}" name="agency_requirement[estimated_contract_value]" /
+						li
+							label.sba-c-label[for="agency_requirement_contract_value"] Awarded Contract Value:
+							.sba-c-input-ornament-container
+							  .sba-c-input-ornament.sba-c-input-ornament--left
+							    svg.sba-c-icon aria-hidden="true"
+							      use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#dollar-sign" xmlns:xlink="http://www.w3.org/1999/xlink"
+							  input#agency_requirement_contract_value.sba-c-input style="max-width: 42rem;" value="#{@agency_requirement.contract_value}" name="agency_requirement[contract_value]" /
+						li
+						  label.sba-c-label for="add_size_standard" Size Standard:
+						  p#size_standard_holder
+						  	- if @agency_requirement&.agency_naics_code.nil?
+						  		| Enter a valid NAICS code.
+						  	- else
+						  		= @agency_requirement&.agency_naics_code&.size
+				br
+				br
+				.sba-l-row
+				  fieldset.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				    legend.sba-c-facet-set__legend Offer Data
+				    ul.sba-c-unstyled-list
+				      li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				    		= f.label :offer_solicitation_number, "Solicitation Number:", class: "sba-c-label"
+				    		= f.text_field :offer_solicitation_number, class: "sba-c-input"
+				      li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				      	= f.label :agency_offer_scope_id, "Scope:", class: "sba-c-label"
+				      	= f.select :agency_offer_scope_id,  @offer_scope_options, {include_blank: "Select Scope"}
+				      li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				      	= f.label :agency_offer_agreement_id, "Agreement:", class: "sba-c-label"
+				      	= f.select :agency_offer_agreement_id, @offer_agreement_options,  {include_blank: "Select Agreement"}
+				  / AGENCY
+				  fieldset.sba-l-col--12.sba-l-sm-col--6
+				    legend.sba-c-facet-set__legend Agency
+				    ul.sba-c-unstyled-list
+				      li.sba-l-col--12.sba-l-sm-col--12.sba-u-sm-padding-right--2
+				    		= f.label :agency_office_id, "Agency(Required):", class: "sba-c-label"
+				    		= f.select :agency_office_id, @agency_office_options, {  include_blank: "Select Office" }
+				      li
+				        fieldset.sba-u-margin-top--4
+				          legend.sba-u-font-size--base.sba-u-font-weight--normal
+										= f.label :program_id, "SBA Program:"
+				          ul.sba-c-unstyled-list
+										li
+											= f.radio_button :program_id, '3'
+											= f.label :program_id, '8(a)', value: "3", class: "sba-c-label sba-u-margin-top--0"
+										li
+											= f.radio_button :program_id, '2'
+											= f.label :program_id, 'ASMPP', value: "2", class: "sba-c-label sba-u-margin-top--0"
+										li
+											= f.radio_button :program_id, '1'
+											= f.label :program_id, 'WOSB', value: "1", class: "sba-c-label sba-u-margin-top--0"
+				      li
+				      	= f.label :agency_comments, "Comments:", class: "sba-c-label"
+				        = f.text_area :agency_comments, class: "sba-c-input"
+
+				.sba-l-row
+					legend.sba-c-facet-set__legend Contracting Officer Information
+					fieldset.sba-c-fieldset.sba-c-fieldset--inputs
+				    ul.sba-c-unstyled-list.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				      li
+				        label.sba-c-label for="co_first_name" First Name:
+				        input#co_first_name.sba-c-input value="#{@agency_requirement&.agency_co&.first_name}" name="agency_co[first_name]" type="text" /
+				      li
+				        label.sba-c-label for="co_last_name" Last Name:
+				        input#co_last_name.sba-c-input value="#{@agency_requirement&.agency_co&.last_name}" name="agency_co[last_name]" type="text" /
+				      li
+				        label.sba-c-label for="co_phone" Phone:
+				        input#co_phone.sba-c-input value="#{@agency_requirement&.agency_co&.phone}" name="agency_co[phone]" /
+				      li
+				        label.sba-c-label for="co_email" Email:
+				        input#co_email.sba-c-input value="#{@agency_requirement&.agency_co&.email}" name="agency_co[email]" type="email" /
+				    ul.sba-c-unstyled-list.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				      li
+				        label.sba-c-label for="co_address1" Address 1:
+				        input#co_address1.sba-c-input value="#{@agency_requirement&.agency_co&.address1}" name="agency_co[address1]" type="text" /
+				      li
+				        label.sba-c-label for="co_address2" Address 2:
+				        input#co_address2.sba-c-input value="#{@agency_requirement&.agency_co&.address2}" name="agency_co[address2]" type="text" /
+				      li
+				        label.sba-c-label for="co_city" City:
+				        input#co_city.sba-c-input value="#{@agency_requirement&.agency_co&.city}" name="agency_co[city]" type="text" /
+				      li
+				        label.sba-c-label for="co_state"  State:
+				        select#co_state name="agency_co[state]"
+				          option value=""  Select State
+				          - @us_states.each do |state|
+					          option value="#{state[:code]}" #{state[:name]}
+				      li
+				        label.sba-c-label for="co_zip"  Zip:
+				        input#co_zip.sba-c-input value="#{@agency_requirement&.agency_co&.zip}" name="agency_co[zip]" /
+				.sba-l-row
+					fieldset.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+					  legend.sba-c-facet-set__legend Contract Information:
+					  ul.sba-c-unstyled-list
+					    li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+					  		= f.label :agency_contract_type_id, "Type(Required):", class: "sba-c-label"
+					  		= f.select :agency_contract_type_id, @agency_contract_options, {include_blank: 'Select Type'}
+					    li
+					      fieldset.sba-u-margin-top--4
+					        legend.sba-u-font-size--base.sba-u-font-weight--normal Contract Status:
+					        ul.sba-c-unstyled-list
+										- if @agency_requirement.contract_awarded == true
+										  li
+										    input#agency_requirement_contract_awarded.sba-c-checkbox type="radio" checked="checked"  name="agency_requirement[contract_awarded]" value="true" /
+										    label.sba-c-label.sba-u-margin-top--0  for="agency_requirement_contract_awarded"  Awarded
+										  li
+										    input#cs_not_awarded.sba-c-checkbox name="agency_requirement[contract_awarded]" value="false"  type="radio"
+										    label.sba-c-label.sba-u-margin-top--0 for="cs_not_awarded" Not Awarded
+										- else
+											li
+											  input#agency_requirement_contract_awarded.sba-c-checkbox type="radio" name="agency_requirement[contract_awarded]" value="true" /
+											  label.sba-c-label.sba-u-margin-top--0  for="agency_requirement_contract_awarded"  Awarded
+											li
+												input#cs_not_awarded.sba-c-checkbox name="agency_requirement[contract_awarded]" checked="checked" value="false"  type="radio"
+												label.sba-c-label.sba-u-margin-top--0 for="cs_not_awarded" Not Awarded
+							li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+								= f.label :contract_number, "Contract Number:", class: "sba-c-input"
+								= f.text_field :contract_number, class: "sba-c-input"
+							li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+								= f.label :contract_comments, "Contract Comments:", class: "sba-c-label"
+								= f.text_area :contract_comments, class: "sba-c-input"
+					/! Additional Comments
+					fieldset.sba-l-col--12.sba-l-sm-col--6
+					  legend.sba-c-facet-set__legend Additional Comments
+					  ul.sba-c-unstyled-list
+					    li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+					    	= f.label :comments, "Comments:", class: "sba-c-label"
+					    	= f.text_area :comments, class: "sba-c-input"
+
+				fieldset.sba-c-fieldset.sba-c-fieldset--inputs
+				  p
+				  br/
+				  = f.submit "Update requirement", class: "usa-button"
+				  = link_to "Cancel", sba_analyst_agency_requirement_path(@agency_requirement), class: "usa-button sba-c-button--inverse"
+css:
+	.sba-l-row {
+		min-width: 100%;
+	}
+
+	input.error, select.error {
+		border: 0.1rem solid #cd2026;
+	}
+
+	label.error {
+		display: inline;
+  	padding-left: 4px;
+  }
+
+javascript:
+  $('header.navigation').css('margin-bottom', '0');
+  $('section.usa-grid-full').css('max-width', '100%');

@@ -1,0 +1,30 @@
+#login-new
+  section.usa-width-one-whole
+    article
+      h1 Sign in to certify.SBA.gov
+      = render partial: 'layouts/application/msg'
+      .usa-width-two-thirds
+        = form_tag session_path(:user), class: 'new_user', id: 'new_user' do
+          fieldset
+            = label_tag 'user_email'
+            = text_field_tag "user[email]", nil, id: "user_email", type: 'email', autofocus: true
+            = label_tag 'user_password'
+            = password_field_tag "user[password]", nil, id: "user_password", type: 'password', autocomplete: "off"
+            = submit_tag "Sign-in", id: "business_signin"
+        p
+          = link_to "Forgot your password?", new_password_path(:user), class: "forgot-password"
+
+        p  For your security, after 3 failed login attempts you’ll be automatically locked out and must wait 15 minutes before you try to sign in again.
+
+      aside.usa-width-one-third
+        h2 Are you a federal employee?
+        p
+          | If you are a federal employee or an SBA contracting officer, please visit the
+          | &nbsp;
+          a href="/max_gov" employee account page.
+
+        h2 New to certify.SBA.gov?
+        p
+          | If you are new to certify.SBA.gov, please
+          | &nbsp;
+          a href="/users/sign_up?" create an account.

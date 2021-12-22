@@ -1,0 +1,61 @@
+.sba-l-container
+  .sba-l-row
+    .sba-l-col--12.sba-u-padding-x--0
+      .certify-page-header[style="margin-bottom: 0px;"]
+        .certify-page-header__primary.sba-l-col--9
+          h1
+            | Data Dictionary
+        .sba-l-col--3.sba-u-md-text-align--right
+          a#header-button.sba-c-button.sba-c-button--inverse[aria-title="Export" href="https://dev.sba-one.net/admin/data_dictionary/csv_download_all.csv"]
+            span.sba-c-tooltip-wrapper
+              span.sba-c-tooltip-wrapper
+                svg.sba-c-icon.sba-c-icon--blue.sba-u-margin-right--1.sba-c-tooltip-toggle[aria-hidden="true" data-tooltip-text="Export CSV" aria-describedby="tooltip80697" tabindex="0"]
+                  use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#download"
+                span#tooltip80697.sba-c-tooltip[aria-hidden="true" aria-role="tooltip"]
+                  | Export CSV
+              span#tooltip95309.sba-c-tooltip[aria-hidden="true" aria-role="tooltip"]
+                | Export CSV
+            | Download Entire Dictionary
+
+  .sba-l-row
+    .sba-l-row.sba-u-margin-top--5
+      .card-set.card-set--halves
+        - @tables_columns_array.each_with_index do |table_columns_hash, index|
+          - table_name = table_columns_hash.keys[0]
+          - table_columns = table_columns_hash.values[0]
+          - number_empty = table_columns.count {|column| DatabaseInspector.column_comment(table_name, column).blank?}
+          - percent_complete = (table_columns.count - number_empty).to_f / table_columns.count.to_f * 100.0
+          .card[id="card_#{index}"]
+            .card__header
+              h3.card__primary-heading
+                => table_name
+              = render partial: 'shared/completion_badge', locals: {percent_complete: percent_complete.round}
+            .card__content
+              p
+                => DatabaseInspector.table_comment(table_name)
+            .card__bulk-actions.sba-u-margin-top--1
+              .task-panel
+                span.sba-c-tooltip-wrapper
+                  /button.sba-c-button.sba-c-button--transparent.sba-c-tooltip-toggle[type="button" aria-title=" Export" href="https://dev.sba-one.net/admin/data_dictionary/csv_download.csv?table=access_requests" data-tooltip-text="Export CSV" aria-describedby="tooltip73806" tabindex="0"]
+                  = link_to csv_download_admin_data_dictionary_index_path(format: "csv", table: table_name), class:"sba-c-button sba-c-button--transparent sba-c-tooltip-toggle", "aria-title": "Export", "type":"button", "data-tooltip-text":"Export CSV", "aria-describedby":"tooltip73806", "tabindex":"#{index}" do
+                    svg.sba-c-icon.sba-c-icon--blue[aria-hidden="true" aria-describedby="tooltip98693" tabindex="0"]
+                      use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#download"
+                  span#tooltip73806.sba-c-tooltip[aria-hidden="true" aria-role="tooltip"]
+                    | Export CSV
+                span.sba-c-tooltip-wrapper
+                  button.sba-c-button.sba-c-button--transparent.sba-c-button--icon-only.sba-c-card__toggle.sba-c-tooltip-toggle[type="button" data-tooltip-text="Show/hide details" aria-expanded="false" aria-controls="expand_#{index}" aria-describedby="tooltip#{index}" tabindex="#{index}"]
+                    svg.sba-c-icon[aria-hidden="true"]
+                      use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#angle-down" xmlns:xlink="http://www.w3.org/1999/xlink"
+                  span.sba-c-tooltip[aria-hidden="true" aria-role="tooltip" id="tooltip#{index}"]
+                    | Show/hide details
+            .sba-u-padding-top--1[hidden="hidden" id="expand_#{index}"]
+              .card__content.sba-u-padding-top--0.sba-u-padding-bottom--0
+                span
+                table.sba-u-margin-top--1
+                  thead
+                    tr
+                      th Column
+                      th Comment
+                  tbody
+                    - table_columns.each do |column|
+                      = render partial: 'admin/data_dictionary/data_dictionary_row', locals: {table: table_name, column: column}

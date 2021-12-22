@@ -1,0 +1,8 @@
+unless @notifications.blank?
+  = link_to notifications_path do
+    = t('notifications.view_all') %>
+  end
+  = render @notifications.take(5)
+else
+  = render partial: 'shared/notifications/no_notifications'
+end

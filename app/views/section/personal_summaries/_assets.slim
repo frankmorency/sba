@@ -1,0 +1,9 @@
+- if assets
+  - 1.upto(17).each do |i|
+    - if assets[i]
+      tr
+        td class=(assets[i][:class] if assets[i][:class])
+          = assets[i][:label] if (!(defined? reviewer_mode) || i > 16)
+          = link_to assets[i][:label], "##{assets[i][:question_name]}" if (defined? reviewer_mode) && i < 16
+        td class=(assets[i][:class] if assets[i][:class])
+          = number_to_currency(assets[i][:value]) if assets[i][:value]

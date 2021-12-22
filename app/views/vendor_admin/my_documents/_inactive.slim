@@ -1,0 +1,34 @@
+h1 My archived document library
+
+- if @inactive_documents.count > 0
+  table#manage.display cellspacing="0" width="100%"
+    thead
+      tr
+        th scope="col" Document Name
+        th scope="col" Document Type
+        th scope="col" Date Created
+        th scope="col" Comments (Double-click on comment to edit)
+        th scope="col" Actions
+    tbody
+      - @inactive_documents.each do |document|
+        - if document.user.is_vendor_or_contributor?
+          tr  id="#{document.id}"
+            td
+              = document.original_file_name
+            td
+              = DocumentType.find(document.document_type_id).name if DocumentType.find(document.document_type_id)
+            td
+              = document.created_at.strftime("%m/%d/%Y")
+            td name="comments" id="#{document.id}"
+              = document.comment
+            td
+              = link_to 'Restore', vendor_admin_my_document_restore_path(my_document_id: document.id), id: "#{document.id}", name: 'archive', method: :put, data: {confirm: 'Are you sure you want to restore this document?'}
+
+              - if document.av_status == "OK"
+                '
+                = link_to 'View', pdf_viewer_organization_document_path(id: document.id, organization_id: current_organization.id), method: :get, class: "usa-button-outline",target: "_blank"
+
+- else
+  h2 There are no archived documents
+
+= link_to "Active documents", vendor_admin_my_documents_path

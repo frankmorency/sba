@@ -1,0 +1,28 @@
+.usa-width-one-whole.review_outer
+  .usa-width-one-forth.review_nav
+    = render partial: 'sba_analyst/reviews/nav'
+
+  .usa-width-three-forths.review_main
+    h1 Cases
+
+    = render partial: 'organizations/profile', locals: {org: @certificate.organization, search_result: false, sam_snapshot: {}}
+
+    table
+      tr
+        th scope="col" Review
+        th scope="col" Case #
+        th scope="col" Initiated
+        th scope="col" Supervisor
+        th scope="col" Owner
+        th scope="col" Reviewer
+
+      - @reviews.each do |review|
+        tr
+          td = review.display_type
+          td = link_to review.case_number, edit_sba_analyst_review_path(review)
+          td = review.created_at
+          td = review.current_assignment.supervisor.name
+          td = review.current_assignment.owner.name
+          td = review.current_assignment.reviewer.name
+
+    = button_to 'New review', new_sba_analyst_sba_application_review_path(@sba_application), method: :get, style: 'float: right'

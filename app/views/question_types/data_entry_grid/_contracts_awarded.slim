@@ -1,0 +1,206 @@
+javascript:
+
+  $("#jsGrid").jsGrid({
+    width: "100%",
+    noDataContent: '',
+    invalidNotify: function (args) {
+      var messages = $.map(args.errors, function (error) {
+        return error.message + "<br/>";
+      });
+
+      $("p.usa-alert-text").html(messages);
+      $('#jsgrid-validation-error[name="#{question.dom_id}"]').show();
+    },
+    modal: true,
+    filtering: false,
+    inserting: true,
+    editing: true,
+    sorting: false,
+    paging: false,
+    autoload: true,
+    pageSize: 10,
+    pageButtonCount: 5,
+    confirmDeleting: false,
+    onItemInserted: function (args) {
+      $('#jsgrid-validation-error[name="#{question.dom_id}"]').hide();
+    },
+    controller: {
+      loadData: function () {
+        return $.ajax({
+          type: "POST",
+          url: "/answers/data_entry_grid/contracts_awarded",
+          dataType: "json",
+          beforeSend: function(jqXHR) {jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          data: {"sba_application_id": "#{@sba_application.id}", "question_id": "#{question.question.id}", "owner_id": "#{current_user.id}"}
+        });
+      },
+      insertItem: function (item) {
+      },
+      updateItem: function (item) {
+      },
+      deleteItem: function (item) {
+
+        var award_date = item["Award date"];
+        var agency_customer_name = item["Agency or customer name"];
+        var naics_code = item["NAICS code"];
+        var description = item["Description of Work"];
+        var value = item["Value"];
+        var item_json = {"award_date": award_date, "agency_customer_name": agency_customer_name, "naics_code": naics_code, "description": description, "value": value}
+
+        return $.ajax({
+          type: "DELETE",
+          url: "/answers/data_entry_grid/destroy_contract",
+          dataType: "json",
+          beforeSend: function(jqXHR) {jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          data: {"sba_application_id": "#{@sba_application.id}", "question_id": "#{question.question.id}", "owner_id": "#{current_user.id}", "item": item_json }
+        });
+      }
+    },
+    fields: [
+      {
+        name: 'Award date',
+        type: 'text',
+        width: 100,
+        headercss: 'jsgrid-header-bold jsgrid-header-grey',
+        validate: [
+          {
+            validator: "required",
+            message: 'Please provide an award date.'
+          },
+          {
+            message: 'The award date should be in MM/DD/YYYY format.',
+            validator: 'pattern',
+            param: /^(\d{2}\/\d{2}\/\d{4})$|^(\s*)$/
+          }
+        ],
+        cellRenderer: function (value, item, itemIndex) {
+              return getCustomCellTemplate(value, item, itemIndex, 'award_date')
+        }
+      },
+      {
+        name: 'Agency or customer name',
+        type: 'text',
+        width: 100,
+        filtering: false,
+        headercss: 'jsgrid-header-bold jsgrid-header-grey',
+        validate: [{
+          validator: "required",
+          message: 'Please provide an agency or customer name.'
+        }],
+        cellRenderer: function (value, item, itemIndex) {
+              return getCustomCellTemplate(value, item, itemIndex, 'agency_customer_name')
+        }
+      },
+      {
+        name: 'NAICS code',
+        type: 'text',
+        width: 100,
+        headercss: 'jsgrid-header-bold jsgrid-header-grey',
+        validate: [
+          {
+            validator: "required",
+            message: 'Please provide a NAICS code.'
+          },
+          {
+            message: 'The NAICS code should be a 5 or 6 digit number.',
+            validator: 'pattern',
+            param: /^(?:\d{5,6}|)$/
+          }
+        ],
+        cellRenderer: function (value, item, itemIndex) {
+              return getCustomCellTemplate(value, item, itemIndex, 'naics_code')
+        }
+      },
+      {
+        name: 'Description of Work',
+        type: 'text', width: 150,
+        headercss: 'jsgrid-header-bold jsgrid-header-grey',
+        validate: [{
+          validator: "required",
+          message: 'Please provide a description of the work.'
+        }],
+        cellRenderer: function (value, item, itemIndex) {
+              return getCustomCellTemplate(value, item, itemIndex, 'description')
+        }
+      },
+      {
+        name: 'Value',
+        type: 'number',
+        width: 100,
+        headercss: 'jsgrid-header-bold jsgrid-header-grey',
+        validate: [{
+          validator: "required",
+          message: 'Please provide the value of the contract.'
+        }],
+        cellRenderer: function (value, item, itemIndex) {
+              return getCustomCellTemplate(value, item, itemIndex, 'value')
+        }
+      },
+      {
+        type: "control",
+        width: 75,
+        modeSwitchButton: false,
+        editButton: false,
+        deleteButton: true,
+        headercss: "jsgrid-header-bold jsgrid-header-grey",
+        editTemplate: function () {
+          return getCustomEditTemplate("jsGrid")
+        },
+        itemTemplate: function () {
+          return getCustomItemTemplate()
+        }
+      }
+    ]
+  });
+
+  function getCustomCellTemplate(value, item, itemIndex, field_name) {
+
+    var name_value_str = "#{question.dom_id}[" + itemIndex + "][" + field_name + "]";
+
+    var input = document.createElement("input");
+    input.type = "hidden";
+    input.setAttribute('type', 'hidden');
+    input.setAttribute('name', name_value_str);
+    input.setAttribute('value', value);
+    return $("<td>").append(input);
+  }
+
+  function getCustomItemTemplate() {
+    return $("<button>")
+            .addClass("fa fa-pencil jsgrid-edit-button-fa")
+            .attr({
+              type: "button"
+            })
+            .on("click", function () {
+              $("#jsGrid").jsGrid("editItem", $('.jsgrid-selected-row'));
+            })
+            .add($("<button>")
+            .addClass("fa fa-times-circle jsgrid-delete-button-fa")
+            .attr({
+              type: "button"
+            })
+            .on("click", function () {
+              $("#jsGrid").jsGrid("deleteItem", $('.jsgrid-selected-row'));
+              $('.jsgrid-selected-row').remove();
+            }));
+  }
+
+  function getCustomEditTemplate(gridId) {
+    var grid = $("#" + gridId).data("JSGrid");
+    return $("<button>").addClass("fa fa-check jsgrid-update-button-fa edit")
+            .attr({
+              type: "button"
+            })
+            .on("click", function () {
+              $('#jsgrid-validation-error[name="#{question.dom_id}"]').hide();
+              $("#jsGrid").jsGrid("updateItem");
+            })
+            .add($("<button>")
+                    .addClass("fa fa-remove jsgrid-cancel-edit-button-fa")
+                    .attr({
+                      type: "button"
+                    })
+                    .on("click", function () {
+                      grid.option("inserting", false);
+                    }));
+  }

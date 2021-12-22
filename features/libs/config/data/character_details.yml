@@ -1,0 +1,15 @@
+Character Details: Character,Review Submit
+
+Character:
+ ever_been_debarred_or_suspended_by_any_Federal_entity_as_no: Has the applicant firm (under any name) ever been debarred or suspended by any Federal entity?
+ Is_the_applicant_firm_a_defendant_in_any_pending_lawsuit_as_no: Is the applicant firm a defendant in any pending lawsuit?
+ filed_for_bankruptcy_or_insolvency_within_the_past_7_years_as_no: Has the applicant firm filed for bankruptcy or insolvency within the past 7 years?
+ outstanding_delinquent_federal_state_or_local_financial_obligations_or_liens_filed_as_no: Does the applicant firm have any outstanding delinquent federal, state or local financial obligations or liens filed against it?
+ Continue:
+ Complete Status: character,Character
+
+Review Submit:
+ Review left navigation: Review
+ Submit Character: 
+ Success: Character section is complete
+  

@@ -1,0 +1,17 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+- @referral = Referral.new(params[:referral])
+
+.usa-grid-full
+
+  h1 Case Referred to #{@referral.office.title}
+
+  p.usa-font-lead
+    ' This case has been referred to
+    ' #{@referral.individual.name}
+    ' in
+    ' #{@referral.office.title}. No other action is required.
+  - if @review.type == 'Review::AdverseAction'
+   = link_to 'Dashboard', root_path, class: "usa-button"
+  - else
+   = link_to 'Dashboard', sba_application_application_dashboard_overview_index_path(@sba_application.id), class: "usa-button"

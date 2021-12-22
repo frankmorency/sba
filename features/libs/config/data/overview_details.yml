@@ -1,0 +1,63 @@
+Expected sections that are added: Business Ownership,Individual Contributors,Character,Potential for Success,Control,Contributors
+Character Details: Character,Check status of application
+Business Ownership Details: Business Ownership,Check status of application
+Business Ownership with no LLC Details: Business Ownership,Check status of application
+Business Ownership with LLC Details: Business Ownership,Check status of application
+Individual Contributors Details: Individual Contributors,Contributors,Check status of application,Final status of application,Send 15 day returned completed,Annual Review Send deficiency letter 15 day returned completed,Review and Sign
+Annual Review Submission: Review Multiple Sign,Check status of application
+Multiple Contributors Details:  Multiple Contributors,Check status of application
+One Contributor Creation:  Multiple Contributors,Check status of application
+Two Contributors Creation:  Multiple Contributors,Check status of application
+Contributor A Details: Start Application
+Contributor B Details: Start Application
+Contributor C Details: Start Application
+Contributor A1 Details: Start Application
+Contributor A2 Details: Start Application
+Contributor B2 Details: Start Application
+Potential for Success Details: Potential for Success,Check status of application
+
+Control Details: Control,Check status of application
+
+Character:
+ Character: Character
+
+Business Ownership:
+ Business Ownership: Business Ownership
+
+Individual Contributors:
+ Individual Contributors: Individual Contributors
+
+Contributors:
+ Contributors: Contributors
+
+Potential for Success:
+ Potential for Success: Potential for Success
+
+Control:
+ Control: Control
+
+Multiple Contributors:
+ Individual Contributors: Individual Contributors
+
+Start Application:
+ Start Application: Start Application
+ Accept: Accept
+
+Check status of application:
+ Check status of application:
+
+Final status of application:
+ Final status of application: Your application package is ready to submit!
+
+Send 15 day returned completed:
+ Send 15 day returned completed: Please make changes found within the Deficiency Letter.
+
+Annual Review Send deficiency letter 15 day returned completed:
+ Annual Review Send deficiency letter 15 day returned completed: Please make changes found within the Deficiency Letter.
+
+
+Review and Sign:
+ Review and Sign: Your application package is ready to submit!
+
+Review Multiple Sign:
+ Review Multiple Sign: Your application package is ready to submit!

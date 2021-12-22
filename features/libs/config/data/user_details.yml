@@ -1,0 +1,113 @@
+SBA Contributor A registration: Contributor A
+SBA Contributor B registration: Contributor B
+SBA Contributor C registration: Contributor C
+SBA Contributor A1 registration: Contributor A1
+SBA Contributor A2 registration: Contributor A2
+SBA Contributor B2 registration: Contributor B2
+
+Vendor User:
+ username: qa119@mailinator.com
+ password: password
+
+Vendor User1:
+ username: qa80@mailinator.com
+ password: password
+
+Vendor User2:
+ username: qa80@mailinator.com
+ password: password
+
+Vendor User3:
+ username: qa82@mailinator.com
+ password: password
+
+Staging Vendor User:
+ username: qa82@mailinator.com
+ password: Secure your account by creating a strong password.
+
+Vendor LLC User:
+ username: jw_llc@mailinator.com
+ password: password
+ 
+REST Administrator:
+ username: admin@mailinator.com
+ password: password
+
+Gmail User:
+ username: vendornamem8819sba
+ enc_password: Secure your account by creating a strong password
+
+gmail contributors creation: ContributorA,ContributorB,ContributorC,Contributor A Registration,Contributor B Registration,Contributor C Registration
+
+ContributorA:
+ Please add another 8(a) Applicant, if applicable.: Add another Disadvantaged Individual, if applicable
+ Name: eight_a_disadvantaged_individual>dvdid-2>Contributor A
+ Email: eight_a_disadvantaged_individual>dvdid-2>ve.nd.o.rn.a.m.e.m8819sba@gmail.com
+ Send_Invitation: eight_a_disadvantaged_individual
+
+Contributor A Registration:
+ Register: Contributor,A,ve.nd.o.rn.a.m.e.m8819sba@gmail.com
+ Strong Password: Secure your account by creating a strong password
+
+Contributor A is:
+ username: ve.nd.o.rn.a.m.e.m8819sba@gmail.com
+ password: Secure your account by creating a strong password
+
+ContributorB:
+ Please add the spouse of any Disadvantaged Individual.: Add a spouse of a Disadvantaged Individual
+ Name: eight_a_spouse>dvdid-3>Contributor B
+ Email: eight_a_spouse>dvdid-3>v.en.do.r.na.mem.8819sba@gmail.com
+ Send_Invitation: eight_a_spouse
+
+Contributor B Registration:
+ Register: Contributor,B,v.en.do.r.na.mem.8819sba@gmail.com
+ Strong Password: Secure your account by creating a strong password
+
+Contributor B is:
+ username: v.en.do.r.na.mem.8819sba@gmail.com
+ password: Secure your account by creating a strong password
+
+ContributorC:
+ Please add all other individuals directly involved with the business.: Add other individuals
+ Name: eight_a_business_partner>dvdid-4>Contributor C
+ Email: eight_a_business_partner>dvdid-4>ve.n.d.or.n.am.em8.819sba@gmail.com
+ Send_Invitation: eight_a_business_partner
+
+Contributor C Registration:
+ Register: Contributor,C,ve.n.d.or.n.am.em8.819sba@gmail.com
+ Strong Password: Secure your account by creating a strong password
+
+Contributor C is:
+ username: ve.n.d.or.n.am.em8.819sba@gmail.com
+ password: Secure your account by creating a strong password
+
+
+Register Contributors:
+ username: contributor_1@mailinator.com,contributor_2@mailinator.com,contributor_3@mailinator.com
+ password: Secure your account by creating a strong password.
+
+Supervisor:
+ username: sba_supervisor_8a_cods_1@mailinator.com
+ password: password
+ 
+Analyst:
+ username: sba_analyst_8a_cods_1@mailinator.com
+ password: password
+
+Supervisor HQ Program:
+ username: sba_supervisor_8a_hq_program_1@mailinator.com
+ password: password
+
+Supervisor HQ AA Program:
+ username: sba_supervisor_8a_hq_aa_1@mailinator.com
+ password: password
+
+District Supervisor:
+ username: sba_supervisor_8a_district_office_1@mailinator.com
+ password: password
+
+District Analyst:
+ username: sba_analyst_8a_district_office_1@mailinator.com
+ password: password
+
+

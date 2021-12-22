@@ -1,0 +1,99 @@
+Login: Sign Up
+credentials: contributor_1,contributor_2,contributor_3,test
+Contributor A registration: ContributorA,Certify Registration Link
+Contributor B registration: ContributorB,Certify Registration Link
+Contributor C registration: ContributorC,Certify Registration Link
+Contributor A1 registration: ContributorA1,Certify Registration Link
+Contributor A2 registration: ContributorA2,Certify Registration Link
+Contributor B2 registration: ContributorB2,Certify Registration Link
+Contributor A removal notice: Remove ContributorA Confirmation,Delete Emails
+Contributor B removal notice: Remove ContributorB Confirmation,Delete Emails
+Contributor C removal notice: Remove ContributorC Confirmation,Delete Emails
+SBA Contributor A registration: ContributorA,Certify Registration,ContributorA Certify Email Confirmation Link
+SBA Contributor B registration: ContributorB,Certify Registration,ContributorB Certify Email Confirmation Link
+SBA Contributor C registration: ContributorC,Certify Registration,ContributorC Certify Email Confirmation Link
+SBA Contributor A1 registration: ContributorA1,Certify Registration,ContributorA1 Certify Email Confirmation Link
+SBA Contributor A2 registration: ContributorA2,Certify Registration,ContributorA2 Certify Email Confirmation Link
+SBA Contributor B2 registration: ContributorB2,Certify Registration,ContributorB2 Certify Email Confirmation Link
+
+
+
+Sign Up:
+ Search: contributor_1
+ More Contributors: contributor_2,contributor_3,contributor_A1,contributor_A2,contributor_B2
+
+contributor_1:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_1@mailinator.com>contributor_1"
+
+contributor_2:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_2@mailinator.com>,contributor_2"
+
+contributor_3: 
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_3@mailinator.com>contributor_3" 
+
+test:
+ contributor: "           [ This Inbox channel is currently Empty ]>test@mailinator.com>test>Sensex settles below 35,000 mark"
+
+ContributorA:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_1@mailinator.com>Please provide information for Entity 286 Legal Business Name for the SBA 8(a) program>contributor_1"
+
+ContributorB:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_2@mailinator.com>Please provide information for Entity 286 Legal Business Name for the SBA 8(a) program>contributor_2"
+
+ContributorC: 
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_3@mailinator.com>Please provide information for Entity 286 Legal Business Name for the SBA 8(a) program>contributor_3"
+
+ContributorA1:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_A1@mailinator.com>Please provide information for Entity 286 Legal Business Name for the SBA 8(a) program>contributor_A1"
+
+ContributorA2:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_A2@mailinator.com>Please provide information for Entity 286 Legal Business Name for the SBA 8(a) program>contributor_A2"
+
+ContributorB2:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_B2@mailinator.com>Please provide information for Entity 286 Legal Business Name for the SBA 8(a) program>contributor_B2"
+
+Certify Registration: 
+ sba_link: 
+
+Certify Registration Link:
+ email_link:
+
+ContributorA Certify Email Confirmation Link:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_1@mailinator.com>Confirm Your certify.SBA.gov account>contributor_1"
+ email_confirmation_link:
+
+ContributorB Certify Email Confirmation Link:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_2@mailinator.com>Confirm Your certify.SBA.gov account>contributor_2"
+ email_confirmation_link:
+
+ContributorC Certify Email Confirmation Link:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_3@mailinator.com>Confirm Your certify.SBA.gov account>contributor_3"
+ email_confirmation_link:
+ 
+ContributorA1 Certify Email Confirmation Link:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_A1@mailinator.com>Confirm Your certify.SBA.gov account>contributor_A1"
+ email_confirmation_link:
+
+ContributorA2 Certify Email Confirmation Link:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_A2@mailinator.com>Confirm Your certify.SBA.gov account>contributor_A2"
+ email_confirmation_link:
+
+ContributorB2 Certify Email Confirmation Link:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_B2@mailinator.com>Confirm Your certify.SBA.gov account>contributor_B2"
+ email_confirmation_link:
+
+Remove ContributorA Confirmation:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_1@mailinator.com>Entity 286 Legal Business Name removed you from its 8(a) application"
+ More Contributors: contributor_1
+
+Remove ContributorB Confirmation:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_2@mailinator.com>Entity 286 Legal Business Name removed you from its 8(a) application"
+ More Contributors: contributor_2
+
+Remove ContributorC Confirmation:
+ contributor: "           [ This Inbox channel is currently Empty ]>contributor_3@mailinator.com>Entity 286 Legal Business Name removed you from its 8(a) application"
+ More Contributors: contributor_3
+
+Delete Emails:
+ Delete Emails:
+

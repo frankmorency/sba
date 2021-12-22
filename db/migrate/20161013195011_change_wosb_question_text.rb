@@ -1,0 +1,38 @@
+class ChangeWosbQuestionText < ActiveRecord::Migration
+  def change
+        QuestionnaireDSL.update! do
+      update_question '8aq1', 'Is the qualifying individual(s) currently certified by the U.S. Small Business Administration as an 8(a) Business Development (BD) Program Participant and does this woman own at least 51% of the business?'
+      update_question 'tpc1_q1', 'Is the qualifying individual(s) certified as a WOSB or EDWOSB by an SBA-approved Third-Party Certifier?'
+      update_question 'tpc2_q1', 'Since receiving an SBA-approved Third-Party Certification, have there been any changes in circumstances affecting the qualifying individual(s) eligibility?'
+      update_question 'tpc3_q1', 'Has an SBA-approved Third-Party Certifier declined WOSB or EDWOSB certification for the qualifying individual(s)?'
+      update_question 'corp1_q1', 'Do the corporation’s stock ledger and stock certificates show that the qualifying individual(s) own at least 51% of all outstanding stock?'
+      update_question 'corp1_q3', 'In answering the corporate questions above did you consider unexercised stock options or similar agreements held by the qualifying individual(s)?'
+      update_question 'corp2_q1', 'Do the corporation’s stock ledger and stock certificates show that at least 51% of each class of voting stock is owned by the qualifying individual(s)?'
+      update_question 'corp4_q1', 'Are any unexercised stock options or similar agreements held by the qualifying individual(s)?'
+      update_question 'corp5_q1', 'Do the Articles of Incorporation and By-laws show that the qualifying individual(s) control the Board of Directors?'
+      update_question 'partn_q1', 'Does the partnership agreement show that at least 51% of each class of partnership interest is unconditionally and directly owned by the qualifying individual(s)?'
+      update_question 'partn_q2', 'Does the partnership agreement show that the qualifying individual(s) serve as general partners, with control over all partnership decisions?'
+      update_question 'llc_q1', 'Do the Articles of Organization, Operating Agreements and any amendments show that at least 51% of each class of member interest is unconditionally and directly owned by the qualifying individual(s)?'
+      update_question 'llc_q2', 'Do the Articles of Organization and any amendments or Operating Agreement and any amendments show that the qualifying individual(s) serve as management members, with control over all decisions of the limited liability company?'
+      update_question 'oper1_q1', 'Do the birth certificates, naturalization papers, or passports show the qualifying individual(s) are U.S. citizens?'
+      update_question 'oper1_q2', 'Is the following statement true? The qualifying individual(s) is not subject to any conditions, executory agreements, voting trusts, or other arrangements that cause or potentially cause ownership benefits to go to another person.'
+      update_question 'oper2_q1', 'Is the qualifying individual’s ownership direct; that is the ownership is not held through another business entity (including employee stock ownership plan) that is, in turn, owned and controlled by the qualifying individual(s)?'
+      update_question 'oper2_q2', 'If the 51% ownership is held through a trust, is the trust revocable, and does it designate the qualifying individual(s) as the grantor, the trustee, and the sole current beneficiary?'
+      update_question 'oper3_q1', 'Are the management and daily operations of the business controlled by the qualifying individual(s)?'
+      update_question 'oper3_q2', 'Does the qualifying individual(s) hold the highest officer position in the business and does she have the managerial experience needed to run the business?'
+      update_question 'oper4_q1', 'Does the qualifying individual(s) have ultimate managerial and supervisory control over those who possess the required licenses or technical expertise for the business? The qualifying individual(s) herself may have the technical expertise or possess the required license for the business.'
+      update_question 'oper4_q2', 'Does the qualifying individual(s) who holds the highest officer position manage the business on a full-time basis and devote full-time attention to the business during the normal working hours of similar businesses?'
+      update_question 'oper5_q1', 'Is it true that the qualifying individual(s) who holds the highest officer position does not engage in outside employment that prevents her from devoting sufficent time and attention to control daily business operations?'
+      update_question 'oper5_q2', 'Does the qualifying individual(s) fully control the business, that is, no one else has actual control or has the power to control the business?'
+      update_question 'oper6_q1', 'Is the following statement true? The qualifying individual(s) has not received a decision from the SBA – in connection to an examination or protest – finding that the business does not qualify as a WOSB or an EDWOSB.'
+      update_question 'oper6_q2', 'Is the qualifying individual(s) in control of long-term decision making and day-to-day operations?'
+      update_question 'demonstrate_less_than_750k', 'Can the qualifying individual(s) show that her personal net worth (assets – liabilities) is less than $750,000, excluding her ownership interest in the business and her equity interest in her primary personal residence?'
+      update_question 'woman_financial_condition', 'Do the financial records of the qualifying individual(s) show that she is economically disadvantaged?'
+      update_question 'agi_3_year_less_than_350k', 'Is the qualifying individual’s adjusted gross income averaged over the previous three years at or less than $350,000?'
+      update_question 'agi_3_year_exceeds_but_uncommon', 'Does the adjusted gross income of the qualifying individual(s) averaged over the three years preceding the certification exceed $350,000; however, the woman can show that (1) this income level was unusual and not likely to occur in the future; (2) that losses commensurate with and directly related to the earnings were suffered; or (3) that the income is not indicative of lack of economic disadvantage?'
+      update_question 'woman_assets_less_than_6m', 'Is the fair market value of all the assets of the qualifying individual(s) at or less than $6 million?'
+      update_question 'woman_has_not_transferred_assets', 'Can the qualifying individual(s) confirm that no assets were transferred within two years of the date of EDWOSB certification?'
+      update_question 'woman_asset_transfer_excusable', 'If the qualifying individual(s) transferred assets within two years of the date of the certification, can she confirm that the assets were transferred: (1) to or on behalf of an immediate family member for that individual’s education, medical expenses, or some other form of essential support; or (2) to an immediate family member in recognition of a special occasion, such as a birthday, graduation, anniversary, or retirement?'
+    end
+  end
+end

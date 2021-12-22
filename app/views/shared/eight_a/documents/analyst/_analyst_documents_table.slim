@@ -1,0 +1,15 @@
+.table-header
+  .table-info
+    p
+      strong
+        ' #{firm_documents.size}
+        = (firm_documents.size > 1) ? 'documents' : 'document'
+  table
+    thead
+      tr
+        th Document Name
+        th Uploaded By
+        th Date Uploaded
+    tbody
+      - firm_documents.sort.reverse.each do |firm_document|
+        = render partial: 'shared/eight_a/documents/analyst/analyst_documents_row', locals: {firm_document: firm_document, current_organization: current_organization}

@@ -1,0 +1,38 @@
+.usa-grid-full
+  .masthead__content__primary.sba-u-border--0
+    - unless (is_vendor_or_contributor? current_user)
+      h1.masthead__primary-heading.sba-u-margin-top--0
+        = link_to organization.legal_business_name, sba_analyst_dashboard_show_path(enc: $encryptor.encrypt("duns_number=#{organization.duns_number}&tax_identifier=#{organization.tax_identifier}")) if organization
+    h2.masthead__secondary-heading style="line-height: 1em; font-weight: bold"
+      = application.masthead_title
+    - if application.masthead_subtitle
+      .masthead__tertiary-heading
+        = application.masthead_subtitle
+  .sba-u-margin-y--1.sba-u-display--flex.sba-u-flex-direction--column.sba-u-md-flex-direction--row
+    .sba-u-padding-right--2.sba-u-display--flex
+      strong.sba-u-margin-right--1
+        | Owner:
+      = "#{organization.sam_org.govt_bus_poc_first_name.humanize} #{organization.sam_org.govt_bus_poc_last_name.humanize} (#{number_to_phone(organization.sam_org.govt_bus_poc_us_phone)})"
+    - if current_user.can?(:sba_user) && application.has_active_certificate?
+      .sba-u-padding-right--2.sba-u-display--flex
+        strong.sba-u-margin-right--1
+          | District Office:
+        br
+        span.sba-u-margin-right--1[data-print="district_office"]
+          = application.duty_station_name
+        = link_to edit_duty_station_sba_application_application_dashboard_overview_index_path(sba_application_id: application.id) do
+          svg.sba-c-icon.sba-c-icon--blue[aria-hidden="true"]
+            use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#edit"]
+          span.sba-u-visibility--screen-reader
+            | Change
+      .sba-u-padding-right--2.sba-u-display--flex
+        strong.sba-u-margin-right--1
+          | Servicing BOS:
+        span.sba-u-margin-right--1[data-print="servicing_bos"]
+          = application.servicing_bos_name
+        = link_to edit_servicing_bos_sba_application_application_dashboard_overview_index_path(sba_application_id: application.id) do
+          svg.sba-c-icon.sba-c-icon--blue[aria-hidden="true"]
+            use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#edit"]
+          span.sba-u-visibility--screen-reader
+            | Change
+br

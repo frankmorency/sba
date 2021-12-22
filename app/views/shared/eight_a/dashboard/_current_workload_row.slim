@@ -1,0 +1,43 @@
+tr.odd[role="row"]
+  th
+    - if application.is_really_a_review?
+      = link_to application.organization.name, organization_adverse_action_review_path(application.organization, application)
+    - else
+      = link_to application.organization.name, sba_application_application_dashboard_overview_index_path(sba_application_id: application.id)
+    br
+    small
+      ' Firm Owner:
+      = application.organization.owner_name
+      br
+      ' Phone:
+      = number_to_phone(application.organization.phone)
+  td
+    = application.display_kind
+  td
+    strong
+      - if application.info_request?
+        = application.status
+      - elsif application.is_really_a_review?
+        = application.workflow_state.titleize
+      - else
+        => dashboard_review_status(application.current_review).gsub("Pending Reconsideration Or Appeal", "Pending Appeal").gsub("Pending Reconsideration", "Ineligible")
+        - if application.submitted_reconsideration?
+          | (Reconsideration)
+  td
+    - if ['adverse_action', 'info_request'].include?(application.kind)
+      |
+    - elsif application.current_review.try(:processing_paused?) && application.current_review.workflow_state == "processing"
+      span.red
+        ' Pending
+        br
+        | (Clock stopped at #{application.current_review.due_date_days_left})
+    - elsif application&.current_review&.due_date
+      = l application.current_review.due_date
+      br
+      small
+        = application.current_review.due_date_days_left
+  td
+    = currently_with(application)
+    br
+    - if application.info_request?
+      = link_to "Remove from workload", set_hide_info_path(application.id), :data => {:confirm => "Are you sure you want to remove this information request from your workload? It will remain on the firm's overview page, but will not appear on any SBA analyst's workload."}

@@ -1,0 +1,9 @@
+.usa-width-one-whole
+  p
+    = simple_format(q.title.gsub('\n','<br />'), {})
+
+  p
+    b Response:
+    | &nbsp;
+    = q.value.to_s.titlecase
+  br

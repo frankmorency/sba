@@ -1,0 +1,29 @@
+li.sba-u-bgcolor--transparent
+  div.usa-accordion-button.sba-u-padding--0.sba-u-padding-y--1.sba-u-bgcolor--transparent aria-controls="a1" aria-expanded="false" type="button"
+    | Annual Review
+  #a1.usa-accordion-content aria-hidden="true"
+    fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+      legend.sba-c-facet-set__legend.sba-c-facet-set__legend--l2
+        | Status
+      ul.sba-c-unstyled-list.check-pill
+        li
+          = locals[:f].check_box :ar_screening, {}, "ar_screening"
+          = locals[:f].label :ar_screening, "Screening", {class: 'sba-c-label'}
+        li
+          = locals[:f].check_box :ar_returned_with_deficiency_letter, {}, "ar_returned_with_deficiency_letter"
+          = locals[:f].label :ar_returned_with_deficiency_letter, "Returned with Deficiency Letter", {class: 'sba-c-label'}
+        li
+          = locals[:f].check_box :ar_processing, {}, "ar_processing"
+          = locals[:f].label :ar_processing, "Processing", {class: 'sba-c-label'}
+        li
+          = locals[:f].check_box :ar_early_graduation_recommended, {}, "ar_early_graduation_recommended"
+          = locals[:f].label :ar_early_graduation_recommended, "Early Graduation Recommended", {class: 'sba-c-label'}
+        li
+          = locals[:f].check_box :ar_termination_recommended, {}, "ar_termination_recommended"
+          = locals[:f].label :ar_termination_recommended, "Termination Recommended", {class: 'sba-c-label'}
+        li
+          = locals[:f].check_box :ar_voluntary_withdrawal_recommended, {}, "ar_voluntary_withdrawal_recommended"
+          = locals[:f].label :ar_voluntary_withdrawal_recommended, "Voluntary Withdrawal Recommended", {class: 'sba-c-label'}
+        li
+          = locals[:f].check_box :ar_retained, {}, "ar_retained"
+          = locals[:f].label :ar_retained, "Retained", {class: 'sba-c-label'}

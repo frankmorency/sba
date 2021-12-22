@@ -1,0 +1,43 @@
+.attachment {
+  margin-top: 20px;
+  margin-bottom: 25px;
+}
+
+.options-box {
+  display: none;
+  background-color: #e4e2e0;
+}
+
+.doc-options, .box1, .box2{
+  display: none;
+}
+
+.doc-options {
+  padding: 10px;
+}
+
+.box1 {
+  margin-top: -25px;
+  padding: 0 10px 0 10px;
+}
+
+.box2 {
+  margin-top: -25px;
+  padding: 0 10px 0 10px;
+}
+
+.remove {
+  color: red;
+}
+
+.edit_table {
+  margin-top: 5px;
+}
+
+.dz-clickable{
+  cursor: pointer;
+}
+
+.delete-cert {
+  cursor: pointer;
+}

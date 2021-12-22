@@ -1,0 +1,51 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Determination: Step 3 of 4
+        h1 Forward This Case
+    p.usa-font-lead Please forward this case to a supervisor to contact the firm regarding your decision.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_for @determination,  url: wizard_path, method: :put do |f|
+          = f.hidden_field 'determine_eligible', value: params["eight_a_determination"]["determine_eligible"]
+          = f.hidden_field 'determine_eligible_for_appeal', value: params["eight_a_determination"]["determine_eligible_for_appeal"]
+
+          fieldset.questions
+            h4 Please select a supervisor
+            ul#response.usa-unstyled-list
+              - @users.each do |user|
+                li
+                  = f.radio_button 'individual_id', user.id, id: "reassigned_to_#{user.id}", class: "radio-btn"
+                  label for="reassigned_to_#{user.id}"  
+                    = user.name
+          .actions
+            .actions__main
+              = f.submit "Next", class: "btn-next"
+              = link_to "Back", previous_wizard_path(eight_a_determination: {determine_eligible: params["eight_a_determination"]["determine_eligible"],determine_eligible_for_appeal: params["eight_a_determination"]["determine_eligible_for_appeal"]})
+              p
+                em Next step: Review and complete
+
+
+javascript:
+
+  $( document ).ready(function() {
+    $(".btn-next").click(function(event){
+      var is_checked = false;
+      $(".radio-btn").each(function( index ) {
+        if( $($(".radio-btn")[index]).is(':checked'))
+        {
+          is_checked = true;
+        }
+      });
+      if(!is_checked)
+      {
+        event.preventDefault();
+        alert("You must at least select a supervisor.");
+      } 
+    });
+  });
+
+

@@ -1,0 +1,37 @@
+p Who owns the firm? Please detail the ownership percentages of the firm:
+b Response:
+.usa-grid-full
+  .usa-width-two-thirds
+    | Individuals 
+  .usa-width-one-third
+    = answer.value['value']['individual'] + "%" if answer && answer.value
+
+.usa-grid-full 
+  .usa-width-two-thirds
+    | Other firms 
+  .usa-width-one-third
+    = answer.value['value']['other_firms'] + "%" if answer && answer.value
+
+.usa-grid-full 
+  .usa-width-two-thirds
+    | American Indian Tribe (AIT) 
+  .usa-width-one-third
+    = answer.value['value']['AIT'] + "%" if answer && answer.value
+
+.usa-grid-full 
+  .usa-width-two-thirds
+    | Alaska Native Corporation (ANC) 
+  .usa-width-one-third
+    = answer.value['value']['ANC'] + "%" if answer && answer.value
+
+.usa-grid-full 
+  .usa-width-two-thirds
+    | Community Development Corporation (CDC) 
+  .usa-width-one-third
+    = answer.value['value']['CDC'] + "%" if answer && answer.value
+
+.usa-grid-full 
+  .usa-width-two-thirds
+    | Native Hawaiian Organization (NHO)  
+  .usa-width-one-third
+    = answer.value['value']['NHO'] + "%" if answer && answer.value

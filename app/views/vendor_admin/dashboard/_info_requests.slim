@@ -1,0 +1,10 @@
+tr
+  td
+    - title = info_request&.sub_applications&.first&.adhoc_question_title.empty? ? 'Information Request' : info_request&.sub_applications&.first&.adhoc_question_title
+    = link_to title, sba_application_application_dashboard_overview_index_path(info_request)
+  td
+    = info_request&.created_at&.strftime("%m/%d/%Y")
+  td
+    = info_request&.application_submitted_at&.strftime("%m/%d/%Y")
+  td
+    = info_request&.workflow_state&.humanize

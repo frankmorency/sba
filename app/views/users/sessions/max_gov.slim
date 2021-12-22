@@ -1,0 +1,14 @@
+#maxgov
+  .usa-width-one-whole.maxgov-margin-top
+    h1 Use MAX.gov to access certify.SBA.gov as a government employee
+    .usa-content
+      p If you already have a MAX.gov account, you can easily login below. If you are registering a new account or managing your existing account, use the appropriate links below the login button. You will then be leaving certify.SBA.gov and be forwarded to MAX.gov to complete your work.
+
+  .usa-width-one-whole
+    form action="/signin"
+      input type="submit" value="Login"
+  .usa-width-one-whole
+    p
+      a href="https://max.gov/maxportal/registrationForm.action" target="_blank" Create an account on MAX.gov
+    p
+      = link_to "Reset your password on MAX.gov", ENV["MAX_PASSWORD_RESET_URL"], target: "_blank"

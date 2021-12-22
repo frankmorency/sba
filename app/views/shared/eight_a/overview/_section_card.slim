@@ -1,0 +1,11 @@
+section
+  .card
+    .card__header
+      - section_number = group.even? ? 2*index+1 : 2*(index+1)
+      h4.card__primary-heading[onclick="sendSectionRequest(#{section.id}, #{section.sba_application_id})"]
+        = analyst_reconsideration_section_display(@sba_application, section)
+    .card__content
+      = render partial: 'shared/eight_a/overview/quick_details', locals: {section: section, style: section.status_style, display_submitted: !current_user.is_vendor?}
+    = render partial: 'shared/eight_a/overview/adhoc_footer', locals: {section: section}
+    - if @permissions.can_view_section_card_menu? && !section.is_a?(Section::ReconsiderationSection)
+      = render partial: 'shared/eight_a/overview/section_card_menu', locals: {permissions: @permissions, review: @review, section: section, number: section_number, prefix: ''}

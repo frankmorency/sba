@@ -1,0 +1,36 @@
+h2 Admin Dashboard
+
+p This page contains resources for the product people at SBA.
+
+h3 Regarding Questionnaires
+
+ul
+  li = link_to 'A list of all Questionnaires in the system', admin_questionnaires_path
+  li = link_to 'A list of Questionnaire Sections in the system', admin_sections_path
+  li = link_to 'A list of Question Types in the system', admin_question_types_path
+  li = link_to 'A list of all Questions in the system', admin_questions_path
+
+h3 Regarding Workflow
+
+ul
+  li = link_to 'A list of workflow states in the system', admin_workflow_states_path
+
+h3 Regarding Permissions
+
+ul
+  li = link_to 'A spreadsheet of all current permissions', admin_permissions_path
+  li = link_to 'Manage Users', admin_users_path
+  li = link_to 'SBA Users (Test)', admin_sba_users_path
+
+h3 Additional Information
+
+ul
+  li = link_to 'A list of all Document Types in the system', admin_document_types_path
+  li = link_to 'Data Dictionary', admin_data_dictionary_index_path
+  li = link_to 'Unclaimed Businesses (Test data)', admin_unclaimed_business_path
+
+
+h3 Environment Information
+
+ul
+  li = "Server IP Address - #{@ip_address}"

@@ -1,0 +1,20 @@
+#reply-box.message-reply-box.hidden
+  / BRUNO-MESSAGING params[:conversation_id] will be scoped and dealt with when we get to the reply stories. in next sprint.
+  = form_for(new_sba_application_conversation_message_path, html: {id: :new_message_form}) do
+    = hidden_field_tag(:conversation_id, "#{params[:conversation_id]}")
+    = hidden_field_tag( "sender_id", current_user.id )
+    
+    - if @body[:conversation][:user_1] == current_user.id
+      = hidden_field_tag( "recipient_id", @body[:conversation][:user_2] )
+    - else
+      = hidden_field_tag( "recipient_id", @body[:conversation][:user_1] )
+    = label_tag(:message_label, t('messages.new.title'))
+    = hidden_field_tag "body", nil, {id: 'form_body'}
+    #new_message_body
+    - unless current_user.is_vendor_or_contributor?
+      = check_box_tag(:priority_read_receipt, "true")
+      = label_tag(:priority_read_receipt, t('messages.new.notify-when-read'))
+    .message-reply-box-options
+      = button_tag  t('messages.thread.cancel'), type: "button", class: "usa-button-gray", id: "cancel-reply"
+      = submit_tag(t('messages.thread.send'), :data => { disable_with: t('messages.thread.send') })
+

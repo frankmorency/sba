@@ -1,0 +1,111 @@
+= form_tag sba_analyst_review_assessments_path(@review) do |ass|
+    = hidden_field_tag :owner, answered_for_id
+    .usa-width-three-fourths.review_main
+      h2.usa-heading More Information
+    - questions_order = ["Cash On Hand", "Other Sources Of Income", "Notes Receivable", "Retirement Accounts", "Life Insurance", "Stocks & Bonds", "Real Estate - Primary Residence", "Real Estate - Other", "Personal Property", "Notes Payable and Other Liabilities", "Assessed Taxes", "Adjusted Gross Income"]
+    - questions_sections_name = {"Cash On Hand" => "cash_on_hand", "Other Sources Of Income" => "other_sources_of_income", "Notes Receivable" => "notes_receivable", "Retirement Accounts" => "retirement_accounts", "Life Insurance" => "life_insurance", "Stocks & Bonds" => "stocks_bonds", "Real Estate - Primary Residence" => "real_estate_primary_residence", "Real Estate - Other" => "real_estate_other", "Personal Property" => "personal_property", "Notes Payable and Other Liabilities" => "notes_payable", "Assessed Taxes" => "assessed_taxes", "Adjusted Gross Income" => "adjuste_gross_income"}
+    - questions_order.each do |title|
+      - questions = financial_questions_by_section[title]
+      - section_name = financial_questions_by_section[title].first.section.name
+
+      .usa-width-one-whole.main_row
+        .usa-width-one-whole
+            .usa-width-two-thirds.review_left.wide
+              h3.usa-heading = title
+              - questions.each do |q|
+                div
+                  p id=("#{questions_sections_name[title]}")
+                    = q.title
+                    br
+                    - if q.question_type.currency?
+                      p
+                        b Response:
+                        | &nbsp;
+                        = number_to_currency(q.value.to_s.titlecase) if q.value.to_s.titlecase
+                    - elsif (['question_types/real_estate', 'question_types/table'].include? q.question_type.partial) && business_partner.answer_for(q.question.name, q.section.sba_application.id)
+                      = render partial: "answers/#{q.question_type.partial}", locals: {answer: business_partner.answer_for(q.question.name, q.section.sba_application.id), business_partner: business_partner, questionp: q, editable: false, section: q.section}
+                    - else
+                      p
+                        b Response:
+                        | &nbsp;
+                        = q.value.to_s.titlecase
+                    br
+
+                  - unless q.comment.blank?
+                    strong Vendor comment:
+                    br
+                    = q.comment
+                    br
+                    br
+
+                  - unless q.documents.blank?
+
+                    strong Vendor attachments:
+                    table
+                      thead
+                        tr
+                          th scope="col" Name
+                          th scope="col" Document type
+                          th scope="col" Uploaded
+                      - q.documents.each do |doc|
+                        tr
+                          td = link_to doc.original_file_name, pdf_viewer_organization_document_path(id: doc.id, organization_id: @organization.id), method: :get, class: "usa-button-outline", target: "_blank"
+                          td = doc.document_type.name
+                          td = l doc.updated_at.to_date
+
+            - if can? :manage_assessment, current_user
+              .usa-width-one-third.review_right.narrow
+                - section_names = [ Section.customize_name(section_name, business_partner.name), Section.old_customize_name(section_name, business_partner.name)]
+                - section = @sections.find {|s| section_names.include?(s.name) }
+                - assessment = section.assessment_accessor
+                = fields_for 'assessments[]', assessment do |ass|
+                  = render partial: 'assessments/form', locals: {ass: ass, assessment: assessment, statuses: @statuses}
+                  br
+
+                - first_assessment = section.assessments.select(&:persisted?).first
+
+                - if section.assessments.select(&:persisted?).count < 2 && first_assessment.try(:short?)
+                  = render partial: 'assessments/assessment', object: first_assessment, locals: {brief: false}
+                - elsif first_assessment
+                  div id="assessments_brief_#{section.id}"
+                    = render partial: 'assessments/assessment', object: first_assessment, locals: {brief: true}
+                    = link_to "Show more", "#", class: 'expand_notes', "data-identifier": section.id
+                    br
+                    br
+                  div.hide-display id="assessments_long_#{section.id}"
+                    = render collection: section.assessments.select(&:persisted?), partial: 'assessments/assessment', locals: {brief: false}
+                    = link_to "Show less", "#", class: 'collapse_notes', "data-identifier": section.id
+                    br
+                    br
+
+        div.return-to-top
+          p
+            = link_to  '<i class="fa fa-chevron-up"></i>Top'.html_safe, "#top"
+            hr
+
+    .usa-width-one-whole
+      = submit_tag 'Save and commit', id: 'save_notes', disabled: @review.determination_made?
+
+javascript:
+  $(function (){
+    $(".note_link").click(function (event) {
+      $(this).next().toggle();
+      event.preventDefault();
+    });
+
+    $("save_notes").click(function(event) {
+      event.preventDefault();
+    });
+
+    $(".expand_notes").click(function(event) {
+      $("#assessments_long_" + $(this).data('identifier')).show();
+      $("#assessments_brief_" + $(this).data('identifier')).hide();
+      event.preventDefault();
+    });
+
+    $(".collapse_notes").click(function (event) {
+      $("#assessments_long_" + $(this).data('identifier')).hide();
+      $("#assessments_brief_" + $(this).data('identifier')).show();
+      event.preventDefault();
+    });
+  });

@@ -1,0 +1,53 @@
+b
+  = link_to link, '#', id: "add_link_#{section.id}"
+
+= form_for Contributor.new, url: sba_application_section_contributors_path(sba_application, section), html: {id: "form_#{section.id}", style: "display: none;"} do |f|
+  fieldset.usa-fieldset-inputs.usa-sans
+    ul.usa-unstyled-list
+      li
+        = f.label :full_name, 'Full name'
+        = f.text_field :full_name
+      li
+        = f.label :email, 'Email address'
+        = f.text_field :email
+    = f.submit 'Send invitation'
+    = link_to 'Cancel', '#', id: "cancel_link_#{section.id}"
+
+javascript:
+  $(function() {
+      $("#add_link_#{section.id}").click(function(event) {
+          $("#add_link_#{section.id}").hide();
+          $("#form_#{section.id}").show();
+          event.preventDefault();
+          event.stopPropagation();
+      });
+
+      $("#cancel_link_#{section.id}").click(function(event) {
+          $("#add_link_#{section.id}").show();
+          $("#form_#{section.id}").hide();
+          event.preventDefault();
+          event.stopPropagation();
+      });
+
+      $("#form_#{section.id}").validate({
+          rules: {
+              "contributor[full_name]": {
+                  required: true
+              },
+              "contributor[email]": {
+                  required: true,
+                  email: true
+              }
+          },
+          messages: {
+              "contributor[full_name]": "Full name is required.",
+              "contributor[email]": {
+                  required: "Email is required.",
+                  email: "Please enter a valid email address."
+              }
+          }
+      });
+
+
+
+  });

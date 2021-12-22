@@ -1,0 +1,111 @@
+[
+  {
+    "section": "eight_a_business_ownership_entity",
+    "answers": {
+      "ownership_percentage": {
+        "question_text": "Who owns the applicant firm? Please detail the ownership percentages of the applicant firm:",
+        "question_name": "ownership_percentage",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": {
+          "individual": "12",
+          "other_firms": "12",
+          "AIT": "12",
+          "ANC": "12",
+          "CDC": "12",
+          "NHO": "12"
+        }
+      },
+      "51_percent_owned_other_entity": {
+        "question_text": "Is the applicant firm at least 51% or more unconditionally owned by another entity?",
+        "question_name": "51_percent_owned_other_entity",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed",
+        "comment": ""
+      }
+    }
+  },
+  {
+    "section": "eight_a_business_ownership_details",
+    "answers": {
+      "how_acquired": {
+        "question_text": "How did the Principal Owner(s) acquire the applicant firm?",
+        "question_name": "how_acquired",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "Bought the applicant firm"
+      },
+      "ownership_structure_name_changed": {
+        "question_text": "Has the applicant firm’s ownership, legal structure, or name changed in the past two years?",
+        "question_name": "ownership_structure_name_changed",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed",
+        "comment": ""
+      },
+      "arrangement_impact_on_dvd_ownership": {
+        "question_text": "Does the applicant firm have any buy-sell agreements, shareholder agreements, or other similar arrangements which may impact the unconditional ownership of the disadvantaged individuals?",
+        "question_name": "arrangement_impact_on_dvd_ownership",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      },
+      "ownership_interest_in_other_firm": {
+        "question_text": "Does the applicant firm currently have ownership interest in any other firm?",
+        "question_name": "ownership_interest_in_other_firm",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      },
+      "more_than_10_percent": {
+        "question_text": "Does another firm or other organization have more than 10% ownership interest in the applicant firm?",
+        "question_name": "more_than_10_percent",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      }
+    }
+  },
+  {
+    "section": "eight_a_business_ownership_corporation",
+    "answers": {
+      "upload_relevant_corporation_documents_q0": {
+        "question_name": "upload_relevant_corporation_documents_q0",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "yes",
+        "attachment": "has_attachments",
+        "document_ids": [
+          "8"
+        ]
+      },
+      "upload_relevant_corporation_documents_q1": {
+        "question_name": "upload_relevant_corporation_documents_q1",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "yes",
+        "attachment": "has_attachments",
+        "document_ids": [
+          "8"
+        ]
+      },
+      "upload_current_certificate_of_good_standing_corporation": {
+        "question_text": "Please upload the applicant firm’s current Certificate of Good Standing. ",
+        "question_name": "upload_current_certificate_of_good_standing_corporation",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "yes",
+        "attachment": "has_attachments",
+        "document_ids": [
+          "8"
+        ]
+      }
+    }
+  }
+]

@@ -1,0 +1,11 @@
+h1 SAM Data Validation Results
+- if @sam_org.present?
+  p DUNS: #{@duns}
+  p TIN: #{@tin_validation_result}
+  p MPIN: #{@mpin_validation_result}
+- else
+  - flash.now[:error] = "Could not find organization with DUNS number #{@duns}."
+  h4 No results to show
+ul.usa-unstyled-list
+  li
+    = link_to 'Go back to validate SAM data', ops_support_sam_validation_index_path, class: 'usa-nav-link'

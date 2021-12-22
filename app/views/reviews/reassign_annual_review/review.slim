@@ -1,0 +1,23 @@
+.sba-l-container
+  .sba-l-row
+    .sba-l-col--12.sba-u-padding-x--2
+      .certify-page-header
+        .certify-page-header__primary
+          span.subheading--large
+            | Reassign case
+          h1
+            | Review your selections
+      p.usa-font-lead
+        | Please review the information below and complete the reassignment.
+  .sba-l-row
+    .sba-l-sm-col--12.sba-l-md-col--golden-lg.sba-l-lg-col--8.sba-u-padding-x--2
+      .review-info
+        .review-info__item
+          .review-info__content
+            h2.review-info__heading
+              | Reassigning to:
+            p
+              = @new_case_owner.name
+      p
+        = link_to 'Reassign case', next_wizard_path, {class: 'sba-c-button sba-u-sm-margin-right--3'}
+        = link_to 'Start over', wizard_path(:assign)

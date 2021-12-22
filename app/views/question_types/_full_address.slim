@@ -1,0 +1,49 @@
+div.usa-form-large id="#{question.dom_id}"
+  = field_set_tag do
+    = label_tag "#{question.dom_id}[mailing_address]", 'Street Address'
+    = text_field_tag "#{question.dom_id}[mailing_address]", (JSON.parse(question.value)['mailing_address'] if question.value), required: "required"
+    div.mailing-space
+      .usa-input-grid.usa-input-grid-medium
+        = label_tag "#{question.dom_id}[city]", 'City'
+        = text_field_tag "#{question.dom_id}[city]", (JSON.parse(question.value)['city'] if question.value), required: "required"
+      .usa-input-grid.usa-input-grid-small
+        = label_tag "#{question.dom_id}[state]", 'State'
+        = select_tag "#{question.dom_id}[state]", options_for_select(us_states.collect{ |state| [state[:name], state[:code]] }, (JSON.parse(question.value)['state'] if question.value)), {include_blank: 'Select a state', required: "required"}
+    div
+      = label_tag "#{question.dom_id}[zip]", 'ZIP'
+      = text_field_tag "#{question.dom_id}[zip]", (JSON.parse(question.value)['zip'] if question.value), class: 'usa-input-medium', required: "required"
+      = label_tag "#{question.dom_id}[country]", 'Country'
+      = select_tag "#{question.dom_id}[country]", options_for_select(Country.pluck(:name, :iso_alpha2_code), (JSON.parse(question.value)['country'] if question.value) || 'US'), required: "required"
+
+javascript:
+    $(document).ready(function(){        
+        var state_field = $("#answers_#{question.id}_value_state");
+        var zip_field = $("#answers_#{question.id}_value_zip");
+        var country_field = $("#answers_#{question.id}_value_country");
+
+        if ($("#answers_#{question.id}_value_country :selected").val() == 'US') {
+            state_field.prop('disabled', false);
+            state_field.css('background-color', '#ffffff');
+            $("label[for=answers_#{question.id}_value_zip]").text('ZIP');
+        } else {
+            state_field.prop('disabled', true);
+            state_field.css('background-color', '#cccccc');
+            $("label[for=answers_#{question.id}_value_zip]").html("ZIP<span class='usa-additional_text'> (Optional)</span>");
+        }
+
+        country_field.change(function () {
+            if ($("#answers_#{question.id}_value_country :selected").val() == 'US') {
+                state_field.prop('disabled', false);
+                state_field.css('background-color', '#ffffff');
+                zip_field.prop('required', 'required');
+                $("label[for=answers_#{question.id}_value_zip]").text('ZIP');
+            } else {
+                state_field.prop('disabled', true);
+                state_field.css('background-color', '#cccccc');
+                state_field.val('').change();                
+                zip_field.prop('required', false);
+                $("label[for=answers_#{question.id}_value_zip]").html("ZIP<span class='usa-additional_text'> (Optional)</span>");
+            }
+        });
+        country_field.change();
+    });

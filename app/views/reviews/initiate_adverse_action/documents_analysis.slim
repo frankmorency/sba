@@ -1,0 +1,58 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading Approval: Step 2 of 4
+        h1 Please upload your documents and analysis.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_tag(wizard_path, {method: :put, id: :documents_analysis}) do
+          fieldset.questions
+            input#recommendation_made[type="hidden" value="true"]
+            ul#response.usa-unstyled-list
+              li
+                .dropzone id="analysis-document-dz-area" style="appearance: none; border: 3px solid #0071bc; border-radius: 0; box-sizing: border-box; color: #212121; display: block; font-size: 1.7rem; min-height: 0px;  line-height: 1.3; margin: 0.2em 0; max-width: 46rem; outline: none; padding: 1rem 0.7em; width: 100%;"
+                  .dz-default.dz-message style="text-align: left; margin: 0 0 0em 1em;"
+                    span#upload-error-message.usa-alert-error.usa-alert-no_icon.hidden
+                    a> class="dz-clickable usa-button" id="dz-select-analysis-document" Add documents
+                    span#selected_analysis_document_note
+                      = session[:analysis_document].nil? ? 'No file chosen' : session[:analysis_document][:original_file_name]
+          .actions
+            .actions__main
+              = submit_tag 'Next'
+              = link_to 'Go back', '#', :onclick => 'window.history.back();return false;'
+              p
+                em Next step: Review and complete
+
+javascript:
+  // disable auto discover
+  Dropzone.autoDiscover = false;
+
+  $("#analysis-document-dz-area").dropzone({
+    url: "/documents/review_upload",
+    method: "POST",
+    clickable: "a#dz-select-analysis-document",
+    autoProcessQueue: true,
+    addRemoveLinks: true,
+    maxFilesize: 25,  //mb
+    previewTemplate: "<div class='hide-display'></div>",
+    acceptedFiles: ".doc, .docx",
+    parallelUploads: 2,
+    sending: function (file, xhr, formData) {
+      xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      formData.append('question_name', "analyst_document");
+      formData.append('sba_application_id', "#{@sba_application.id}");
+      formData.append('organization_id', "#{@sba_application.organization.id}");
+      formData.append('document_type', "analysis_letter");
+      formData.append('sba_application_object_type', "#{@sba_application.class.name}");
+    },
+    success: function (file, response) {
+      $("span#selected_analysis_document_note").text(response["document_name"]);
+    },
+    error: function (file, response) {
+      $("span#upload-error-message").text(response["message"]);
+      $("span#upload-error-message").show();
+    }
+  });

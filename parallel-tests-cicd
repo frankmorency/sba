@@ -1,0 +1,6 @@
+#!/bin/bash
+export TEST_ENV_NUMBER=2
+RAILS_ENV=build_admin bundle install
+RAILS_ENV=build_admin rake parallel:drop
+RAILS_ENV=build_admin rake parallel:setup
+RAILS_ENV=build_admin rake parallel:spec

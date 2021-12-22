@@ -1,0 +1,9 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+.usa-grid-full
+
+  h1 Request for additional info sent
+
+  p.usa-font-lead Your request for additional information was sent on #{l Date.today}.
+
+  = button_to 'Return to application', edit_sba_analyst_review_path(@review), method: :get

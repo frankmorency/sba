@@ -1,0 +1,105 @@
+@import "variables.scss";
+
+$pip-radius:  5px;
+
+.no-notifications {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.no-notifications h2 {
+  margin: 0;
+  color: $gray;
+}
+.no-notifications p {
+  max-width: 40rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: $gray;
+}
+.notifications-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 100rem;
+}
+.notification {
+  display: flex;
+  justify-content: space-between;
+  margin: .5rem 1rem;
+  padding: 1rem;
+  font-size: 1.7rem;
+  border-radius: 3px;
+  border: 1px solid $gray-lightest;
+}
+.notification a {
+  text-decoration: none;
+}
+.notification.unread {
+  background-color: $gray-lightest;
+}
+.notification.read {
+  background-color: $white;
+}
+.new-notifications-pip {
+  //display: inline-block;
+  vertical-align: top;
+  width: $pip-radius * 2;
+  height: $pip-radius * 2;
+  margin-left: 2px;
+  border-radius: $pip-radius;
+  background-color: $primary-alt;
+}
+div.notifications-drawer-link {
+    display: none;
+}
+@media screen and (min-width: 951px) {
+  div.notifications-drawer-link {
+    display: block;
+  }
+  a.notifications-mobile-link {
+    display: none;
+  }
+}
+.notifications-drawer {
+  display: none;
+  position: absolute;
+  width: 45rem;
+  margin-top: 2rem;
+  margin-left: -16rem;
+  padding: .5rem 0;
+  background-color: $white;
+  border: 1px solid $gray-light;
+  border-radius: 4px;
+}
+.notifications-drawer a,
+.notifications-drawer span {
+  font-size: 1.5rem;
+  align-self: center;
+}
+.notifications-drawer a {
+  color: $primary;
+}
+.notifications-drawer a:hover {
+  background-color: transparent;
+  color: $primary-darker;
+}
+.notifications-drawer .notification a {
+  max-width: 78%;
+  margin-right: 2%;
+  padding: 0;
+}
+.notifications-drawer > a {
+  color: $gray;
+}
+.notifications-drawer > a:hover {
+  background-color: $white;
+}
+
+.pagination {
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+

@@ -1,0 +1,134 @@
+.real_estate.real_estate_real id="real_estate_#{index}"
+  .panel
+    - if question.multi
+      br
+      a.remove.edit_controls.table-button.rs-remove onclick='if (confirm("Are you sure?")) { $(this).parent().remove(); }'
+        span Remove real estate
+    div style="border-left: dotted 1px #999999; margin-left: 20px; padding-left: 20px; border-bottom: dotted 1px #999999;"
+      - question.sub_questions.each do |sub_question|
+        - sub_question.array_index = index
+        - sub_question.value = answer_set.with_indifferent_access[sub_question.name] if answer_set
+        = render_question sub_question
+
+  javascript:
+      // HACK: sub_question position is hardcoded right now...
+      var qid = "#{@section.qp_id_for_question(@real_estate_type)}";
+      var real_estate_type_id = "#{@section.qp_id_for_question('has_' + @real_estate_type)}";
+      var real_estate_type = "#{@real_estate_type}";
+      var rent_income = "input[name='answers[#{@section.qp_id_for_question(@real_estate_type)}][#{index}][13][value]']";
+      var real_estate_rent_income_value = "#answers_real_estate_rent_income_value_#{index}";
+      var second_mortgage = "input[name='answers[#{@section.qp_id_for_question(@real_estate_type)}][#{index}][8][value]']";
+      var second_mortgage_in_name = "input[name='answers[#{@section.qp_id_for_question(@real_estate_type)}][#{index}][10][value]']";
+      var real_estate_second_mortgage_value = "#answers_real_estate_second_mortgage_value_#{index}";
+      var real_estate_second_mortgage_balance = "#answers_real_estate_second_mortgage_balance_#{index}";
+      var real_estate_second_mortgage_your_name = "#answers_real_estate_second_mortgage_your_name_#{index}";
+      var real_estate_second_mortgage_percent = "#answers_real_estate_second_mortgage_percent_#{index}";
+      var jointly_owned = "input[name='answers[#{@section.qp_id_for_question(@real_estate_type)}][#{index}][2][value]']";
+      var real_estate_jointly_owned_percent = "#answers_real_estate_jointly_owned_percent_#{index}";
+      var mortgage_in_name = "input[name='answers[#{@section.qp_id_for_question(@real_estate_type)}][#{index}][4][value]']";
+      var real_estate_percent_of_mortgage = "#answers_real_estate_percent_of_mortgage_#{index}";
+
+      var SingleRealEstate = {
+          checkIt: function() {
+              SingleRealEstate.checkJointlyOwned();
+              SingleRealEstate.checkNameOnMortgage();
+              SingleRealEstate.checkSecondMortgage();
+              SingleRealEstate.checkRentIncome();
+              SingleRealEstate.checkSecondMortgageInName();
+          },
+
+          checkRentIncome: function () {
+              if ($(rent_income + ':checked').val() == 'yes') {
+                  $(real_estate_rent_income_value).show();
+                  $(real_estate_rent_income_value + ' input[type!="hidden"]').attr('required', 'required');
+                  $(real_estate_rent_income_value + ' input[type!="hidden"]').prop('disabled', false);
+              } else {
+                  $(real_estate_rent_income_value + ' input[type!="hidden"]').prop('disabled', true);
+                  $(real_estate_rent_income_value + ' input[type!="hidden"]').removeAttr('required');
+                  $(real_estate_rent_income_value).hide();
+              }
+          },
+
+          checkNameOnMortgage: function() {
+              if ($(mortgage_in_name + ':checked').val() == 'yes') {
+                  $(real_estate_percent_of_mortgage).show();
+                  $(real_estate_percent_of_mortgage + ' input[type!="hidden"]').attr('required', 'required');
+                  $(real_estate_percent_of_mortgage + ' input[type!="hidden"]').prop('disabled', false);
+              } else {
+                  $(real_estate_percent_of_mortgage + ' input[type!="hidden"]').removeAttr('required');
+                  $(real_estate_percent_of_mortgage + ' input[type!="hidden"]').prop('disabled', true);
+                  $(real_estate_percent_of_mortgage).hide();
+              }
+          },
+
+          checkJointlyOwned: function () {
+              if ($(jointly_owned + ':checked').val() == 'yes') {
+                  $(real_estate_jointly_owned_percent).show();
+                  $(real_estate_jointly_owned_percent + ' input[type!="hidden"]').attr('required', 'required');
+                  $(real_estate_jointly_owned_percent + ' input[type!="hidden"]').prop('disabled', false);
+              } else {
+                  $(real_estate_jointly_owned_percent + ' input[type!="hidden"]').removeAttr('required');
+                  $(real_estate_jointly_owned_percent + ' input[type!="hidden"]').prop('disabled', true);
+                  $(real_estate_jointly_owned_percent).hide();
+              }
+          },
+
+          checkSecondMortgage: function () {
+              if ($(second_mortgage + ':checked').val() == 'yes') {
+                  $(real_estate_second_mortgage_value).show();
+                  $(real_estate_second_mortgage_value + ' input[type!="hidden"]').attr('required', 'required');
+                  $(real_estate_second_mortgage_value + ' input[type!="hidden"]').prop('disabled', false);
+                  $(real_estate_second_mortgage_balance).show();
+                  $(real_estate_second_mortgage_balance + ' input[type!="hidden"]').attr('required', 'required');
+                  $(real_estate_second_mortgage_balance + ' input[type!="hidden"]').prop('disabled', false);
+                  $(real_estate_second_mortgage_your_name).show();
+                  $(real_estate_second_mortgage_your_name + ' input[type!="hidden"]').attr('required', 'required');
+                  $(real_estate_second_mortgage_your_name + ' input[type!="hidden"]').prop('disabled', false);
+              } else {
+                  $(real_estate_second_mortgage_value + ' input[type!="hidden"]').prop('disabled', true);
+                  $(real_estate_second_mortgage_value + ' input[type!="hidden"]').removeAttr('required');
+                  $(real_estate_second_mortgage_value).hide();
+                  $(real_estate_second_mortgage_balance + ' input[type!="hidden"]').prop('disabled', true);
+                  $(real_estate_second_mortgage_balance + ' input[type!="hidden"]').removeAttr('required');
+                  $(real_estate_second_mortgage_balance).hide();
+                  $(real_estate_second_mortgage_your_name + ' input[type!="hidden"]').prop('disabled', true);
+                  $(real_estate_second_mortgage_your_name + ' input[type!="hidden"]').removeAttr('required');
+                  $(real_estate_second_mortgage_your_name).hide();
+                  $(real_estate_second_mortgage_percent + ' input[type!="hidden"]').prop('disabled', true);
+                  $(real_estate_second_mortgage_percent + ' input[type!="hidden"]').removeAttr('required');
+                  $(real_estate_second_mortgage_percent).hide();
+              }
+
+              $(second_mortgage_in_name).click(SingleRealEstate.checkSecondMortgage);
+              SingleRealEstate.checkSecondMortgageInName();
+          },
+
+          checkSecondMortgageInName: function() {
+              if ($(second_mortgage_in_name + ':checked').val() == 'yes' && $(second_mortgage + ':checked').val() == 'yes') {
+                  $(real_estate_second_mortgage_percent).show();
+                  $(real_estate_second_mortgage_percent + ' input[type!="hidden"]').attr('required', 'required');
+                  $(real_estate_second_mortgage_percent + ' input[type!="hidden"]').prop('disabled', false);
+              } else {
+                  $(real_estate_second_mortgage_percent + ' input[type!="hidden"]').prop('disabled', true);
+                  $(real_estate_second_mortgage_percent + ' input[type!="hidden"]').removeAttr('required');
+                  $(real_estate_second_mortgage_percent).hide();
+              }
+          },
+
+          initialize: function () {
+              $(rent_income).click(this.checkRentIncome);
+              this.checkRentIncome();
+              $(jointly_owned).click(this.checkJointlyOwned);
+              this.checkJointlyOwned();
+              $(mortgage_in_name).click(this.checkNameOnMortgage);
+              this.checkNameOnMortgage();
+              $(second_mortgage).click(this.checkSecondMortgage);
+              this.checkSecondMortgage();
+              $(second_mortgage_in_name).click(this.checkSecondMortgage);
+              this.checkSecondMortgageInName();
+
+              $("input[name='answers[" + real_estate_type_id + "][value]']").click(this.checkIt);
+          }
+      };
+
+      SingleRealEstate.initialize();

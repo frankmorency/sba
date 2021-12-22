@@ -1,0 +1,42 @@
+div#disqualifier-warning.hidden name="#{question.dom_id}"
+  .usa-alert.usa-alert-warning role="alert"
+    .usa-alert-body
+      h3.usa-alert-heading Warning!
+      p.usa-alert-text
+
+- if question.value.nil? && defined?(answer).nil?
+  - answer_value = ''
+- elsif defined?(answer)
+  - answer_value = answer.display_value
+- else
+  - answer_value = question.value
+
+javascript:
+  $(document).ready(function () {
+
+    var disqualifier_value = "#{question.disqualifier.value}";
+    var disqualifier_message = "#{question.disqualifier.message.html_safe}";
+    var answer_value = "#{answer_value}";
+
+    var config = {
+      radio_choice: "input:radio[name='#{question.dom_id}']"
+    }
+
+    if (disqualifier_value == answer_value) {
+      $('#disqualifier-warning[name="#{question.dom_id}"]').find( "p.usa-alert-text" ).html(disqualifier_message);
+      $('#disqualifier-warning[name="#{question.dom_id}"]').slideDown("slow");
+    }
+
+    $(config['radio_choice']).change(function () {
+
+      var checked_answer = $("input:radio[name='#{question.dom_id}']:checked").val();
+
+      if (disqualifier_value == checked_answer) {
+        $('#disqualifier-warning[name="#{question.dom_id}"]').find( "p.usa-alert-text" ).html(disqualifier_message);
+        $('#disqualifier-warning[name="#{question.dom_id}"]').slideDown("slow");
+      } else {
+        $('#disqualifier-warning[name="#{question.dom_id}"]').slideUp("slow");
+      }
+    });
+
+  });

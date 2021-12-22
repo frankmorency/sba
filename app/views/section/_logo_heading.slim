@@ -1,0 +1,24 @@
+.wosb-detail-page
+  .usa-grid-full
+    .usa-width-three-fourths.wosb_detail_title
+      h1
+        = @sba_application.questionnaire.review_page_display_title
+    .usa-width-one-fourth.logo_right
+      br
+      = image_tag 'sba_round_logo.png', alt: 'sba_logo'
+
+  .usa-grid-full
+    .usa-width-one-half
+      h3 #{@sba_application.organization.legal_business_name}
+      p
+        b DUNS: &nbsp;
+        span #{@sba_application.organization.duns_number}
+      p
+        b CAGE: &nbsp;
+        span #{@sba_application.organization.cage_code}
+
+      - if @sba_application.certificate && @sba_application.certificate_type.display_summary_thanks?
+        p
+          h4 Thank you for submitting your application to participate in SBA’s All Small Mentor-Protégé Program. Once your application is processed and evaluated, a member of the All Small Mentor-Protégé Program Office will contact you to verify your application status.
+    .usa-width-one-half
+      p &nbsp;

@@ -1,0 +1,15 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  h1 Your Letter of Intent to Terminate has been sent
+
+  - url = sba_analyst_cases_path
+  - if current_user.can?(:ensure_8a_initial_sba_analyst)
+    - url = eight_a_initial_sba_analyst_dashboard_index_path
+  - elsif current_user.can? (:ensure_8a_initial_sba_supervisor)
+    - url = eight_a_initial_sba_supervisor_dashboard_index_path
+  - elsif current_user.can? (:assign_8a_role_district_office_supervisor)
+    - url = district_office_sba_supervisor_dashboard_index_path
+
+  = link_to 'View dashboard', url, class: "usa-button"
+  = link_to 'Add SBA note', wizard_path(:add_a_note), class: "usa-button usa-button-knockout"

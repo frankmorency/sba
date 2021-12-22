@@ -1,0 +1,61 @@
+.firm-owner-percent
+  .block
+    .usa-width-two-thirds
+      | Individuals &nbsp;
+    .usa-width-one-third
+      - individual_value = JSON.parse(question.value)['individual'] if question.value
+      | #{number_field_tag "#{question.dom_id}[individual]", individual_value, 'aria-label': question.name, step: 1.0, min: 0, max: 100, placeholder: "0", required: true}
+      .block_fields.percent_sign
+        |&nbsp;%
+      = label_tag "#{question.dom_id}[individual]", question.title, class: 'hide last'
+  .block
+    .usa-width-two-thirds
+      | Other firms &nbsp;
+    .usa-width-one-third
+      - other_firms_value = JSON.parse(question.value)['other_firms'] if question.value
+      | #{number_field_tag "#{question.dom_id}[other_firms]", other_firms_value, 'aria-label': question.name, step: 1.0, min: 0, max: 100, placeholder: "0", required: true}
+      .block_fields.percent_sign
+        |&nbsp;%
+      = label_tag "#{question.dom_id}[other_firms]", question.title, class: 'hide last'
+  .block
+    .usa-width-two-thirds
+      | American Indian Tribe (AIT) &nbsp;
+    .usa-width-one-third
+      - ait_value = JSON.parse(question.value)['AIT'] if question.value
+      | #{number_field_tag "#{question.dom_id}[AIT]", ait_value, 'aria-label': question.name, step: 1.0, min: 0, max: 100, placeholder: "0", required: true}
+      .block_fields.percent_sign
+        |&nbsp;%
+      = label_tag "#{question.dom_id}[AIT]", question.title, class: 'hide last'
+  .block
+    .usa-width-two-thirds
+      | Alaska Native Corporation (ANC) &nbsp;
+    .usa-width-one-third
+      - anc_value = JSON.parse(question.value)['ANC'] if question.value
+      | #{number_field_tag "#{question.dom_id}[ANC]", anc_value, 'aria-label': question.name, step: 1.0, min: 0, max: 100, placeholder: "0", required: true}
+      .block_fields.percent_sign
+        |&nbsp;%
+      = label_tag "#{question.dom_id}[ANC]", question.title, class: 'hide last'
+  .block
+    .usa-width-two-thirds
+      | Community Development Corporation (CDC) &nbsp;
+    .usa-width-one-third
+      - cdc_value = JSON.parse(question.value)['CDC'] if question.value
+      | #{number_field_tag "#{question.dom_id}[CDC]", cdc_value, 'aria-label': question.name, step: 1.0, min: 0, max: 100, placeholder: "0", required: true}
+      .block_fields.percent_sign
+        |&nbsp;%
+      = label_tag "#{question.dom_id}[CDC]", question.title, class: 'hide last'
+  .block
+    .usa-width-two-thirds
+      | Native Hawaiian Organization (NHO)  &nbsp;
+    .usa-width-one-third
+      - nho_value = JSON.parse(question.value)['NHO'] if question.value
+      | #{number_field_tag "#{question.dom_id}[NHO]", nho_value, 'aria-label': question.name, step: 1.0, min: 0, max: 100, placeholder: "0", required: true}
+      .block_fields.percent_sign
+        |&nbsp;%
+      = label_tag "#{question.dom_id}[NHO]", question.title, class: 'hide last'
+
+
+  javascript:
+    $(document).ready(function(){
+      // add additional validation here if needed.
+    });

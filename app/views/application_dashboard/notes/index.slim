@@ -1,0 +1,130 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+= render partial: 'shared/eight_a/fun_bar', locals: {application: @sba_application }
+
+.usa-grid-full style="max-width:1250px"
+  .certify-page-header
+    .certify-page-header__primary
+      h1 SBA Notes
+    .certify-page-header__secondary
+      a#compose-note-button.usa-button.usa-button-big href="javascript:void(0)"  Compose new note
+  .usa-grid-full
+    div class=((is_vendor_or_contributor? current_user) ? 'usa-width-one-whole' : 'usa-width-two-thirds')
+      p class="usa-font-lead" SBA notes cannot be seen by the firm.
+br
+.usa-grid-full
+    .certify-grid-wrap
+      .usa-width-one-third
+        form.certify-facets action="#"
+          h2.certify-facets__form-heading Filter Notes
+          fieldset.certify-facets__set
+            legend.certify-facets__heading Tags
+            ul.certify-facets__list
+              = tag_list(@sba_application)
+      .usa-width-two-thirds
+        .card-set
+          - @notes.each do |note|
+            article.card
+              header.card__header
+                h3.card__primary-heading #{note.title}
+                p.card__sub-head
+                  strong #{User.find_by_id(note.author_id).name}
+                  '
+                  = "@ #{note.created_at.strftime('%I:%M%p %B %d, %Y')}"
+              .card__content
+                p #{note.body}
+              .card__meta
+                p.tags-list
+                  strong Tags:
+                  - unless note.tags.nil?
+                    - note.tags.each do |tag|
+                      span.content-tag #{tag}
+              .card__bulk-actions
+
+
+- locals = {application: @sba_application}
+- if @sba_application.is_really_a_review?
+  - locals[:note_post_path] = organization_adverse_action_review_notes_path(@sba_application.organization, adverse_action_review_id: @sba_application.case_number)
+
+= render partial: 'shared/note_popup/index', locals: locals
+
+javascript:
+  $(document).ready(function () {
+
+    $('#notes_tab').addClass('current');
+
+    // Filtering code
+    $('input:checkbox[name=category]').change(function () {
+      var selected_tags = determine_selected_tags();
+      filter_cards(selected_tags);
+    });
+
+    function determine_selected_tags(){
+      var selected_tags = [];
+      $('input:checkbox[name=category]:checked').each(function () {
+          selected_tags.push($(this).attr('value'));
+      });
+      return selected_tags;
+    }
+
+    function filter_cards(selected_tags){
+      if (selected_tags.length < 1) {
+          display_all_note_cards();
+      } else {
+          display_selected_note_cards(selected_tags);
+      }
+    }
+
+    function display_all_note_cards(){
+      // show all cards
+      $('article.card').each(function () {
+          $(this).show();
+      });
+    }
+
+    function display_selected_note_cards(selected_tags){
+      // hide all cards
+      $('article.card').each(function () {
+          $(this).hide();
+      });
+      // traverse through all cards
+      $('article.card').each(function () {
+          // if card is already visible goto next card
+          if ($(this).is(":visible")) {
+            return true;
+          }
+
+          // if the card has one of the selected tags
+          if(card_has_tag(this, selected_tags)){
+            // make card visible
+            $(this).show();
+          }
+
+      });
+    }
+
+    function card_has_tag(card_element, selected_tags){
+      var has_tag = false;
+      $(card_element).find(".card__meta").find("p.tags-list").children("span.content-tag").each(function () {
+        if (array_has_tag(selected_tags, $(this).text())){
+          has_tag = true;
+          return false;
+        }
+      });
+      return has_tag;
+    }
+
+    function array_has_tag(arr, tag) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === tag) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    $('#compose-note-button').on('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        $('#note-main-popup').addClass("visible");
+    });
+  });

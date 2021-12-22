@@ -1,0 +1,42 @@
+h1 Welcome to #{ link_to "certify.SBA.gov", root_path, class: 'h1' }!
+h2 Request access
+
+.usa-width-one-whole
+  p
+    | There are two roles that are available for a firm to manage SBA's small business certifications. If this is the first time that your business is creating or updating a certification in this system, please select the Vendor Admin role below. There must be at least one Vendor Admin assigned to the account.
+
+
+    = form_tag request_vendor_role_path do
+      fieldset.usa-fieldset-inputs.usa-sans
+        ul.usa-unstyled-list
+          li 
+            = radio_button_tag :request, :new_application
+            = label_tag 
+              b
+                | Vendor Admin for a business that is new to certify.SBA.gov
+              br
+              p
+                |  The Vendor Admin is authorized to create, edit, and update all necessary information on behalf of the business. In addition, the Vendor Admin can grant and manage system access to others within their business.
+          li
+            = radio_button_tag :request, :request_vendor_admin
+            = label_tag
+              b
+                | Vendor Admin for a business that already exists in certify.SBA.gov
+              br
+              p
+                | The Vendor Admin is authorized to create, edit, and update all necessary information on behalf of the business. In addition, the Vendor Admin can grant and manage system access to others within their business.
+         
+          li
+            = radio_button_tag :request, :request_vendor_editor
+            = label_tag
+              b
+                | Vendor Editor for a business that already exists in certify.SBA.gov
+              br
+              p
+                | The Vendor Editor is authorized to create, edit and update all necessary information on behalf of the business. However, they cannot grant access to others in their business.
+      p
+        | You are accessing a U.S. Government information system which is provided for U.S. Government-authorized use only. By submitting a request for access, you are confirming that you are authorized to represent your firm to access data in this system. Unauthorized or improper use of this system may result in disciplinary action, as well as civil and criminal penalties.
+
+      p
+        = submit_tag "Request access"
+

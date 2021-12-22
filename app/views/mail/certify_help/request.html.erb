@@ -1,0 +1,52 @@
+<style>
+    table tr>th:nth-child(1){
+        text-align: right;
+    }
+    table tr td {
+        padding: 5px;
+        margin: 0px;
+    }
+    table th, table td {
+        border-bottom: 1px solid #d3d3d37d;
+    }
+    table tr:nth-child(1) th, table tr:nth-child(1) td{
+        border-top: 1px solid #d3d3d37d;
+    }
+    table{
+        border-collapse: collapse;
+    }
+    #issue_desc{
+        margin-top: 5px;
+        padding: 5px;
+        white-space: pre-wrap;
+        width: 600px;
+        box-shadow: 0px 0px 2px 0.2px rgba(0,0,0,0.2);
+    }
+</style>
+<div style="padding: 10px 5px">
+New Certify help request from <%= @help_request['first_name'] %> <%= @help_request['last_name'] %>.
+<br/>
+<br/>
+<table>
+<tbody>
+<tr>
+<th>DUNS:</th><td><%= @help_request['duns'] %></td>
+</tr>
+<tr>
+<th>Certify Login Email:</th><td><%= @help_request['certify_email'] %></td>
+</tr>
+<tr>
+<th>SAM Account Status:</th><td><%= @help_request['sam_active'] %></td>
+</tr>
+<tr>
+<th>Program:</th><td><%= @help_request['program'] %></td>
+</tr>
+<tr>
+<th>Subject:</th><td><%= @help_request['issue'] %></td>
+</tr>
+</tbody>
+</table>
+<br/>
+<b>Description of issue:</b><br/>
+<div id="issue_desc"><%= @help_request['issue_description'] %></div>
+</div>

@@ -1,0 +1,38 @@
+Potential for Success Details: Taxes,Revenue,Potential for Success,Review Submit
+
+Taxes: 
+ document_library_file_name: Please upload the applicant firm’s Federal tax returns filed in the last three years, including all schedules and attachments.,dz-select-eight_a_pos_taxes,Upload_Document.pdf
+ Complete Status: eight_a_pos_taxes,Taxes
+ 
+Revenue: 
+ primary NAICS code listed in SAM.gov_as_yes: Are you applying for the 8(a) program under the same primary NAICS code listed for your firm in SAM.gov? 
+ primary NAICS code for at least two years_as_yes: Has the applicant firm earned revenues in its primary NAICS code for at least two years?
+ most recently completed fiscal year_as_percentage: 20
+ contracts within the last 12 months_as_awards: 12/12/2009,USDS,12345,Working for implementationA,1000000
+ #contracts within the last 12 months_as_awards reenter: 12/12/2011,USDA,12346,Working for implementationB,2000000
+ Please upload an interim or year-end balance sheet and profit and loss statement.: Please upload an interim or year-end balance sheet and profit and loss statement.
+ Save and Continue:
+ Complete Status: eight_a_pos_revenue,Revenue
+ 
+Potential for Success:
+ are not commercial bank loans_as_no: Do you have any loan agreements that are not commercial bank loans?
+ special licenses under which the applicant firm operates_as_no: Do you have any special licenses under which the applicant firm operates?
+ bonding ability from the applicant firms surety_as_no: Do you have statements of bonding ability from the applicant firm’s surety?
+ Submit: Potential for Success
+ Complete Status: eight_a_pos_pos,Potential for Success
+
+Potential for Success flow:
+ are not commercial bank loans_as_yes: Do you have any loan agreements that are not commercial bank loans?
+ are not commercial bank loans_as_yes_document: Upload_Document.pdf
+ special licenses under which the applicant firm operates_as_yes: Do you have any special licenses under which the applicant firm operates?
+ special licenses under which the applicant firm operates_as_yes_document: Upload_Document.pdf
+ bonding ability from the applicant firms surety_as_yes: Do you have statements of bonding ability from the applicant firm’s surety?
+ bonding ability from the applicant firms surety_as_not_applicable: Do you have statements of bonding ability from the applicant firm’s surety?
+ bonding ability from the applicant firms surety_as_yes_document: Upload_Document.pdf
+ Submit: Potential for Success
+ Complete Status: eight_a_pos_pos,Potential for Success
+ 
+
+Review Submit: 
+ Submit Potential for Success: 
+ Success: Potential for Success section is complete

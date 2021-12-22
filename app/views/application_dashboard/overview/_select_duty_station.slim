@@ -1,0 +1,33 @@
+.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        h1
+          = title
+    p.usa-font-lead = "Please select the District Office that will work with #{@sba_application.organization.name}."
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        p
+          = "#{@sba_application.organization.name} is located at "
+          = link_to @sba_application.organization.full_address, URI.encode("https://www.google.com/maps/place/#{@sba_application.organization.full_address}"), target:"_blank"
+        = form_tag assign_duty_station_sba_application_application_dashboard_overview_index_url do
+          fieldset.questions
+            label.usa-sr-only for="field_office"  District Offices
+            = select_tag @dt, options_for_select(DutyStation.order('name ASC').collect{ |u| [u.name, u.id] }.insert(0, "")), id: "field_office", name: "field_office", required: true
+          .actions
+            .actions__main
+              button class="btn-next" type="submit"  Set District Office
+              = link_to 'Cancel', sba_application_application_dashboard_overview_index_path(@sba_application)
+
+javascript:
+  $(document).ready(function() {
+    $('#overview_tab').addClass('current');
+
+    $('.btn-next').click(function(event){
+      var fieldOffice = $("#field_office option:selected").text();
+
+      if(fieldOffice && confirm("Set District Office to " + fieldOffice ) != true) {
+        event.preventDefault();
+      }
+    });
+  });

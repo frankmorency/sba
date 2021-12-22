@@ -1,0 +1,22 @@
+.usa-width-one-half.standalone-card
+  p.subheading Requesting Access
+  h1 Welcome to certify.SBA.gov!
+  p.usa-font-lead To get started, we'll need to know a little more about your role and responsibilities to grant you access.
+  form.usa-form action="/next_page" method="post"
+    = hidden_field_tag :authenticity_token, form_authenticity_token
+    = hidden_field_tag :hash, @hash.to_json
+    .questions
+      fieldset
+        legend What best describes you?
+        ul.usa-unstyled-list
+          li
+            input#role-employee-supervisor name="capasity" required="" type="radio" value=("supervisor") /
+            label for="role-employee-supervisor"  I am an SBA Supervisor
+          li
+            input#role-employee-analyst name="capasity" required="" type="radio" value=("analyst") /
+            label for="role-employee-analyst"  I am an SBA Analyst
+          li
+            input#role-contracting-officer name="capasity" required="" type="radio" value=("co") /
+            label for="role-contracting-officer"  I am a Contracting Officer
+          li
+    button.usa-button type="submit"  Next

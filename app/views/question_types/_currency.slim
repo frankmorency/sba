@@ -1,0 +1,6 @@
+.block
+  .block_fields.dollar_sign
+    | $
+  .block_fields
+    | #{number_field_tag question.dom_id, question.value, 'aria-label': question.name, step: 0.01, min: 0, placeholder: "100.00", required: true}
+    = label_tag question.dom_id, question.title, class: 'hide last'

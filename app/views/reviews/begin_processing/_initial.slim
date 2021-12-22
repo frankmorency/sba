@@ -1,0 +1,19 @@
+.usa-grid-full
+
+  h1 Accept this case for processing?
+
+  p.usa-font-lead By accepting this case for processing, you confirm that everyone who must provide information for this Initial Application has submitted their information:
+
+  ul
+    li Owners claiming disadvantage
+    li Spouses of all owners claiming disadvantage
+    li Everyone who owns at least 10% of the firm
+    li Officers
+    li Directors
+    li Board members
+    li Managers
+    li Partners
+
+  = form_for review, url: wizard_path, method: :put do |f|
+    = f.submit "Yes, accept for processing", data: { confirm: "Are you sure you want to begin processing?" }
+    = link_to 'Start Over', new_sba_analyst_sba_application_review_path(sba_application_id: app.id)

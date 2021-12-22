@@ -1,0 +1,3 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+= render partial: "reviews/begin_processing/#{@sba_application.kind}", locals: {app: @sba_application, review: @review, due_date: @due_date}

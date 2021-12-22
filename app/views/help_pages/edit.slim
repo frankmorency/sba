@@ -1,0 +1,21 @@
+section.text-tiny.breadcrumb
+
+  =form_for @page, url: help_pages_path do |f|
+
+    .usa-width-one-whole#title-editor
+      = f.text_area :title, id: 'editorTitle', value: @page.title
+
+    .usa-width-one-whole
+      .usa-width-two-thirds#left-panel-editor
+        = f.text_area :left_panel, id: 'editorLeft', value: @page.left_panel
+      .usa-width-one-third#right-panel-editor
+        = f.text_area :right_panel, id: 'editorRight', value: @page.right_panel
+
+    .usa-width-one-whole
+      = f.submit 'Save my work'
+
+  javascript:
+    CKEDITOR.disableAutoInline = false;
+    CKEDITOR.inline( 'editorTitle' );
+    CKEDITOR.inline( 'editorLeft' );
+    CKEDITOR.inline( 'editorRight' );

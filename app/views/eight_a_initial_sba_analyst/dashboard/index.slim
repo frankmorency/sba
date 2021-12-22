@@ -1,0 +1,19 @@
+- if Feature.active?(:sba_workload_queue)
+  .sba-l-container
+    .sba-l-row
+      .sba-l-col--12.sba-u-padding-x--2
+        .certify-page-header
+          .certify-page-header__primary
+            h1
+              | Dashboard
+    .sba-l-row
+      .sba-l-col--12.sba-u-padding-x--2
+        header.dashboard-section__header
+          h2.dashboard-section__heading
+            | My Cases
+        = render partial: 'eight_a_initial_sba_analyst/dashboard/search'
+- else
+  article#main-content
+    h1 Dashboard
+    = render partial: 'shared/eight_a/dashboard/current_workload' if current_user.can?(:view_8a_initial_sba_analyst_dashboard)
+  a.usa-button.usa-button-big[href="/sba_analyst/cases"] View all cases

@@ -1,0 +1,112 @@
+table#certifications-8a style="margin-top: 0px; padding-top: 0px"
+  thead
+    tr
+      th scope="col" nowrap="" Programs
+      th scope="col" Type
+      th scope="col" Submission Date
+      th scope="col" Expiration Date
+      th scope="col" Status
+      th scope="col" Decision
+      th scope="col" Action
+
+  - unless @adverse_actions.blank?
+    - @adverse_actions.each do |aa|
+      tr
+        td
+          = link_to 'Adverse Action Review', organization_adverse_action_review_path(aa.organization, aa)
+        td Adverse Action
+        td = aa.created_at.strftime("%m/%d/%Y")
+        td
+        td = aa.certificate.status
+        td = aa.status
+        td
+  - @eight_a_init_draft_apps.each do |application|
+    tr
+      td
+        - if application.workflow_state == 'returned'
+          = link_to application.questionnaire.link_label, sba_application_application_dashboard_overview_index_path(sba_application_id: application.id)
+        - else
+          = application.questionnaire.link_label
+      td
+        = application.display_kind
+      td
+      td
+      td
+        = application.display_status
+      td
+      td
+  - @eight_a_apps.each do |application|
+    - current_section = application.current_section || application.first_section
+
+    - if application.is_mpp_annual_report?
+      tr
+        td
+          - if current_user.is_sba_or_ops?
+            = link_to application.questionnaire.link_label, section_path_helper(application, current_section, true), target: '_blank'
+        td Annual Report
+        td = application.formatted_submission_date
+        td
+        td Active
+        td
+        td
+          - if application.deleteable? current_user
+            = link_to 'Delete', sba_application_path(application), class: "confirmation delete-cert", method: :delete
+    - elsif application.not_in_appeal_or_complete?(current_user)
+      tr
+        td
+          - if current_user.is_sba_or_ops?
+            - if application.linkable? && current_user.is_sba?
+              - if application.is_a?(SbaApplication::MasterApplication)
+                - path = sba_application_application_dashboard_overview_index_path(sba_application_id: application.id)
+              - else
+                - path = questionnaire_organization_sba_application_path(application.questionnaire.name, application.organization_id, application.id)
+
+              - if application.is_a?(SbaApplication::EightAInfoRequest)
+                = link_to "8(a) Info Request for #{application.creator.name}", path
+              - else
+                = link_to application.questionnaire.link_label, path
+            - elsif application.linkable?
+              = link_to application.questionnaire.link_label, section_path_helper(application, current_section, true), target: '_blank'
+            - else
+              = application.questionnaire.link_label
+        td
+          = application.display_kind
+        td
+          = application.formatted_submission_date
+        td
+        td
+          - if application.complete?
+            = application.certificate.display_status
+          - else
+            = application.status
+        td
+          = application.decision.titleize if application.decision
+        td
+          - if application.deleteable? current_user
+            = link_to 'Delete', sba_application_path(application), class: "confirmation delete-cert", method: :delete
+
+  - @eight_a_certs.each do |certificate|
+    tr
+      td
+        - if certificate.uses_master_apps?
+          = certificate_title_link certificate, current_user, current_organization
+        - elsif current_user.can_review?(certificate)
+          = certificate_review_link certificate, current_user
+        - elsif current_user.can_view_app? certificate
+          = link_to certificate.certificate_type.initial_questionnaire.link_label, questionnaire_organization_sba_application_path(certificate.current_application.questionnaire, current_organization.id, certificate.sba_application.id)
+        - elsif current_user.can? :view_vendor_certification
+          = certificate.certificate_type.initial_questionnaire.link_label
+        - else
+          = certificate.title
+      td
+        = certificate.display_kind
+      td
+        = certificate.formatted_submission_date
+      td
+        = certificate.formatted_expiry_date
+      td
+        = certificate.display_status
+      td
+        = certificate.decision
+      td
+        = render partial: 'shared/dashboard/certificate_actions', locals: {certificate: certificate}

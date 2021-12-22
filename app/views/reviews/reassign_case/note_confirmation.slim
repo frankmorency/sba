@@ -1,0 +1,13 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        h1
+          | Note Created
+    p.usa-font-lead
+      | Your note has been added to the Notes section of this application.
+    p
+      = link_to 'Back to application', sba_application_application_dashboard_overview_index_path(@sba_application.id), class: "usa-button"
+      = link_to 'See notes', sba_application_application_dashboard_notes_path(@sba_application.id), class: "usa-button usa-button-knockout"

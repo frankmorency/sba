@@ -1,0 +1,3 @@
+- if @permissions.can_close_case?
+  li.task-panel-menu__item
+    = link_to 'Close this case', review_close_case_path(@review, :add_sba_note), class: 'task-panel-menu__link--emergency'

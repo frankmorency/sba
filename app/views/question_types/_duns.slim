@@ -1,0 +1,83 @@
+.block
+  .block_fields
+    | #{number_field_tag question.dom_id, question.value, 'aria-label': question.name, required: true, id: "duns-value-#{question.id}" } 
+    - if question.value.nil?
+      = link_to " Confirm DUNS", '#', id: "search-duns-#{question.id}"
+      = link_to " Change DUNS", '#', id: "change-duns-#{question.id}", class: 'hide'
+    - else
+      = link_to " Validate DUNS", '#', id: "search-duns-#{question.id}", class: 'hide'
+      = link_to " Change DUNS", '#', id: "change-duns-#{question.id}"
+  .block_fields
+  = label_tag question.dom_id, question.title, class: 'hide last'
+  div.hide id="duns-biz-name-#{question.id}"
+
+javascript:
+  $(document).ready(function(){
+
+    // not sure this needs to go here. 
+    $.validator.addMethod("validateDuns", function(value, element) {
+      return this.optional(element) || $("#search-duns-#{question.id}").is(':hidden') ;
+    }, "You must confirm the DUNS number");
+
+    $("#search-duns-#{question.id}").click(function(event){
+      event.preventDefault();
+      var dunsEntered = $("#duns-value-#{question.id}").val();
+      run_duns(dunsEntered);
+    });
+
+    $("#change-duns-#{question.id}").click(function(event){
+      event.preventDefault();
+      change_duns();
+    });
+
+
+    var run_duns = function(duns){
+      $.ajax({
+        url: "/api/duns_numbers/" + duns,
+        type: 'GET',
+        beforeSend: function (jqXHR) {
+          jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        dataType: "json",
+        success: function (data, textStatus, jqXHR) {
+          confirm_duns(data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log(errorThrown);
+        }
+      });
+    }
+
+    var confirm_duns = function(data){
+      if(data['name'] !== null)
+      {
+        var r = confirm( 'Please confirm that this is the correct business:\n' + data['name']);
+        if (r == true){
+          confirmed_duns(data['name']);
+        } else {
+          $("#duns-value-#{question.id}").val('');
+          $("#duns-value-#{question.id}").attr('readonly', false);
+        }
+      } else {
+        alert("Mentor does not have an active registration in SAM.gov. Confirm that you’ve typed the correct DUNS or ask the Mentor to register with SAM.gov in order to proceed.");
+        change_duns();
+      }
+    }
+
+    var confirmed_duns = function(str){
+      $("#duns-value-#{question.id}").attr('readonly', true);
+      $("#duns-biz-name-#{question.id}").text('The selected business is: ' + str);
+      $("#duns-biz-name-#{question.id}").removeClass('hide');
+      $("#change-duns-#{question.id}").removeClass('hide');
+      $("#search-duns-#{question.id}").addClass('hide');
+      $($("#duns-value-#{question.id}")[0].form).validate().element("#duns-value-#{question.id}");
+    }
+
+    var change_duns = function(){
+      $("#duns-value-#{question.id}").val('');
+      $("#duns-value-#{question.id}").attr('readonly', false);
+      $("#duns-biz-name-#{question.id}").text('');
+      $("#search-duns-#{question.id}").removeClass('hide');
+      $("#change-duns-#{question.id}").addClass('hide');
+    }
+  });

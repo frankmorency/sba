@@ -1,0 +1,7 @@
+#!/bin/bash
+#source ~/.bashrc
+export TEST_ENV_NUMBER=2
+RAILS_ENV=test bundle install
+RAILS_ENV=test rake parallel:drop
+RAILS_ENV=test rake parallel:setup
+RAILS_ENV=test rake parallel:spec

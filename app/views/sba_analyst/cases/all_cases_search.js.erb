@@ -1,0 +1,9 @@
+var case_number = "<%= @cases.count %>";
+var case_total = "<%= @cases.total %>";
+var pagination_display = "<%= @pagination_display %>"
+var program = "<%= @program %>".toLowerCase();
+$("#case-numbers").html(pagination_display);
+$("#search-results").html("<%= escape_javascript(render partial: 'search_result', locals: { cases: @cases} ) %>");
+$("a.sba-c-pagination__link").each(function() {
+  this.href = this.href.replace("all_cases_search?", program+"?")
+});

@@ -1,0 +1,99 @@
+.usa-width-one-whole.usa-content
+  h1 Vendor Support
+  h2 #{@organization.name}
+  h3 Business Profile
+  .div
+    p
+      b DUNS:
+      span#duns.field
+        = @organization.duns
+    p
+      b CAGE:
+      span#cage.field
+        = @organization.cage_code
+    p
+      b Business Type:
+      span#business_type_text.field
+        = BusinessType.get(@organization.business_type).display_name
+      = select_tag 'business_type', options_from_collection_for_select(BusinessType.all, 'name', 'display_name', @organization.business_type), style:'display:none;'
+      - if @organization.has_any_draft_application?
+        i<
+          | (In order to edit the business type, all draft applications must be deleted.)
+      - else
+        = link_to 'Change Vendors\' Business Type', '#', style:'margin-left:30px;', id:'change_business_type_link', remote: true
+
+  .button_wrapper
+    button#save style='display:none;' Save
+    a#cancel.cancel-co-review href='#' style='display:none; color:#cd2026;' Cancel
+
+  .usa-alert.usa-alert-error role="alert" style='display:none;'
+    .usa-alert-body
+      h3.usa-alert-heading Error Status
+      p.usa-alert-text There was an error updating the business type. Please try again.
+
+  p
+  = link_to "<i class='fa fa-chevron-left'>&nbsp;</i>Vendor Overview".html_safe, sba_analyst_dashboard_show_path(enc: $encryptor.encrypt("duns_number=#{@organization.duns}&tax_identifier=#{@organization.tax_identifier_number}"))
+
+javascript:
+  $(document).ready(function () {
+    $('#change_business_type_link').on("click", function (event) {
+      event.preventDefault();
+
+      $('#business_type').css('display', 'inline');
+      $('button#save').css('display', 'inline');
+      $('a#cancel').css('display', 'inline');
+
+      $('span#business_type_text').contents().remove();
+      $('#change_business_type_link').hide();
+    });
+
+    $('a#cancel').on("click", function (event) {
+      event.preventDefault();
+
+      $('#business_type').css('display', 'none');
+      $('#business_type').val("#{@organization.business_type}").prop('selected', true);
+
+
+      $('#save').css('display', 'none');
+      $('a#cancel').css('display', 'none');
+
+      $('span#business_type_text').append("#{BusinessType.get(@organization.business_type).display_name}");
+      $('#change_business_type_link').show();
+    });
+
+    $('#save').on("click", function (event) {
+      event.preventDefault();
+
+      var data = jQuery.parseJSON('{\"business_type\":\"'+ $('#business_type').val() +'\"}');
+
+      $.ajax({
+        url: "/ops_support/organizations/#{@organization.id}",
+        type: 'PUT',
+        beforeSend: function (jqXHR) {
+          jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+        },
+        dataType: "json",
+        data: {organization: data},
+        success: function (data, textStatus, jqXHR) {
+
+          var business_type = jqXHR.responseJSON["business_type"]
+
+          $('#business_type').css('display', 'none');
+          $('#save').css('display', 'none');
+          $('a#cancel').css('display', 'none');
+          $('span#business_type_text').append(business_type);
+          $('#change_business_type_link').show();
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          if (jqXHR.status == 401) {
+            // Redirect to Login
+            window.location.href = "/";
+          } else {
+            $('.usa-alert-error ').css('display', 'block');
+          }
+        }
+      });
+    });
+
+  });

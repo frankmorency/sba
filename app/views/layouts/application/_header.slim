@@ -1,0 +1,18 @@
+title
+  | certify.SBA.gov
+= javascript_include_tag 'application', media: 'all'
+noscript
+  p
+    | For full functionality of this site it is necessary to enable JavaScript.
+    '
+    | Here are the
+    a<> href="http://www.enable-javascript.com/" target="_blank"
+      | instructions for how to enable JavaScript in your web browser
+- if content_for?(:javascript_includes)
+  = yield :javascript_includes
+= stylesheet_link_tag 'application', media: 'all'
+= csrf_meta_tags
+= favicon_link_tag 'sba_logo_favicon.ico'
+meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+= render 'layouts/application/dap'
+= render 'layouts/application/g_tag_manager'

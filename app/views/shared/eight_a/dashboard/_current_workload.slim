@@ -1,0 +1,7 @@
+section.dashboard-section
+  header.dashboard-section__header
+    h2.dashboard-section__heading My Current Workload
+    - if @workload.blank? || @workload.nil?
+      | There are currently no cases assigned to you.
+    - else
+      = render partial: 'shared/eight_a/dashboard/current_workload_table', locals: {workload: @workload.uniq, application: @sba_application}

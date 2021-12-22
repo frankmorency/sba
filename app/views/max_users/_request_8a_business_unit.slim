@@ -1,0 +1,72 @@
+.usa-width-one-half.standalone-card
+  p.subheading Requesting Access
+  h1 What is your business unit?
+  p.usa-text-small Select all that apply
+  form.usa-form action="/next_page" method="post"
+    = hidden_field_tag :authenticity_token, form_authenticity_token
+    = hidden_field_tag :hash, @hash.to_json
+    .questions
+      fieldset
+        legend.usa-sr-only Select your business unit(s)
+        ul.usa-unstyled-list
+          li onclick="checkBuUnit();"
+            input#bu_cods  name="business_unit" type="radio" value="cods" /
+            label for="bu_cods"  CODS
+
+          li onclick="checkBuUnit();"
+            input#bu_hq_program  name="business_unit" type="radio" value=("hq_program") /
+            label for="bu_hq_program"  HQ Program
+
+          li onclick="checkBuUnit();"
+            input#bu_size  name="business_unit" type="radio" value="size" /
+            label for="bu_size"  SIZE
+
+          li onclick="checkBuUnit();"
+            input#bu_ops  name="business_unit" type="radio" value=("ops") /
+            label for="bu_ops"  OPS
+
+          li onclick="checkBuUnit();"
+            input#bu_district_office  name="business_unit" type="radio" value="district_office" /
+            label for="bu_district_office"  District Office
+
+          li onclick="checkBuUnit();"
+            input#bu_hq_ce  name="business_unit" type="radio" value=("hq_ce") /
+            label for="bu_hq_ce"  CE
+
+          li onclick="checkBuUnit();"
+            input#bu_hq_legal  name="business_unit" type="radio" value="hq_legal" /
+            label for="bu_hq_legal"  Legal
+
+          li onclick="checkBuUnit();"
+            input#bu_oig  name="business_unit" type="radio" value=("oig") /
+            label for="bu_oig"  OIG
+
+
+    button.usa-button#bu-submit type="submit"  Next
+    a.usa-button.usa-button-knockout href="#" onclick="javascript:window.history.back();"  Go Back
+
+javascript:
+
+  function checkBuUnit() {
+    if ( $("input#bu_cods").is(':checked') == true ||
+        $("input#bu_hq_program").is(':checked') == true ||
+        $("input#bu_size").is(':checked') == true ||
+        $("input#bu_ops").is(':checked') == true ||
+        $("input#bu_district_office").is(':checked') == true ||
+        $("input#bu_hq_ce").is(':checked') == true ||
+        $("input#bu_hq_legal").is(':checked') == true ||
+        $("input#bu_oig").is(':checked') == true)
+    {
+            $("#bu-submit")[0].disabled = false;
+    }
+    else
+    {
+      $("#bu-submit")[0].disabled = true;
+    }
+  }    
+
+  $(document).ready(function() {
+    if( $("#bu-submit").length != 0 ){
+        $("#bu-submit")[0].disabled = true;
+    }
+  });

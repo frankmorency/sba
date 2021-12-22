@@ -1,0 +1,13 @@
+= hidden_field_tag :application_id, app.id
+fieldset
+  h4 Reassign case to myself
+  .usa-width-one-half
+    ul.usa-unstyled-list
+      li
+        input name="user_id" required="" type="radio" value=("#{current_user.id}") id="#{current_user.id}" /
+        label for="#{current_user.id}"
+          = current_user.name
+
+= render partial: 'reviews/reassign_case/assignment_options', locals: {users: @hq_users, option_id_prefix: 'hq', option_list_title: 'Headquarters'} if app.is_initial?
+= render partial: 'reviews/reassign_case/assignment_options', locals: {users: @sf_users, option_id_prefix: 'sf', option_list_title: 'San Francisco CODS'}
+= render partial: 'reviews/reassign_case/assignment_options', locals: {users: @phily_users, option_id_prefix: 'ph', option_list_title: 'Philadelphia CODS'}

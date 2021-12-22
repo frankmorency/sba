@@ -1,0 +1,63 @@
+table#certifications-mentor style="margin-top: 0px; padding-top: 0px"
+	thead
+	  tr
+	    th scope="col" nowrap="" Programs
+	    th scope="col" Type
+	    th scope="col" Submission Date
+	    th scope="col" Expiration Date
+	    th scope="col" Status
+	    th scope="col" Decision
+	    th scope="col" Action
+	- @annual_reports.each do |annual_report|
+	  tr
+	   td
+	     - if current_user.can?(:sba_user) || current_user.can?(:ensure_ops_support)
+	       = link_to 'MPP Application', questionnaire_organization_sba_application_path(questionnaire_id: annual_report.sba_application.questionnaire.id, organization_id: annual_report.sba_application.organization.id, id: annual_report.sba_application.id), target: '_blank'
+	   td Annual Report
+	   td
+	     = annual_report.formatted_submission_date
+	   td
+	   td Active
+	   td
+	     = annual_report.status
+	   td
+	     - unless annual_report.status == "returned"
+	       = link_to 'View summary', questionnaire_organization_sba_application_path(annual_report.sba_application.questionnaire, annual_report.organization.id, annual_report.sba_application.id)
+
+	- @mpp_draft_apps.each do |application|
+		tr
+			td
+			 = application.questionnaire.link_label
+			td
+			 = application.display_kind
+			td
+			td
+			td
+			 = application.display_status
+			td
+			td
+	- @mpp_certs.each do |certificate|
+	  tr
+	    td
+	      - if certificate.uses_master_apps?
+	        = certificate_title_link certificate, current_user, current_organization
+	      - elsif current_user.can_review?(certificate)
+	        = certificate_review_link certificate, current_user
+	      - elsif current_user.can_view_app? certificate
+	        = link_to certificate.certificate_type.initial_questionnaire.link_label, questionnaire_organization_sba_application_path(certificate.current_application.questionnaire, current_organization.id, certificate.sba_application.id)
+	      - elsif current_user.can? :view_vendor_certification
+	        = certificate.certificate_type.initial_questionnaire.link_label
+	      - else
+	        = certificate.title
+	    td
+	      = certificate.display_kind
+	    td
+	      = certificate.formatted_submission_date
+	    td
+	      = certificate.formatted_expiry_date
+	    td
+	      = certificate.display_status
+	    td
+	      = certificate.decision
+	    td
+	      = render partial: 'shared/dashboard/certificate_actions', locals: {certificate: certificate}

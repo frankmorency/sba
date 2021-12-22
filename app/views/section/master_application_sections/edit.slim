@@ -1,0 +1,17 @@
+- if current_user.cannot? :contribute
+  h2 #{@section.title}
+
+  div.wosb-detail-page
+    div
+      = render partial: 'section/master_application_sections/eight_a'
+
+  = render partial: 'section/base/javascript'
+
+- else
+  table
+    thead
+      tr
+        th Type
+        th Status
+    tbody
+      = render partial: 'contributors/dashboard/table'

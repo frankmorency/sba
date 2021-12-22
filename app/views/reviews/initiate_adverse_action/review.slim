@@ -1,0 +1,101 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+  span.subheading #{@adverse_action_title}: Step 4 of 4
+  h1 Review and complete
+  p Please review the information below and complete your recommendation.
+
+  .review-info
+    .review-info__item
+      h2.review-info__heading Send case to:
+      p #{@reassign_to.first_name} #{@reassign_to.last_name}
+
+    .review-info__item
+      h2.review-info__heading Documents:
+      p
+        span data-print="analysis_doc"
+        = session[:analysis_document].nil? ? 'No file chosen' : session[:analysis_document][:original_file_name]
+
+    .review-info__item
+      .review-info__content
+        h2.review-info__heading Your note
+        - if session[:note_message].blank?
+            p Skipped
+        - else
+            p
+              strong
+                ' Subject:
+              span[data-print="note_subject"]
+              = session[:note_subject]
+            p
+              strong
+                ' Message:
+              span[data-print="note_text"]
+              = session[:note_message]
+            p
+              strong
+                ' Tags:
+              span[data-print="note-tags"]
+              = session[:note_tags].join(", ")
+    
+  = form_tag( wizard_path, {method: :put, id: :new_eight_a_retain_firm} ) do
+    .review-info.no-border
+      .usa-width-one-whole style="margin-left: 1px;"
+        input type="checkbox" id="accept_terms" class="signed" name="thischeckbox"
+        label class="used-refer-case" for="accept_terms" I used “Refer case within SBA” to get approval for this action.
+        br
+      hr
+    p
+      = submit_tag("Send to Approver", class: "usa-button", id: "form_submit")
+      = link_to "Start over", wizard_path(:adverse_action)
+
+javascript:
+    $(document).ready(function () {
+
+        $('#error-alert-container').hide();
+
+        $("#new_eight_a_retain_firm").validate({
+            ignore: ".ignore",
+            onkeyup: false,
+            onfocusout: false,
+            errorPlacement: function(error, element) {
+                if(element.is($("#accept_terms"))){
+                    $(".used-refer-case").after(error);
+                } else {
+                    element.after(error);
+                }
+            },
+            rules: {
+                "thischeckbox": {
+                    required: true
+                }
+            },
+            messages: {
+                "thischeckbox": "<div> Please confirm the statement above by checking the box.</div>"
+            },
+            errorElement: 'span',
+            invalidHandler: function(event, validator) {
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    $('#error-alert-container').show();
+                }
+            },
+            showErrors: function(errorMap, errorList) {
+                this.defaultShowErrors();
+                var content = '';
+                for (i = 0; i < errorList.length; i++) {
+                    content+="<p class='usa-alert-text'>"+errorList[i].message+"</p>";
+                }
+                $("#thischeckbox-error").appendTo(".used-refer-case");
+                $('h3.usa-alert-heading').after(content);
+            }
+        });
+
+        // Click Submit button
+        $('#form_submit').on("click", function(event) {
+            event.preventDefault();
+            $('h3.usa-alert-heading').siblings().remove();
+            $("#new_eight_a_retain_firm").submit();
+        });
+
+    });

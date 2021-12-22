@@ -1,0 +1,72 @@
+- application ||= @sba_application
+.full-grey
+  br
+  .masthead
+    = render partial: 'shared/eight_a/masthead/common', locals: {application: application, organization: organization}
+    .usa-grid-full.certify-local-nav
+      ul.usa-nav-primary.usa-accordion
+        li
+          - if application.is_really_a_review?
+            = link_to application.label, organization_adverse_action_review_path(application.organization, application), class: "usa-nav-link", id: 'overview_tab'
+          - else
+            = link_to sba_application_application_dashboard_overview_index_path(sba_application_id: application.id), class: "usa-nav-link", id: 'overview_tab' do
+              = (is_vendor_or_contributor? current_user) ? 'Overview' : 'Application'
+        - if application.display_messages?
+          li
+            = link_to sba_application_conversations_path(sba_application_id: application.id), class: 'usa-nav-link', id: 'messages_tab' do
+              span
+                | Messages
+        - if application.display_documents?
+          li
+            - if application.is_really_a_review?
+              = link_to organization_adverse_action_review_analyst_documents_path(application.organization, adverse_action_review_id: application.case_number), class: 'usa-nav-link', id: 'documents_tab' do
+                span
+                  | Analyst Documents
+            - else
+              button#documents_tab.usa-accordion-button.usa-nav-link[aria-expanded="false" aria-controls="side-nav-3"]
+                span
+                  | Documents
+              ul#side-nav-3.usa-nav-submenu[aria-hidden="true"]
+                li
+                  = link_to sba_application_application_dashboard_firm_documents_path(sba_application_id: application.id), class: "usa-nav-link", id: 'firm_documents_tab' do
+                    | Firm Documents
+                - unless (is_vendor_or_contributor? current_user)
+                  li
+                    = link_to sba_application_application_dashboard_analyst_documents_path(sba_application_id: application.id), class: "usa-nav-link", id: 'analyst_documents_tab' do
+                      | Analyst Documents
+        - unless (is_vendor_or_contributor? current_user)
+          li
+            - path = application.is_really_a_review? ? organization_adverse_action_review_notes_path(application.organization, adverse_action_review_id: application.case_number) : sba_application_application_dashboard_notes_path(sba_application_id: application.id)
+            = link_to path, class: 'usa-nav-link', id: 'notes_tab' do
+              span
+                | SBA Notes
+        - unless (is_vendor_or_contributor? current_user)
+          li
+            - unless application.is_really_a_review?
+              = link_to sba_application_application_dashboard_activity_log_index_path(sba_application_id: application.id), class: 'usa-nav-link', id: 'activity_log_tab' do
+                span
+                  | Activity Log
+        - if show_bdmis_historic_data?(application, current_user)
+          li
+            = link_to sba_application_application_dashboard_bdmis_history_index_path(sba_application_id: application.id), class: 'usa-nav-link', id: 'bdmis_action_history_tab' do
+              span
+                | BDMIS History
+javascript:
+  $('header.navigation').css('margin-bottom', '0');
+  $('section.usa-grid-full').css('max-width', '100%');
+  $(document).ready(function () {
+    $('#firm_documents_tab').on('click', function () {
+      $("#application_tab_content").addClass("hide");
+      $("#firm_documents_content").removeClass("hide");
+    });
+
+    $('#view_archived_documents').on('click', function () {
+      $("#active_documents").addClass("hide");
+      $("#inactive_documents").removeClass("hide");
+    });
+
+    $('#view_active_documents').on('click', function () {
+      $("#inactive_documents").addClass("hide");
+      $("#active_documents").removeClass("hide");
+    });
+  });

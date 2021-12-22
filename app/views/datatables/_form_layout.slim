@@ -1,0 +1,110 @@
+
+javascript:
+  var #{unique_id}_editor; // use a global for the submit and return data rendering in the examples
+
+  $(document).ready(function () {
+    function #{unique_id}_createPanel(data) {
+      var id = data.DT_RowId;
+      var layout_info = new #{layout}(data);
+
+      $(layout_info.to_html()).appendTo("##{unique_id}_panels");
+      if ($('.panel .remove').size() <= 1) {
+        $('.panel .remove').hide();
+      }
+
+      $('*[data-editor-field]').on('click', function () {
+        #{unique_id}_editor.bubble(this, {
+          submitOnBlur: true
+        });
+      });
+    }
+
+    // Object that will contain the local state
+    var #{unique_id}_tabledata = {};
+
+    // Create or update the tabledata localStorage entry
+    if ($("##{unique_id}").html()) {
+      #{unique_id}_tabledata = JSON.parse($("##{unique_id}").html());
+    }
+
+    // Set up the editor
+    #{unique_id}_editor = new $.fn.dataTable.Editor({
+      fields: #{fields},
+      ajax: function (method, url, d, successCallback, errorCallback) {
+        var output = {data: []};
+
+        if (d.action === 'create') {
+          // Create new row(s), using the current time and loop index as
+          // the row id
+          var dateKey = +new Date();
+
+          $.each(d.data, function (key, value) {
+            var current_first_name = value.first_name;
+            var current_last_name = value.last_name;
+            var updated_firstname = current_first_name.replace(/[^a-zA-Z_]/g, " ");
+            var updated_lastname = current_last_name.replace(/[^a-zA-Z_]/g, " ");
+            value.first_name = updated_firstname;
+            value.last_name = updated_lastname;
+            value.DT_RowId = dateKey + '' + key;
+            value.operation = 'create';
+            #{unique_id}_tabledata[value.DT_RowId] = value;
+            output.data.push(value);
+          });
+        }
+        else if (d.action === 'edit') {
+          // Update each edited item with the data submitted
+          $.each(d.data, function (id, value) {
+            value.DT_RowId = id;
+            $.extend(#{unique_id}_tabledata[id], value);
+            output.data.push(#{unique_id}_tabledata[id]);
+          });
+        }
+        else if (d.action === 'remove') {
+          // Remove items from the object
+          $.each(d.data, function (id) {
+            #{unique_id}_tabledata[id].operation = 'delete';
+          });
+        }
+
+        // Store the latest `tabledata` object for next reload
+        $("##{unique_id}").html(JSON.stringify(#{unique_id}_tabledata));
+
+        // Show Editor what has changed
+        successCallback(output);
+      }
+    });
+
+    // Initialise the DataTable
+    #{unique_id}_editor.on('postCreate', function (e, json) {
+      #{unique_id}_createPanel(json.data[0]);
+    });
+
+    $("##{unique_id}_new_button").on('click', function () {
+      #{unique_id}_editor
+              .title('Create new record')
+              .buttons('Create')
+              .create();
+    });
+
+    // Edit
+    $("##{unique_id}_panels").on('click', 'i.edit', function () {
+      #{unique_id}_editor
+              .title('Edit record')
+              .buttons('Save changes')
+              .edit($(this).data('id'));
+    });
+
+    // Remove
+    $("##{unique_id}_panels").on('click', 'i.remove', function () {
+      #{unique_id}_editor
+              .title('Delete record')
+              .buttons('Delete')
+              .message('Are you sure you wish to delete this record?')
+              .remove($(this).data('id'));
+    });
+
+    // Load the initial data and display in panels
+    for (var key in #{unique_id}_tabledata) {
+      #{unique_id}_createPanel(#{unique_id}_tabledata[key]);
+    }
+  });

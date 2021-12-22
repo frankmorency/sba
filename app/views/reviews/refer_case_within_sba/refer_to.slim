@@ -1,0 +1,53 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+  span.subheading Refer case
+  h1 Refer case within SBA
+
+  p.usa-font-lead Refer the case to get approvals prior to making a recommendation. Prior to referral, upload all relevant documents to the Analyst Documents. While this case is referred, it will remain in the case owner’s dashboard.
+
+  h4 Refer this case to
+
+  = form_tag(wizard_path, {method: :put, id: :refer_to_form}) do
+    = radio_button_tag(:refer_to, 'firm_district_office')
+    = label_tag(:refer_to_firm_district_office, 'Someone in the firm’s District Office')
+
+    = radio_button_tag(:refer_to, 'other_district_office')
+    = label_tag(:refer_to_other_district_office, 'Another District Office')
+
+    = radio_button_tag(:refer_to, 'size_review')
+    = label_tag(:refer_to_size_review, 'Size Review')
+
+    = radio_button_tag(:refer_to, 'district_counsel')
+    = label_tag(:refer_to_district_counsel, 'District Counsel')
+
+    = radio_button_tag(:refer_to, 'inspector_general')
+    = label_tag(:refer_to_inspector_general, 'Inspector General')
+
+    = radio_button_tag(:refer_to, 'hq_program')
+    = label_tag(:refer_to_hq_program, 'HQ program')
+
+    = radio_button_tag(:refer_to, 'continuing_eligibility')
+    = label_tag(:refer_to_continuing_eligibility, 'Continuing Eligibility')
+
+    .actions
+      .actions__main
+        = submit_tag 'Next'
+        = link_to 'Cancel', '#', :onclick => 'window.history.back();return false;'
+
+javascript:
+    $(function () {
+        $("#refer_to_form").validate({
+            errorPlacement: function (error, element) {
+                $("label").last().after(error);
+            },
+            rules: {
+                "refer_to": {
+                    required: true
+                }
+            },
+            messages: {
+                "refer_to": "Select an option"
+            }
+        });
+    });

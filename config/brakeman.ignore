@@ -1,0 +1,82 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Cross Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "07bfac10b1d1dadecdf2fbadf5f447e6cc3879ba6046d36dfc8c4e3642339a12",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/help_pages/index.slim",
+      "line": 13,
+      "link": "http://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "HelpPage.last.right_panel",
+      "render_path": [{"type":"controller","class":"HelpPagesController","method":"index","line":13,"file":"app/controllers/help_pages_controller.rb"}],
+      "location": {
+        "type": "template",
+        "template": "help_pages/index"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Request Forgery",
+      "warning_code": 7,
+      "fingerprint": "121e715c0175f6892a1056acb4c621d81348972b392c3bef300339bc90f0b3f5",
+      "check_name": "ForgerySetting",
+      "message": "'protect_from_forgery' should be called in Api::V1::CertificationsController",
+      "file": "app/controllers/api/v1/certifications_controller.rb",
+      "line": 3,
+      "link": "http://brakemanscanner.org/docs/warning_types/cross-site_request_forgery/",
+      "code": null,
+      "render_path": null,
+      "location": {
+        "type": "controller",
+        "controller": "Api::V1::CertificationsController"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "63a05966f68cebdef6c3e359740a409dc7fe2f6e816e5c16adf68e6e1de24eca",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/help_pages/index.slim",
+      "line": 7,
+      "link": "http://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "HelpPage.last.title",
+      "render_path": [{"type":"controller","class":"HelpPagesController","method":"index","line":13,"file":"app/controllers/help_pages_controller.rb"}],
+      "location": {
+        "type": "template",
+        "template": "help_pages/index"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "b2e12aa3fcd76c2897846ffce3c7ae706f1f306be920607d3d219a92f422e78f",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/help_pages/index.slim",
+      "line": 11,
+      "link": "http://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "HelpPage.last.left_panel",
+      "render_path": [{"type":"controller","class":"HelpPagesController","method":"index","line":13,"file":"app/controllers/help_pages_controller.rb"}],
+      "location": {
+        "type": "template",
+        "template": "help_pages/index"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "note": ""
+    }
+  ],
+  "updated": "2018-01-02 11:31:28 -0500",
+  "brakeman_version": "3.7.2"
+}

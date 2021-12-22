@@ -1,0 +1,45 @@
+h2 = business_partner.name
+.usa-grid-full
+  .usa-width-one-half
+    p
+      b As of Date:
+      br
+      = l business_partner.answer_for('edwosb_cash_as_of_date', @sba_application.id).value_as_date if business_partner.answer_for('edwosb_cash_as_of_date', @sba_application.id)
+    p
+      b Name:
+      br
+      | #{business_partner.name}
+
+    - unless business_partner.is_a? User
+      p
+        b Address:
+        br
+
+          | #{business_partner.address}
+
+    - unless business_partner.is_a? User
+      p
+        b City, State, Zip:
+        br
+          | #{business_partner.city}, #{business_partner.state}, #{business_partner.postal_code}
+
+  .usa-width-one-half
+    - unless business_partner.is_a? User
+      p
+        b Business Phone:
+        br
+
+          | #{business_partner.business_phone}
+
+    - unless business_partner.is_a? User
+      p
+        b Home Phone:
+        br
+          | #{business_partner.home_phone}
+
+    p
+      b Email:
+      br
+      | #{business_partner.email}
+
+= render partial: '/section/personal_summaries/financial', locals: {assets: assets, liabilities: liabilities, agi: agi, income: income}

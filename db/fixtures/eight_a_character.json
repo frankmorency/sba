@@ -1,0 +1,39 @@
+[
+  {
+    "section": "character",
+    "answers": {
+      "character_16a": {
+        "question_text": "Has the applicant firm (under any name) ever been debarred or suspended by any Federal entity?",
+        "question_name": "character_16a",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      },
+      "character_16b": {
+        "question_text": "Does the applicant firm have any outstanding delinquent Federal, state or local financial obligations or liens filed against it?",
+        "question_name": "character_16b",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      },
+      "character_16c": {
+        "question_text": "Is the applicant firm a defendant in any pending lawsuit?",
+        "question_name": "character_16c",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      },
+      "character_16d": {
+        "question_text": "Has the applicant firm filed for bankruptcy or insolvency within the past 7 years?",
+        "question_name": "character_16d",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      }
+    }
+  }
+]

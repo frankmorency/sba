@@ -1,0 +1,29 @@
+- if @hash[:current_page] == "already-requested-roles"
+  = render partial: 'already_requested_roles'
+
+- elsif @hash[:current_page] == "landing"
+  = render partial: 'landing'
+
+- elsif @hash[:current_page] == "request-sba-access"
+  = render partial: 'request_sba_access'
+
+- elsif @hash[:current_page] == "review-request-access"
+  = render partial: "review_request_access"
+
+- elsif @hash[:current_page] == "request-8a-business-unit"
+  = render partial: 'request_8a_business_unit'
+
+- elsif @hash[:current_page] == "request-8a-duty-station"
+  = render partial: "request_8a_duty_station"
+
+- elsif  @hash["current_page"] == "confirmation-sba-user"
+  = render partial: "confirmation_sba_user"
+
+- elsif  @hash[:current_page] == "confirmation-co"
+  = render partial: "confirmation_co"
+
+- elsif @hash[:current_page] == "confirmation-sba-user-problem"
+  = render partial: "confirmation_sba_user_problem"
+
+- elsif @hash[:current_page] == "role-rejected"
+  = render partial: "role_rejected"

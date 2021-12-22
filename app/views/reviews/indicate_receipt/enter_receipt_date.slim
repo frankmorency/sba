@@ -1,0 +1,31 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+.sba-l-container
+  .sba-l-row
+    .sba-l-col--12.sba-u-padding-x--2
+      .certify-page-header
+        .certify-page-header__primary
+          span.subheading--large
+            | Appeal Received Outside Certify: Step 2 of 4
+          h1
+            | When was the package received?
+      p.usa-font-lead
+        | Please indicate when the package was received by the SBA, or if it is an appeal, by OHA.
+  .sba-l-row
+    .sba-l-sm-col--12.sba-l-md-col--golden-lg.sba-l-lg-col--8.sba-u-padding-x--2
+      .sba-c-alert
+        .sba-c-alert__icon.sba-u-padding-x--2.sba-u-padding-y--2
+          svg.sba-c-icon[aria-hidden="true"]
+            use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#info-circle"]
+        .sba-c-alert__body
+          p.sba-c-alert__text.sba-u-padding-y--2
+            | Certify.sba.gov will set the due date for Appeal to 45 days from when you indicate the request was received.
+      = form_tag wizard_path, {method: :put, id: :receipt_date}
+        label.sba-c-label[for="date_input"]
+          | Enter date the package was received by the SBA
+        p#date_input_hint.sba-c-form-hint
+          | For example, MM/DD/YYYY
+        input#date_input.sba-c-input.sba-u-margin-bottom--7[name="receipt_date" type="date" aria-describedby="date_input_hint" pattern="(0[1-9]|1[012]).(0[1-9]|1[0-9]|2[0-9]|3[01]).[0-9]{4}" required=""]
+        .actions
+          .actions__main
+            = submit_tag "Next"
+            = link_to 'Cancel', previous_wizard_path

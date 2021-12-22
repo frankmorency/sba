@@ -1,0 +1,10 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+
+  h1 This case has been assigned to #{@new_case_owner.name}.
+
+  p.usa-font-lead The case was reassigned on #{l @review.current_assignment.created_at}.
+
+  = link_to 'View dashboard', sba_application_application_dashboard_overview_index_path(sba_application_id: @sba_application.id), class: "usa-button"
+  = link_to 'Add SBA note', wizard_path(:add_a_note), class: "usa-button usa-button-knockout"

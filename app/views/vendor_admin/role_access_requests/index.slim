@@ -1,0 +1,32 @@
+= render partial: 'layouts/application/sidenav/vendor'
+h1 Manage employee access
+p
+  | You may accept, reject, or revoke employee access to your business's programs in #{ link_to "certify.SBA.gov", "https://certify.sba.gov" } here. Employees will have access to all documents and programs associated with this DUNS number.
+div.overflow-auto
+  #table-search
+    table.searchable
+      thead
+        tr
+          th scope="col" = sortable 'Name', model: VendorRoleAccessRequest
+          th scope="col" = sortable 'Role', model: VendorRoleAccessRequest
+          th scope="col" = sortable 'Date', model: VendorRoleAccessRequest
+          th scope="col" = sortable 'Status', model: VendorRoleAccessRequest
+          - if current_user.can? :assign_vendor_role
+            th scope="col" Action
+
+      - @access_requests.each do |req|
+        tr
+          td = mail_to req.user.email, req.user.name, class: 'mailto-link'
+          td = req.role_name
+          td = l req.date
+          td = req.status.titleize
+          - if current_user.can? :assign_vendor_role
+            td
+              - if current_user != req.user
+                - if req.requested?
+                  = button_to 'Accept', vendor_admin_role_access_request_accept_path(req.id), method: :put, 'data-confirm': "Are you sure you want to accept access?"
+                  = link_to 'Deny', vendor_admin_role_access_request_reject_path(req.id), class: "error", method: :put, 'data-confirm': "Are you sure you want to reject access?"
+                - elsif req.accepted?
+                  = link_to 'Revoke', vendor_admin_role_access_request_revoke_path(req.id), class: "error", method: :put, 'data-confirm': "Are you sure you want to revoke access?"
+
+= will_paginate(@access_requests) unless @access_requests.empty?

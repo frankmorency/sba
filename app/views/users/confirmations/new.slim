@@ -1,0 +1,9 @@
+.usa-grid-full
+  h1 Send another email to confirm account
+  p.usa-font-lead
+    | Enter the email you used when you created your certify.SBA.gov account. You will receive an email with a verification link that is valid for 24 hours.
+  = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: {method: :post}) do |f|
+    .field
+      = f.label :email
+      = f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email)
+      = f.submit "Send instructions again"

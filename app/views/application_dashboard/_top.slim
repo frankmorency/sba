@@ -1,0 +1,10 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+- if current_user.is_sba? && @sba_application.is_a?(SbaApplication::MasterApplication) && @sba_application.duty_stations.empty?
+  = render partial: 'select_duty_station', locals: {application: @sba_application, title: 'Select a District Office' }
+- else
+  = render partial: 'shared/eight_a/fun_bar', locals: {application: @sba_application }
+
+  .usa-grid-full style="max-width:1250px"
+    .certify-page-header
+      .certify-page-header__primary
+        h1 Application Overview

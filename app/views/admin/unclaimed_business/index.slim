@@ -1,0 +1,13 @@
+h1 Unclaimed Businesses (for Tests)
+
+table
+  tr
+    th scope="col" DUNS
+    th scope="col" Tax Identification Number
+    th scope="col" MPIN
+
+  - @biz.each do |b|
+    tr
+      td = b["duns"]
+      td = b["tax_identifier_number"]
+      td = b["mpin"]

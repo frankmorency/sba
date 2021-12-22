@@ -1,0 +1,23 @@
+.usa-grid-full
+
+  h1 Accept this case for processing?
+
+  p.usa-font-lead By accepting this case for processing, you confirm that everyone who must provide information for this Annual Review has submitted their information:
+
+  ul
+    li Owners claiming disadvantage
+    li Spouses of all owners claiming disadvantage
+    li Everyone who owns at least 10% of the firm
+    li Officers
+    li Directors
+    li Board members
+    li Managers
+    li Partners
+
+  p.usa-font-lead For the first year in Certify, all of the above must provide their information for an Annual Review.
+
+  p.usa-font-lead Once processing begins, new contributors can’t submit and SBA has 30 days to complete this Annual Review.
+
+  = form_for review, url: wizard_path, method: :put do |f|
+    = f.submit "Yes, accept for processing", data: { confirm: "Are you sure you want to begin processing?" }
+    = link_to 'Start Over', new_sba_analyst_sba_application_review_path(sba_application_id: app.id)

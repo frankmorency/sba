@@ -1,0 +1,53 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Recommendation: Step 4 of 4
+        h1 Review and Complete
+    p.usa-font-lead After you submit your recommendation, this case will be removed from your workload.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        .review-info
+          .review-info__item
+            .review-info__content
+              h2.review-info__heading Recommendation
+              - if @recommendation.recommend_eligible == "true"
+                p Recommend eligible
+              - else
+                - if @recommendation.recommend_eligible == 'termination_recommended'
+                  p Termination Recommended
+                - elsif @recommendation.recommend_eligible == 'voluntary_withdrawal_recommended'
+                  p Voluntary Withdrawal Recommended
+                - elsif @recommendation.recommend_eligible == 'early_graduation_recommended'
+                  p Early Graduation Recommended
+                - else
+                  p Recommend ineligible
+          .review-info__item
+            .review-info__content
+              h2.review-info__heading Documents
+              p
+                strong
+                  ' Analysis:
+                span data-print="analysis_doc"
+                = session[:analysis_document].nil? ? 'No file chosen' : session[:analysis_document][:original_file_name]
+              p data-print="note"
+              p
+                strong
+                  ' Notice:
+                span data-print="determination_doc"
+                = session[:determination_document].nil? ? 'No file chosen' : session[:determination_document][:original_file_name]
+          .review-info__item
+            .review-info__content
+              h2.review-info__heading Forward to
+              p
+                = @recommendation.individual.name
+
+  = form_for @recommendation,  url: wizard_path, method: :put do |f|
+    = f.hidden_field 'recommend_eligible', value: params["recommendation"]["recommend_eligible"]
+    = f.hidden_field 'recommend_eligible_for_appeal', value: params["recommendation"]["recommend_eligible_for_appeal"]
+    = f.hidden_field 'individual_id', value: params["recommendation"]["individual_id"]
+    p
+      = f.submit "Submit recommendation"
+      = link_to "Back", wizard_path(:decision)

@@ -1,0 +1,43 @@
+
+//SBA type hierchy
+.forgot-password {
+border: 3.5px solid #003399;
+border-radius: 5px;
+padding: 0.75rem;
+text-decoration: none;
+font-size: 18px;
+font-weight: bold;
+letter-spacing: 0.05rem;
+color: #003399;
+&:hover {
+background: #003399;
+color: #fff;
+}
+}
+
+
+//private
+h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+ul, ol{
+  margin-bottom: 0;
+}
+
+h1.usa-heading{
+  font-family: "Source Sans Pro";
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 1.3em/57px;
+}
+
+//maximum text lenght
+p{
+  max-width: 750px;
+}
+
+table{
+  margin-top: 0;
+}

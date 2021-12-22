@@ -1,0 +1,57 @@
+.repeating_questions
+- if question.details
+  - arr = JSON.parse(question.details)
+  - arr.each_with_index do |answer_set, i|
+    = render partial: 'question_types/repeating_question_sub_question', locals: {question: question, index: i, answer_set: answer_set}
+
+br
+- if question.multi
+  a#add_item.edit_controls.table-button.new-record.new-record-black-icon style="cursor: pointer"
+    i.fa.fa-plus-circle style="padding-right: 5px;"
+    span.add-color Add #{question.repeater_label}
+
+javascript:
+  $(function() {
+    var url = "/sba_applications/#{@sba_application.id}/section/#{question.section.name}/questions/#{question.name}/question_presentations/new";
+    var multi = #{question.multi};
+    var item_label = "#{question.repeater_label.downcase}";
+    var item_label_pluralized = "#{question.repeater_label.downcase.pluralize}";
+    var minimum_items = #{question.minimum || 1};
+    var maximum_items = #{question.maximum || 10};
+
+    var n = $('ul.repeating_questions').size();
+
+    var RepeatingQuestion = {
+      add: function(event) {
+        event.preventDefault();
+        $.get(url + '?index=' + ++n, function (data) {
+          $(".repeating_questions:last").append(data);
+
+          $('span.number_me').each(function (index) {
+            $(this).html(" #" + (index + 1));
+          })
+        });
+      }
+    };
+
+    if (multi) {
+      $("#add_item").click(RepeatingQuestion.add);
+    } else if ($('.real_estate_real').size() == 0) {
+      RepeatingQuestion.add();
+    }
+
+    $('.section_form input[type="submit"]').click(function(event) {
+      var size = $('.repeating_question').size();
+      if (size < minimum_items) {
+        alert("You must have at least " + minimum_items + " " + (size == 1 ? item_label : item_label_pluralized));
+        event.preventDefault();
+      } else if ($('ul.repeating_questions').size() > maximum_items) {
+        alert("You can have no more than " + maximum_items + " " + (size == 1 ? item_label : item_label_pluralized));
+        event.preventDefault();
+      }
+    })
+
+    $('span.number_me').each(function (index) {
+      $(this).html(" #" + (index + 1));
+    })
+  });

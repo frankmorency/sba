@@ -1,0 +1,37 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+= render partial: 'shared/eight_a/fun_bar', locals: {application: @sba_application }
+
+- if @action_history_files.any? || @notes.any? || @recommendations.any? || @rma.any?
+  .usa-grid-full style="max-width:1250px"
+    .certify-page-header
+      .certify-page-header__primary
+        h1 BDMIS historic data
+        p class="usa-font-lead" Here are historic information about this firm extracted from the BDMIS system.
+        .section-block
+          - if @action_history_files.any?
+            ul
+            - @action_history_files.each do |action_history|
+              - if action_history.ends_with? ".html"
+                li = link_to "Action History", view_file_sba_application_application_dashboard_bdmis_history_index_path(file_name: action_history), method: :get, class: "usa-button-outline", target: "_blank"
+          - if @notes.any?
+            ul
+            - @notes.each do |note|
+              - if note.ends_with? ".html"
+                li = link_to "Notes", view_file_sba_application_application_dashboard_bdmis_history_index_path(file_name: note), method: :get, class: "usa-button-outline", target: "_blank"
+          - if @rma.any?
+            ul
+            - @rma.each do |rma|
+              - if rma.ends_with? ".html"
+                li = link_to "RMA", view_file_sba_application_application_dashboard_bdmis_history_index_path(file_name: rma), method: :get, class: "usa-button-outline", target: "_blank"
+          - if @recommendations.any?
+            ul
+            - @recommendations.each do |recommendation|
+              - if recommendation.ends_with? ".html"
+                li = link_to "Recommendations", view_file_sba_application_application_dashboard_bdmis_history_index_path(file_name: recommendation), method: :get, class: "usa-button-outline", target: "_blank"
+- else
+  = render partial: "application_dashboard/bdmis_history/no_history"
+
+javascript:
+    $(document).ready(function () {
+        $('#bdmis_action_history_tab').addClass('current');
+    });

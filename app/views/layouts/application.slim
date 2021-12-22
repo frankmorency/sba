@@ -1,0 +1,73 @@
+doctype html
+html lang="en"
+  head
+    - if %w(stage production).include? Rails.env
+      = render partial: 'layouts/application/g_analytics'
+    /! APPLICATION LAYOUT
+    = render partial: 'layouts/application/header'
+  body class=(@public ? 'public' : 'public mainscreen')
+    - if ENV['RAILS_ENV'] == 'development'
+      /= render partial: 'shared/workflow_states/table'
+    a class="usa-skipnav" href="#main-content" Skip to main content
+    - if can? :view_sba_analyst_dashboard, current_user
+      = render partial: 'layouts/application/analyst_navbar'
+    - elsif can? :view_vendor_navbar, current_user
+      = render partial: 'layouts/application/vendor_navbar'
+    - else
+      = render partial: 'layouts/application/navbar'
+
+    section.usa-grid-full
+      article#main-content
+        - unless @questionnaire_layout
+          = render partial: 'layouts/application/notice'
+
+        - if content_for? :sidenav
+          section.usa-width-one-whole
+            aside.usa-width-one-fourth
+              ul.usa-sidenav-list.navigation-menu.show#js-navigation-menu2
+                = yield :sidenav
+            article.usa-width-three-fourths
+              = yield
+        - elsif @questionnaire_layout
+          section.usa-width-one-whole
+            aside.usa-width-one-third.questionnaire-sidenav
+              = render partial: 'layouts/questionnaire/display_section', locals: {section: @sba_application.try(:root_section), root: true}
+            article.usa-width-two-thirds
+              = render 'layouts/application/notice'
+              = yield
+              p If unable to proceed, please scroll up to find error message.
+        - else
+          = yield
+
+      //Return to Top
+      .usa-grid-full
+        a class="return_to_top" href="#top" Return to top
+
+    //Footer
+    = render partial: 'layouts/application/footer'
+
+- if current_user && can?(:view_search, current_user)
+
+- if @read_only
+  javascript:
+    $(function () {
+      $("input[type='submit']").prop('disabled', true);
+      $("input[type='radio']:not(:checked)").prop('disabled', true);
+      $("input[type='text']").prop('disabled', true);
+      $("input[type='number']").prop('disabled', true);
+      $("input[type='checkbox']").prop('disabled', true);
+      $("textarea").prop('disabled', true)
+      $("select").prop('disabled', true);
+      $(".edit_controls").hide();
+      $(".dt-buttons").hide();
+    });
+
+- if content_for? :javascript
+  javascript:
+    $(document).ready(function () {
+      $('ul.usa-sidenav-list li ul').hide();
+      = yield :javascript
+    }
+
+javascript:
+  $('article#main-content> h2:contains("8(a) Master Application")').css('display', 'none')

@@ -1,0 +1,4 @@
+= content_for :sidenav do
+  - if can?(:assign_analyst_role, current_user) || can?(:assign_mpp_role, current_user) || can?(:assign_8a_role, current_user)
+    li
+      = link_to 'Manage analyst access', sba_analyst_role_access_requests_path, class: 'usa-current'

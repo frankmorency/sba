@@ -1,0 +1,44 @@
+- if Feature.active?(:elasticsearch)
+  = render partial: 'search', cases: @cases 
+
+- if Feature.inactive?(:elasticsearch)
+  h1 My cases
+
+  div.overflow-auto
+    #table-search
+
+      table.searchable class="usa-table-borderless"
+        thead
+          tr
+            th scope="col" Business name
+            th scope="col" = sortable 'DUNS', model: Certificate
+            th scope="col" = sortable 'Program', model: Certificate
+            th scope="col" Review type
+            th scope="col" Submitted
+            th scope="col" Owner
+            th scope="col" Current reviewer
+            th scope="col" = sortable 'Status', model: Certificate
+
+        - unless @cases.blank?
+          - @cases.each do |my_case|
+            tr
+              td
+                - if can?(:start_review, current_user)
+                 = link_to my_case.organization.legal_business_name, new_sba_analyst_sba_application_review_path(my_case.current_application) if can?(:start_review, current_user)
+                - else
+                  = my_case.organization.legal_business_name
+              td = link_to my_case.organization.duns_number, sba_analyst_dashboard_show_path(enc: $encryptor.encrypt("duns_number=#{my_case.organization.duns_number}&tax_identifier=#{my_case.organization.tax_identifier_number}"))
+              td = my_case.certificate_type.initial_questionnaire.human_name
+              td = Review::REVIEW_TYPES[my_case.current_review.type] if my_case.current_review
+              td = my_case.current_application.formatted_submission_date if my_case.current_application
+              td = my_case.current_review.current_assignment.owner.name if my_case.current_review && my_case.current_review.assignments
+              td = my_case.current_review.current_assignment.reviewer.name if my_case.current_review && my_case.current_review.assignments
+              td = Certificate::WORKFLOW_STATE_NAMES[my_case.workflow_state]
+        - else
+          tr
+            td colspan=(8) 
+              | No results found.
+
+  = will_paginate(@cases) if !@cases.empty?
+
+  br

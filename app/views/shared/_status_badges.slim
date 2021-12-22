@@ -1,0 +1,6 @@
+- states.each do |status|
+    - modifier = status_to_badge_modifier status
+    span.sba-c-badge.sba-u-font-size--base[class="sba-c-badge#{modifier}"]
+      span[style="color:white; font-weight:bold"]
+        ' Status:
+      | #{display_status status}

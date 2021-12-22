@@ -1,0 +1,38 @@
+.usa-grid-full
+
+  - if editable
+    .usa-width-three-fourths
+      p Business Partners:
+  - else
+    p Business Partners:
+
+  - if editable && !current_user.is_sba?
+    .usa-width-one-fourth
+      = link_to 'Change answer', section_path_helper(@sba_application, section, true)
+
+.usa-grid-full
+  table
+    thead
+      tr
+        th scope="col" First Name
+        th scope="col" Last Name
+        th scope="col" Title
+        th scope="col" Marital Status
+
+    - answer.value["value"].each do |key, value|
+      - if value.is_a?(Hash)
+        - value = value.with_indifferent_access
+        - bp = BusinessPartner.new(first_name: value[:first_name], last_name: value[:last_name], title: value[:title], marital_status: value[:marital_status])
+        tr
+          td
+            = bp.first_name
+            = bp.first_name
+          td
+            = bp.last_name
+          td
+            = bp.title
+          td
+            = bp.marital_status
+
+  br
+  br

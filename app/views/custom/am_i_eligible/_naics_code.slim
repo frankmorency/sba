@@ -1,0 +1,24 @@
+.question.ans-box id="#{name}"
+  .q.question-box
+    .usa-width-one-half
+      p.lead-para
+        = text.html_safe
+      .answer
+        label Enter the NAICS code in which your business operates:
+        input#naics_code type="text"
+        .button_wrapper
+          button#naics_button Find NAICS
+    .details.usa-width-one-half
+      h4  More Information
+      p
+        = render partial: "helpful_info/#{name}/#{details_file}"
+  .a
+    .usa-width-one-whole.bottom-border.xans-box
+      .usa-width-two-thirds
+        .yes.copy
+          = success.html_safe
+        .no.copy
+          = failure.html_safe
+      .usa-width-one-third style="text-align:center"
+        span.change-ans style="color:#0071bc" &nbsp; | &nbsp;
+        = link_to 'Restart from here', '#', class: 'change', id: "#{name}", alt: "Change your answer", title: "Change your answer"

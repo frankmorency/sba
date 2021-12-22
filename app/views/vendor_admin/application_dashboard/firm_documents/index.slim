@@ -1,0 +1,47 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+.usa-grid-full style="max-width:1250px"
+  .certify-page-header
+    .certify-page-header__primary
+      h1 Firm Documents
+
+.usa-grid-full
+  .usa-width-three-fourths
+    = render partial: 'shared/eight_a/documents/firm/index'
+
+javascript:
+  $('#documents_tab').addClass('current')
+
+  $(document).ready(function () {
+    $('#view_archived_documents').on('click', function () {
+      $("#active_documents").removeClass("show-block")
+      $("#active_documents").addClass("hide");
+
+      $("#inactive_documents").addClass("show-block");
+      $("#inactive_documents").removeClass("hide")
+
+      $("#is_active").val(false);
+    });
+    $('#view_active_documents').on('click', function () {
+      $("#inactive_documents").removeClass("show-block")
+      $("#inactive_documents").addClass("hide");
+
+      $("#active_documents").removeClass("hide")
+      $("#active_documents").addClass("show-block");
+
+      $("#is_active").val(true);
+    });
+  });
+
+  $('#submit_user_filter').on('click', function (event) {
+    event.preventDefault();
+    event.stopPropagation()
+
+    if ($("#active_documents").hasClass("show-block")){
+      $("#is_active").val(true)
+    } else {
+      $("#is_active").val(false)
+    }
+
+    $('#firm_documents_user_filter').submit();
+  });

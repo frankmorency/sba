@@ -1,0 +1,8 @@
+.card__bulk-actions
+  .task-panel
+    button.usa-button-unstyled.task-panel-toggle.task-panel-toggle--small.task-panel-toggle--vertical aria-controls="#{prefix}task-panel#{number}" aria-expanded="false" type="button"  actions
+    div id="#{prefix}task-panel#{number}" class="task-panel-content"
+      ul.task-panel-menu
+        - if permissions.can_request_section_revisions?
+          li.task-panel-menu__item
+            = link_to 'Request revisions to section', review_request_adhoc_review_path(review, :start, sub_section_name: section.name), class: 'task-panel-menu__link'

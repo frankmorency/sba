@@ -1,0 +1,20 @@
+
+table
+  tr
+    th scope="col" Questionnaire
+    th scope="col" Section
+    th scope="col" Title
+    th scope="col" Type
+    th scope="col" Rules
+
+  - @sections.each do |s|
+    tr
+      td = s.questionnaire.name
+      td
+        b = s.name
+      td = s.title
+      td = s.type
+      td
+        ul
+          - s.section_rule_origins.each do |r|
+            li = r.debug

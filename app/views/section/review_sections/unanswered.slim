@@ -1,0 +1,8 @@
+h3 You have not answered all questions
+
+p There are sections of the questionnaire that still need to be answered in order to continue:
+
+ul
+  - @unanswered_sections.each do |section|
+    li
+      = link_to section.title, edit_sba_application_questionnaire_question_section_path(@sba_application, @sba_application.questionnaire.name, section.name)

@@ -1,0 +1,45 @@
+.div#business_search
+  .usa-width-one-whole
+    .usa-width-three-fourths
+      = render partial: 'organizations/profile', locals: {org: @organization, search_result: true, sam_snapshot: {} } if can? :view_vendor_dashboard, current_user
+      .usa-width-one-whole
+        = render 'dashboard/tile_certifications' if can? :view_vendor_certification, current_user
+      .usa-width-one-whole
+        = render 'dashboard/tile_document' if can? :view_vendor_documents , current_user
+      .usa-width-one-whole
+        = render 'dashboard/tile_email_notifications' if can? :view_sba_analyst_dashboard, current_user
+    .usa-width-one-fourth
+      h4
+      p
+      - if can? :ensure_ops_support, current_user
+        = link_to 'Vendor Support', ops_support_organization_path(@organization.id)
+
+- if can? :view_vendor_individual_profile, current_user
+  javascript:
+    $(document).ready(function () {
+      $("#analyst-search").validate({
+        rules: {
+          "query": {
+            required: true
+          }
+        },
+        errorElement: 'span'
+      });
+
+      $('#ava-pop').on('click',function (event) {
+        event.preventDefault();
+        lname =  '#{@user.try :last_name}';
+        fname =  '#{@user.try :first_name}';
+        email  = '#{@user.try :email}';
+        phoneno = '#{@user.try :phone_number}';
+
+        alert(
+            'Last Name: '+ lname + "\n" +
+            'First Name: '+ fname + "\n" +
+            'Email: '+ email + "\n" +
+            'Role: Vendor Administrator'+ "\n" +
+            'Phone No: '+ phoneno + "\n"
+        );
+      });
+
+    });

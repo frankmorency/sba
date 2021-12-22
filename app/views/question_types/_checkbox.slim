@@ -1,0 +1,89 @@
+.block
+  .block_fields.dollar_sign
+    | &nbsp;&nbsp;
+  .block_fields
+    - if question.question_type.custom_checkbox?
+      - question.possible_values.each do |selection|
+        = check_box_tag selection.underscore+"#{question.id}", selection, ( question.value ? question.value.include?(selection.to_s) : false), name: "#{question.dom_id}[]"
+        = label_tag selection.underscore+"#{question.id}", selection, class: (selection == question.possible_values.last ? 'bold' : '')
+    - else
+      - question.possible_values.each do |selection|
+        = check_box_tag selection, selection, false, name: "#{question.dom_id}[]", required: 'required'
+        = label_tag selection, selection, class: (selection == question.possible_values.last ? 'last' : ''), required: (selection == question.possible_values.last ? 'true' : 'false')
+
+- if question.question_type.custom_checkbox?
+  - config_show_comment = question.question_type.config_options&.dig('show_comment')
+  // APP-2127 & APP-2545
+  javascript:
+    $(document).ready(function () {
+      if ('#{config_show_comment}' == 'last_only') {
+        // APP-2545 question_type: create_checkboxes_with_comment_required_on_last_selection
+        // show comment box only when last checkbox selected
+        var last_checkbox = $('input[type="checkbox"][name="#{question.dom_id}[]"]:last')
+        // show comment when last checkbox selected
+        if (last_checkbox.prop('checked')) {
+          $("#comment_#{question.unique_id}").show();
+        }
+        // check/un-check last checkbox
+        last_checkbox.change(function() {
+          if (last_checkbox.prop('checked')) {
+            $("#comment_#{question.unique_id}").show();
+          } else {
+            $("#comment_#{question.unique_id}").hide();
+            $("textarea#answers_#{question.id}_comment").val('');
+          }
+        });
+      } else {
+        // APP-2127 question_type: create_checkboxes_with_comment_required_on_last_selection
+        // Show comment when any but the last checkbox is selected
+        var last_checkbox_id = $('input[type="checkbox"][name="#{question.dom_id}[]"]').last().attr('id');
+
+        if ($('input[type="checkbox"][name="#{question.dom_id}[]"]').last().prop('checked')){
+          $('input[type="checkbox"][name="#{question.dom_id}[]"]').not(":last").attr('checked', false);
+          $('input[type="checkbox"][name="#{question.dom_id}[]"]').not(":last").attr("disabled", true);
+        }
+
+        if ($('input[type="checkbox"][name="#{question.dom_id}[]"]:not(:last):checked').length > 0) {
+          $("#comment_#{question.unique_id}").show();
+        }
+
+        $('input[type="checkbox"][name="#{question.dom_id}[]"]').on('click', function () {
+          // Select last option
+          if ($('input[type="checkbox"][name="#{question.dom_id}[]"]').last().prop('checked')) {
+
+            // uncheck and disable previous checkboxes
+            $('input[type="checkbox"][name="#{question.dom_id}[]"]').not(":last").attr('checked', false);
+            $('input[type="checkbox"][name="#{question.dom_id}[]"]').not(":last").attr("disabled", true);
+
+            // make comment box optional
+            $("textarea#answers_#{question.id}_comment").prop('required', false);
+            $("textarea#answers_#{question.id}_comment").attr("aria-required", false);
+
+            $("#comment_#{question.unique_id}").hide();
+            $("textarea#answers_#{question.id}_comment").val('');
+          }
+
+          // Deselect last option
+          if (!$('input[type="checkbox"][name="#{question.dom_id}[]"]').last().prop('checked')){
+            $('input[type="checkbox"][name="#{question.dom_id}[]"]').not(":last").attr("disabled", false);
+          }
+
+          // Select any checkbox (except last)
+          if ($(this).attr('id') != last_checkbox_id && $(this).prop('checked')) {
+            $("#comment_#{question.unique_id}").show();
+          }
+
+          // Deselect any checkbox (except last)
+          if ($(this).attr('id') != last_checkbox_id && !$(this).prop('checked')) {
+            if ($('input[type="checkbox"][name="#{question.dom_id}[]"]:checked').length < 1){
+              // make comment box optional
+              $("textarea#answers_#{question.id}_comment").prop('required', false);
+              $("textarea#answers_#{question.id}_comment").attr("aria-required", false);
+
+              $("#comment_#{question.unique_id}").hide();
+              $("textarea#answers_#{question.id}_comment").val('');
+            }
+          }
+        });
+      }
+    });

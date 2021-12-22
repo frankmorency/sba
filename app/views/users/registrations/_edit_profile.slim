@@ -1,0 +1,27 @@
+article.usa-width-one-half
+  = form_for(resource, as: resource_name, url: registration_path(resource_name), html: {method: :put}) do |f|
+    - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+      div
+        | Currently waiting confirmation for: #{resource.unconfirmed_email}
+    .hidden_field 
+      = f.hidden_field_tag :hidden_duns, current_user.organization.duns
+    .field
+      = f.label :first_name
+      = f.text_field :first_name, autocomplete: 'off'
+    .field
+      = f.label :last_name
+      = f.text_field :last_name, autocomplete: 'off'
+    .field
+      = f.label :phone_number
+      = f.text_field :phone_number, autocomplete: 'off'
+    .field
+      = f.label :email
+      = f.text_field :email, autocomplete: 'off'
+    .field 
+      - if @current_user.roles_map["Legacy"]["VENDOR"][0] == "admin"
+        = f.label_tag(:mpin, 'You must enter your MPIN to update your profile.')
+        = f.password_field_tag :mpin, nil, autocomplete: 'off', required: true
+    .actions
+      .button_wrapper
+        button#submit.usa-button.display-inline type="submit" Update
+      = link_to 'Back to My Profile', vendor_admin_my_profile_index_path

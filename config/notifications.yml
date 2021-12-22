@@ -1,0 +1,43 @@
+default: &default
+  check_for_new: true
+  api_url: <%= ENV["NOTIFICATION_API_URL"] %>
+
+development:
+  <<: *default
+
+docker:
+  <<: *default
+
+test:
+  <<: *default
+  check_for_new: false
+
+build_admin:
+  <<: *default
+
+build:
+  <<: *default
+
+demo_admin:
+  <<: *default
+
+demo:
+  <<: *default
+
+stage_admin:
+  <<: *default
+
+stage:
+  <<: *default
+
+training_admin:
+  <<: *default
+
+training:
+  <<: *default
+
+production_admin:
+  <<: *default
+
+production:
+  <<: *default

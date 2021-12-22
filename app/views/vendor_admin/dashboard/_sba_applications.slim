@@ -1,0 +1,30 @@
+- current_section = application.current_section
+
+- if application.is_mpp_annual_report?
+  = render partial: 'vendor_admin/dashboard/annual_report_row', locals: {application: application, current_section: current_section}
+- else
+  - unless application.in_appeal? || application.is_mpp_initial_complete?
+    tr
+      td
+        - if current_user.is_sba_or_ops?
+          = link_to application.link_label, section_path_helper(application, current_section, true), target: '_blank'
+        - elsif current_user.is_vendor?
+          - if current_user.cannot_view_answers?(application)
+            = application.link_label
+          - elsif !application.is_open? || application.is_under_reconsideration?
+            = app_under_reconsideration_link(application)
+          - else
+            = link_to application.link_label, section_path_helper(application, current_section, true)
+      td = application.display_kind
+      td = application.display_status
+      td = application.formatted_submission_date
+      td
+      td = application.decision.titleize if application.decision
+      td
+        - if application.deleteable? current_user
+          = link_to 'Delete', sba_application_path(application.id), class: "confirmation delete-cert", method: :delete
+        - if application.is_reconsidering?
+          = render partial: 'sba_applications_reconsidering', locals: { application: application,
+                  reconsider_section: application.last_reconsideration_section,
+                  sub_app: application.last_reconsideration_section.sub_application,
+                  current_review:  application.current_review }

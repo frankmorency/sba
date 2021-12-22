@@ -1,0 +1,11 @@
+doctype html
+html
+  /! BLANK LAYOUT
+  body
+    - title = local_assigns[:title] || "PDF.js viewer"
+    meta charset="utf-8" /
+    meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport" /
+    meta content="notranslate" name="google" /
+    title certify.SBA.gov
+    = yield :head
+    = yield

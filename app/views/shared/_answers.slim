@@ -1,0 +1,11 @@
+- app.get_answerable_section_list.each do |sec|
+  - next if sec.answered_for_id || current_user.cannot_view_answers?(app)
+  .review_questions.question-separator
+    - unless sec.question_presentations.empty?
+      h3 style="margin-top: 12px;"
+        | #{sec.title}
+
+
+    - sec.question_presentations.each do |questionp|
+      .usa-one-whole id="#{questionp.name}"
+        = render partial: "answers/#{questionp.question_type.partial}", locals: {answer: questionp.answers.set_for(app, nil).first, questionp: questionp, editable: editable, section: sec}

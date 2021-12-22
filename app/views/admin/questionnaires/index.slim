@@ -1,0 +1,6 @@
+
+- @questionnaires.each do |q|
+  h5 = "#{q.title} (#{q.name})"
+  - if q.root_section
+    ul
+      = q.root_section.to_html.html_safe

@@ -1,0 +1,15 @@
+#!/bin/bash
+if [ "$1" == "test" ] || [ "$1" == "development" ]; then
+export RAILS_ENV=${RAILS_ENV:=$1}
+echo "Using RAILS_ENV=$RAILS_ENV"
+RAILS_ENV=$RAILS_ENV bundle exec rake db:drop
+RAILS_ENV=$RAILS_ENV bundle exec rake db:create
+RAILS_ENV=$RAILS_ENV bundle exec rake db:migrate
+if [ "$1" == "development" ]; then
+	RAILS_ENV=$RAILS_ENV bundle exec rake db:seed
+fi
+else
+	echo "usege $0 <test | development>"
+	exit
+fi
+	

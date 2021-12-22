@@ -1,0 +1,6 @@
+- master_application = application.is_a?(SbaApplication::MasterApplication) ? application : application.master_application
+.sba-c-question__support-text
+  p
+    ' See your decline letter under the
+    = link_to 'Messages', sba_application_conversations_path(sba_application_id: master_application.id), target: '_blank'
+    |  tab of your 8(a) Initial Application.

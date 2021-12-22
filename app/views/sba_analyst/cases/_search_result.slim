@@ -1,0 +1,95 @@
+- if @program == "EIGHT_A" || @program == "MPP"
+  - @cases.each do |c|
+    - @certificate = c.certificates.select {|cert| cert["program"] == @program }[0]
+    - if @certificate.nil? || @certificate.blank?
+      | There are no results
+    - else
+      .sba-c-card.sba-u-padding-y--2.sba-u-padding-x--1.custom-box-height
+        .sba-l-container.sba-u-padding-x--2
+          .sba-l-row.sba-u-align-items--center.sba-u-margin-bottom--1
+            .sba-l-col--12.sba-l-md-col--4
+              h4.sba-u-margin-top--0.sba-u-margin-bottom--1.sba-u-md-margin-bottom--0.sba-u-font-size--h3
+                = link_to c.firm_name, sba_analyst_dashboard_show_path(enc: $encryptor.encrypt("duns_number=#{c.duns}&tax_identifier=#{c.entity_number}"))
+            .sba-l-col--12.sba-l-md-col--4
+              span.sba-c-badge.sba-u-margin-bottom--1.sba-u-md-margin-bottom--0
+                - most_recent_review = {"id"=>0}
+                - @certificate["reviews"].each do |review|
+                  - most_recent_review = review if review['id'] > most_recent_review['id']
+                - if most_recent_review['id'] == 0
+                  | No Review
+                - else
+                  - if most_recent_review["type"].include?("Initial")
+                    | Initial Application
+                  - else
+                    | Annual Review
+                  | &nbsp; - &nbsp;
+                  = all_cases_review_status most_recent_review["status"]
+            .sba-l-col--12.sba-l-md-col--4.sba-u-md-text-align--right
+          .sba-l-row
+            .sba-l-col--12
+              p.sba-u-margin--0.sba-u-color--muted
+                | Case owner: &nbsp;
+                = @certificate["case_owner"] unless @certificate["case_owner"].nil?
+                span.sba-u-separator--1
+                  | &nbsp; • &nbsp;
+                | Currently with: &nbsp;
+                = @certificate["current_reviewer"] unless @certificate["current_reviewer"].nil?
+                span.sba-u-separator--1
+                  | &nbsp; • &nbsp;
+                ' Program start date:
+                = Date.parse(@certificate["approval_date"]).strftime("%m/%d/%Y") unless @certificate["approval_date"].nil?
+                span.sba-u-separator--1
+                  | &nbsp; • &nbsp;
+                | Participating programs:&nbsp;
+                - @p_programs =  c.certificates.map { |cert| cert["program_title"]  }
+                - @p_programs.uniq.each_with_index do |p, i|
+                  = p
+                  - if @p_programs.uniq.size == (i + 1)
+                    |
+                  - else
+                    | ,&nbsp;
+                span.sba-u-separator--1
+                  | &nbsp; • &nbsp;
+                ' Submission date:
+                = case_date_submitted(c, @program)
+- else
+  - @cases.each do |c|
+    - @certificate = c.certificates.select {|cert| cert["program"] == "EDWOSB" ||  cert["program"] == "WOSB" }[0]
+    - if @certificate.nil? || @certificate.blank?
+      | There are no results
+    - else
+      .sba-c-card.sba-u-padding-y--2.sba-u-padding-x--1.custom-box-height
+        .sba-l-container.sba-u-padding-x--2
+          .sba-l-row.sba-u-align-items--center.sba-u-margin-bottom--1
+            .sba-l-col--12.sba-l-md-col--4
+              h4.sba-u-margin-top--0.sba-u-margin-bottom--1.sba-u-md-margin-bottom--0.sba-u-font-size--h3
+                = link_to c.firm_name, sba_analyst_dashboard_show_path(enc: $encryptor.encrypt("duns_number=#{c.duns}&tax_identifier=#{c.entity_number}"))
+            .sba-l-col--12.sba-l-md-col--4.sba-u-md-text-align--right
+          .sba-l-row
+            .sba-l-col--12
+              p.sba-u-margin--0.sba-u-color--muted
+                | Case owner: &nbsp;
+                = @certificate["case_owner"] unless @certificate["case_owner"].nil?
+                span.sba-u-separator--1
+                  | &nbsp; • &nbsp;
+                | Currently with: &nbsp;
+                = @certificate["current_reviewer"] unless @certificate["current_reviewer"].nil?
+                span.sba-u-separator--1
+                  | &nbsp; • &nbsp;
+                ' Program start date:
+                = Date.parse(@certificate["approval_date"]).strftime("%m/%d/%Y") unless @certificate["approval_date"].nil?
+                span.sba-u-separator--1
+                  | &nbsp; • &nbsp;
+                | Participating programs: &nbsp;
+                - @p_programs =  c.certificates.map { |cert| cert["program_title"]  }
+                - @p_programs.uniq.each_with_index do |p, i|
+                  = p
+                  - if @p_programs.uniq.size == (i + 1)
+                    |
+                  - else
+                    | ,&nbsp;
+                span.sba-u-separator--1
+                  | &nbsp; • &nbsp;
+                ' Submission date:
+                = case_date_submitted(c, @program)
+= paginate @cases, :remote => true

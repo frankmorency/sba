@@ -1,0 +1,6 @@
+span class="notifications-date-stamp"
+  - if ((Time.now - Time.parse(notification['created_at'])) / 1.hour).round > 24
+    = I18n.l Time.parse(notification['created_at']), format: :default
+  - else
+    = distance_of_time_in_words(notification['created_at'], Time.now)
+

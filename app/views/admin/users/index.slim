@@ -1,0 +1,24 @@
+table
+  tr
+    th scope="col" Name
+    th scope="col" Email
+    th scope="col" Roles
+    th
+
+  - @users.each do |user|
+    tr
+      td
+        = user.name
+      td
+        = user.email
+      td
+        ul
+          - user.roles.each do |role|
+            = role.name
+            |&nbsp;
+            = link_to admin_user_role_path(user, role.name), method: :delete, data: {confirm: 'Are you sure you want to remove this role?'} do
+              i.fa.fa-trash-o
+      td
+        = form_tag admin_user_roles_path(user), method: 'post' do
+          = select_tag :id, options_for_select(@roles.map(&:name)), include_blank: true
+          = submit_tag "Add Role"

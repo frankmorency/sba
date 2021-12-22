@@ -1,0 +1,43 @@
+- if application.show_funbar?
+  .usa-grid-full
+    #taskbar-wrap.taskbar-wrap
+      .taskbar
+        .taskbar-section
+          p.taskbar-section__text
+            span.taskbar-section__subhead Application is in
+            = application_status(application, @review).gsub("Pending Reconsideration Or Appeal", "Pending Appeal").gsub("Pending Reconsideration", "Ineligible")
+        - unless current_user.is_vendor_or_contributor?
+          .taskbar-section.hide-mobile
+            p.taskbar-section__text
+              span.taskbar-section__subhead Next Action Due
+              - if @review.nil?
+                = l application.screening_due_date if (application.screening_due_date && !application.is_really_a_review?)
+              - elsif @review.try(:processing_paused?)
+                span.red
+                  ' Pending
+                  | (Clock stopped at #{@review.due_date_days_left})
+              - elsif @review.try(:due_date)
+                = l @review.due_date
+          .taskbar-section.hide-mobile
+            p.taskbar-section__text
+              span.taskbar-section__subhead Case Owner
+              - if application.info_request?
+                = application.info_request_assigned_to.name
+              - elsif @review&.current_assignment&.owner
+                = @review.current_assignment.owner.name
+              - elsif application.is_really_a_review?
+                = application&.current_assignment&.owner&.name
+          .taskbar-section.hide-mobile
+            p.taskbar-section__text
+              span.taskbar-section__subhead Currently with
+              = currently_with(application)
+          .taskbar-actions
+            .task-panel.open
+              button.usa-button-unstyled.task-panel-toggle aria-controls="task-panel-fun-bar" aria-expanded="false" type="button"  Actions
+              #task-panel-fun-bar.task-panel-content
+                - if application.is_annual?
+                  = render partial: 'shared/eight_a/annual_review_action_panel'
+                - elsif application.is_initial?
+                  = render partial: 'shared/eight_a/initial_action_panel'
+                - elsif application.is_really_a_review?
+                  = render partial: 'shared/eight_a/adverse_action_panel', locals: {application: application, review: application}

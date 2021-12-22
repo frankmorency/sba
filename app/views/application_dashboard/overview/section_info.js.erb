@@ -1,0 +1,3 @@
+var sectionName = "<%= @section.name %>"
+$("#"+sectionName+"_content_holder").html("<%= escape_javascript(render partial: 'shared/eight_a/overview/section_answers', locals: {editable: false, business_partner_summaries: [], sba_application: @section.sub_application, role: nil}) %>");
+document.getElementById("page-spinner").style.display = "none";

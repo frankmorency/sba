@@ -1,0 +1,34 @@
+css:
+  p, h2 {
+    font-family: "Source Sans Pro", "Helvetica", "Arial", sans-serif;
+  }
+  td {
+    padding-right: 10px;
+  }
+
+table
+  tr
+    td width='20%'
+      //= image_tag 'sba_round_logo.png', alt: 'sba_logo', class: 'circle-logo'
+      img alt="sba_logo" class="circle-logo" src="file://#{Rails.root}/app/assets/images/sba_round_blue_logo.png"
+    td width='80%' align="center" style="color: blue"
+      h4
+        | U.S. SMALL BUSINESS ADMINISTRATION
+        br
+        | WASHINGTON, D.C. 20416
+br
+br
+p
+  | Date:  #{@certificate.issue_date}
+  br
+  br
+  | From: Office of Government Contracting
+  br
+  |To: #{@certificate.organization.get_corresponding_sam_organization.legal_business_name}
+p Subject: Documents Uploaded to WOSB Program Repository
+p SBA has received documents uploaded by you to the WOSB Program Repository. In order to submit an offer on a contract reserved for competition among EDWOSBs or WOSBs under the WOSB Program, you must be registered in the System for Award Management (SAM.gov), have a current representation posted on SAM.gov that you qualify as an EDWOSB or WOSB, and have provided the required documents to the WOSB Program Repository. 13 C.F.R. 127.300(a). It is your responsibility to ensure you have uploaded all of the documents required by 13 C.F.R. 127.300, remember to log into SAM.gov and update your small business certification status.
+p You must update your WOSB Program Certification (WOSB or EDWOSB) in the WOSB Program Repository and your EDWOSB/WOSB representations and self-certification in SAM.gov as necessary, but at least annually, to ensure they are kept current, accurate, and complete. The certification and representations are effective for a period of one year from the date of submission or update. You must update the supporting documents submitted to the WOSB Program Repository as necessary to ensure they are kept current, accurate and complete. 13 C.F.R. 127.300(f). In accordance with 13 C.F.R. 127.400, SBA, at its choosing, retains the authority to conduct an Eligibility Examination of your submitted documentation. If this should occur, you will be notified per the regulations.
+p Sincerely,
+br
+p U.S. Small Business Administration Office of Government Contracting
+br

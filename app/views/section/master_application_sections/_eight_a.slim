@@ -1,0 +1,57 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+= render partial: 'shared/eight_a/fun_bar', locals: {application: @sba_application }
+
+#application_tab_content.usa-grid-full style="max-width:1250px"
+  .usa-grid-full style="max-width:1250px"
+    .certify-page-header
+      .certify-page-header__primary
+        h1 Application Overview
+
+  .usa-grid-full
+    div class=((is_vendor? current_user) ? 'usa-width-one-whole' : 'usa-width-two-thirds')
+      = render partial: 'shared/eight_a/overview/card_content'
+
+    div class=((is_vendor? current_user) ? 'hide' : 'usa-width-one-third')
+      = render partial: 'application_dashboard/activity_log/activity_log_small'
+      = render partial: 'shared/eight_a/overview/sam_snapshot'
+
+= render partial: 'application_dashboard/tab_javascript'
+
+javascript:
+    $('header.navigation').css('margin-bottom', '0') ;
+    $('section.usa-grid-full').css('max-width', '100%');
+
+    $(document).ready(function () {
+        $('#documents_tab').on('click', function () {
+            if ($('#documents_tab').attr('aria-expanded') === "true") {
+                $("button").attr("aria-expanded", "false");
+            }
+            else {
+                $("button").attr("aria-expanded", "true");
+            }
+            if ($('#side-nav-3').attr('aria-hidden') === "true") {
+                $("ul").attr("aria-hidden", "false");
+            }
+            else {
+                $("ul").attr("aria-hidden", "true");
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $('#firm_documents_tab').on('click', function () {
+            $("#application_tab_content").addClass("hide");
+            $("#firm_documents_content").removeClass("hide")
+        });
+    });
+
+    $(document).ready(function () {
+        $('#view_archived_documents').on('click', function () {
+            $("#active_documents").addClass("hide");
+            $("#inactive_documents").removeClass("hide")
+        });
+        $('#view_active_documents').on('click', function () {
+            $("#inactive_documents").addClass("hide");
+            $("#active_documents").removeClass("hide")
+        });
+    });

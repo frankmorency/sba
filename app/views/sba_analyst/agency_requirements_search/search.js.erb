@@ -1,0 +1,6 @@
+var pagination_display = "<%= @pagination_display %>"
+$("#case-numbers").html(pagination_display);
+$("#search-results").html("<%= escape_javascript(render partial: 'search_results', locals: { results: @agency_reqs} ) %>");
+$("a.sba-c-pagination__link").each(function() {
+  this.href = this.href.replace("/search?", "?")
+});

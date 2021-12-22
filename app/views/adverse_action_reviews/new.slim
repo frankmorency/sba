@@ -1,0 +1,15 @@
+.usa-grid-full
+ 	h2 8(a) Adverse Action on #{@organization.legal_business_name}
+	p.usa-font-lead You are beginning the process of terminating, early graduating, or voluntarily withdrawing #{@organization.legal_business_name} from the 8(a) program.
+
+	p.usa-font-lead
+		| Only SBA users will be able to see the information in this case while it is in review. The
+		b  firm will not see any information until the AA/BD approves
+		|  and sends the firm an official notice.
+
+ 	= link_to organization_adverse_action_reviews_path, method: :post, class: "usa-button", style: 'padding-top: 6px' do
+		| Create Adverse Action
+		svg.sba-c-icon.sba-u-margin-left--1 style="padding-top: 10px; fill: white"
+		  use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/landing-icons/sprite.svg#arrow-right"]
+
+	= link_to 'Cancel', :back

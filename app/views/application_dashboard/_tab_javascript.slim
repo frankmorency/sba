@@ -1,0 +1,26 @@
+javascript:
+  $('#overview_tab').addClass('current');
+
+  $(document.body).on("click", "[id$=_show_content]", function (event) {
+    var card_id = $(this).attr("id")
+    var content_id = card_id.replace("_show_content", "_content");
+    $('#' + content_id).removeClass("hide");
+    $(".cards").addClass("hide")
+  });
+
+  $(document.body).on("click", "[id$=_show_cards]", function (event) {
+    var content_id = $(this).attr("id")
+    var card_id = content_id.replace("_show_cards", "_content");
+    $('#' + card_id).addClass("hide");
+    $(".cards").removeClass("hide")
+  });
+
+  var sendSectionRequest = function(sectionId, sbaAppId) {
+    document.getElementById("page-spinner").style.display = "inline-block";
+    $.ajax({
+      url: "/sba_application/"+sbaAppId+"/application_dashboard/overview/section_info?id="+sectionId,
+      type: "GET"
+    })
+    .then(function (x){
+    });
+  }

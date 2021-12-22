@@ -1,0 +1,5 @@
+= content_for :sidenav do
+  li 
+    = link_to 'Business profile', vendor_admin_my_businesses_url, class: ('usa-current' if params['controller'] == "vendor_admin/my_businesses" )
+  li
+    = link_to 'Manage CO access', vendor_admin_access_requests_url, class: ('usa-current' if params['controller'] == "vendor_admin/access_requests" )

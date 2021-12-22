@@ -1,0 +1,101 @@
+.panel
+  = hidden_field_tag "owners[][id]"
+  = hidden_field_tag "owners[][full_name]", '', class: 'owner_full_names'
+  .usa-width-one-third
+    b
+      label for="first_name"  First Name
+    span.owner_edit
+      = text_field_tag "owners[][first_name]", '', required: 'required', 'data-message': "First name is required", class: 'owner_name'
+    span.owner_show
+
+  .usa-width-one-third
+    b
+      label for="last_name"  Last Name
+    span.owner_edit
+      = text_field_tag "owners[][last_name]", '', required: 'required', 'data-message': "Last name is required", class: 'owner_name'
+    span.owner_show
+
+  .usa-width-one-fourth
+    b
+      label for="title" Role/Title
+    span.owner_edit
+      = select_tag "owners[][title]", options_for_select(BusinessPartner.titles.keys)
+    span.owner_show
+      = BusinessPartner.titles.keys.first
+  .usa-width-one-third
+    b
+      label for="ssn"  Social Security Number
+    span.owner_edit
+      = text_field_tag "owners[][ssn]", '', required: 'required', 'data-message': "Social Security Number must be 9 digits", class: 'owners_ssn'
+    span.owner_show
+
+  .usa-width-one-third
+    b
+      label for="marital_status"  Marital Status
+    span.owner_edit
+      = select_tag "owners[][marital_status]", options_for_select(BusinessPartner.marital_statuses.keys)
+    span.owner_show
+      = BusinessPartner.marital_statuses.keys.first
+  .usa-width-one-fourth
+    b
+      label for="email"  Email Address
+    span.owner_edit
+      = text_field_tag "owners[][email]", '', required: 'required', 'data-message': "Email address is required", class: 'owners_email'
+    span.owner_show
+
+  .usa-width-one-whole
+    b
+      label for="address"  Mailing Address
+    span.owner_edit
+      = text_field_tag "owners[][address]", '', required: 'required', 'data-message': "Mailing address is required"
+    span.owner_show
+
+  .usa-width-one-third
+    b
+      label for="city"  City
+    span.owner_edit
+      = text_field_tag "owners[][city]", '', required: 'required', 'data-message': "City is required"
+    span.owner_show
+
+  .usa-width-one-third
+    b
+      label for="state"  State
+    span.owner_edit data-owner-id=""
+      = text_field_tag "owners[][state]", '', required: 'required', 'data-message': "State is required"
+    span.owner_show
+
+  .usa-width-one-fourth
+    b
+      label for="postal_code"  Zip Code
+    span.owner_edit
+      = text_field_tag "owners[][postal_code]", '', required: 'required', 'data-message': "Zip code is required"
+    span.owner_show
+
+  .usa-width-one-third
+    b
+      label for="country"  Country
+    span.owner_edit
+      = text_field_tag "owners[][country]", '', required: 'required', 'data-message': "Country is required"
+    span.owner_show
+
+  .usa-width-one-third
+    b
+      label for="home_phone"  Business Phone
+    span.owner_edit
+      = text_field_tag "owners[][home_phone]", '', required: 'required', 'data-message': "Business phone is required"
+    span.owner_show
+
+  .usa-width-one-fourth
+    b
+      label for="business_phone"  Personal Phone
+    span.owner_edit
+      = text_field_tag "owners[][business_phone]", '', required: 'required', 'data-message': "Personal phone is required"
+    span.owner_show
+
+  .usa-width-one-whole
+    button.owner_show.owner_edit_button Edit
+    button.owner_edit.owner_done_button Done
+    button.owner_remove_button Remove
+    br
+    hr
+  .usa-grid-full

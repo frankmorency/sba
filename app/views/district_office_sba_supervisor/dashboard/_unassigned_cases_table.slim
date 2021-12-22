@@ -1,0 +1,12 @@
+table#unassigned_cases
+  thead
+    tr
+      th Date Submitted
+      th Type
+      th Applicant Firm
+      th Applicant Firm Location
+      - unless params[:action] == 'assign' || params[:action] == 'create_assignment'
+        th Actions
+  tbody
+    - @applications.each do |application|
+      = render partial: 'unassigned_cases_row', locals: {application: application}

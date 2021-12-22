@@ -1,0 +1,77 @@
+javascript:
+  $(document).ready(function () {
+    var form = "#questionnaire_form";
+    var validationSettings = $.parseJSON(#{{@js_validation_settings.to_json}});
+    var question_ids = $.parseJSON("#{@questions.map(&:id)}");
+    var toggler = $.parseJSON(#{@section.toggle_json.to_json.html_safe});
+    var functions = [];
+    var i = 0;
+
+    Validator.initialize(form, question_ids, validationSettings);
+
+    if (toggler) {
+      $.each(toggler, function (trigger, details) {
+        functions[i] = function() {
+          if ($(trigger + ':checked').val() == details['show_on']) {
+            $(details['div']).show();
+            $(details['input']).attr('required', 'required');
+          } else {
+            $(details['input']).removeAttr('required');
+            $(details['div']).hide();
+          }
+        };
+
+        $(trigger).click(functions[i]);
+        functions[i++]();
+      });
+    }
+
+    var isValidDate = function (value) {
+      var match = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(value),
+      isDate = function (m, d, y) {
+          return m > 0 && m < 13 && y > 0 && y < 32768 && d > 0 && d <= (new Date(y, m, 0)).getDate();
+      };
+      return match && isDate(match[1], match[2], match[3]);
+     }
+
+    $.validator.addMethod("dateFormatValidation", function(value, element) {
+      var pat = new RegExp("(0[1-9]|1[012])[-|/](0[1-9]|[12][0-9]|3[01])[-|/](19|20)[0-9][0-9]");
+      var theReturn1 = pat.test(value);
+      var theReturn2 = value.length == 10;
+
+      if(!theReturn2) {
+        return false;
+      } else if(!theReturn1) {
+        return false
+      } else {
+        return isValidDate(value);
+      }
+    }, "Please enter a date in the following format MM/DD/YYYY");
+
+    $.validator.addMethod('validateDateRange', function(value, element, arg) {
+
+        if(element.id.includes("start")) {
+          var endValue = $("#"+element.id.replace("start", "end")).val();
+          endValue = new Date(endValue);
+          var startValue = new Date(element.value);
+        } else {
+          var startValue = $("#"+element.id.replace("end", "start")).val();
+          startValue = new Date(startValue);
+          var endValue = new Date(element.value);
+        }
+        if(endValue < startValue ) {
+          return false;
+        }
+        else  {
+          return true;
+        }
+     }, $.validator.format("The FROM date must be on or before the TO date"))
+
+    $("#questionnaire_form .hasDatepicker").each(function() {
+        $(this).rules('add', {
+            required: true,
+            'dateFormatValidation': true
+        });
+    });
+
+  });

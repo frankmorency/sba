@@ -1,0 +1,21 @@
+.usa-width-one-half.standalone-card
+  p.subheading Requesting Access
+  h1 You would like to use certify.SBA.gov as:
+  p.usa-font-lead style="color:#2e8540"
+    strong data-print="access_role" = @hash[:role_name].map{|r| r[:name]}.join(",")
+  p
+    strong Program: = @hash
+    span data-print="program"
+
+  - if @hash[:destination]
+    form.usa-form action="#{@hash[:destination]}" method="post"
+      = hidden_field_tag :authenticity_token, form_authenticity_token
+      = hidden_field_tag :hash, @hash.to_json
+      button type="submit"  Submit Request
+      a.usa-button.usa-button-knockout href="#" onclick="javascript:window.history.back();"  Go Back
+  - else
+    form.usa-form action="/assign_role" method="post"
+      = hidden_field_tag :authenticity_token, form_authenticity_token
+      = hidden_field_tag :hash, @hash.to_json
+      button type="submit"  Submit Request
+      a.usa-button.usa-button-knockout href="#" onclick="javascript:window.history.back();"  Go Back

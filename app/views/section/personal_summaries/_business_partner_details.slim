@@ -1,0 +1,47 @@
+.print-summary
+  - @sections.each do |sec|
+    - next if not sec.answered_for_id
+    - next if sec.answered_for != business_partner
+
+    .review_questions.question-separator
+      - unless sec.question_presentations.empty?
+        h4 = sec.title
+
+      - sec.question_presentations.each do |questionp|
+        - if business_partner.answer_for(questionp.question.name, sec.sba_application.id)
+          - answer = business_partner.answer_for(questionp.question.name, sec.sba_application.id)
+          = render partial: "answers/#{questionp.question_type.partial}", locals: {answer: answer, business_partner: business_partner, questionp: questionp, editable: editable, section: sec }
+
+          - if answer.comment? && !answer.question.question_type.is_a?(QuestionType::Currency)
+            div
+              p
+                b Comments:
+                '
+                = answer.comment
+            br
+          - if answer.documents.any?
+            div
+              p
+                b
+                  | Attachments:
+              table
+                thead
+                  tr
+                    th
+                      | File Name
+                    th
+                      | Document Type
+                    th
+                      | Upload Date
+                - answer.documents.each do |doc|
+                  tr
+                    td
+                      - if doc.av_status == 'OK'
+                        = link_to doc.original_file_name, pdf_viewer_organization_document_path(id: doc.id, organization_id: current_organization.id), method: :get, class: "usa-button-outline", target: "_blank"
+                      - else
+                        = doc.original_file_name
+                    td
+                      = doc.document_type.name
+                    td
+                      = doc.created_at.strftime("%m/%d/%Y")
+            br

@@ -1,0 +1,134 @@
+@import "variables.scss";
+
+.no-conversations {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+  text-align: center;
+}
+.no-conversations i.fa-inbox {
+  font-size: 15rem;
+  color: $gray-lighter;
+}
+.no-conversations h2 {
+  margin: 0;
+  color: $gray;
+}
+.no-conversations p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  max-width: 40rem;
+  color: $gray;
+}
+.conversation-list {
+  color: $gray-dark;
+  font-weight: normal;
+}
+.conversation-list h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-size: 2.4rem;
+  font-weight: normal;
+}
+.conversation-list a {
+  text-decoration: none;
+  color: $gray-dark;
+  font-weight: normal;
+}
+.conversation-list a:hover {
+  text-decoration: none;
+  color: $primary;
+  font-weight: normal;
+}
+.conversation-list p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.conversation-item {
+  border-bottom: 1px solid $gray-lightest;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem 0;
+}
+.conversation-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 1.5rem;
+}
+.conversation-subject {
+  font-size: 2.4rem;
+  display: inline-block;
+}
+.conversation-subject  h3{
+  font-size: 2.4rem;
+  margin-top: 0;
+}
+.conversation-details {
+  display: flex;
+  justify-content: space-between;
+}
+.conversation-updated {
+  float: right;
+}
+.conversation-snippet {
+  word-break: break-word;
+  display: flex;
+}
+.no-message-placeholder {
+  font-style: italic;
+  font-size: 1.25rem;
+}
+.new-message {
+  margin-top: 2rem;
+}
+.new-message input {
+  max-width: 50rem;
+}
+.new-message textarea {
+  max-width: 60rem;
+}
+.unread-message *{
+  font-weight: bolder;
+}
+.unread-message-marker {
+  height: 15px;
+  width: 15px;
+  margin-right: 1rem;
+  padding-right: 15px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 15 15'><circle cx='7.5' cy='18.5' r='7.5' fill='%230071bc' fill-rule='evenodd' transform='translate(0 -11)'/></svg>");
+}
+.read-message-marker {
+  height: 15px;
+  width: 15px;
+  margin-right: 1rem;
+  padding-right: 15px;
+}
+.read-message * {
+  font-weight: normal;
+}
+.conversation-type > img {
+  max-width: 5.5rem;
+}
+.conversation-type > i {
+  font-size: 5.5rem;
+  color: $gray;
+}
+
+/* Quill JS settings*/
+#new_conversation_form .ql-toolbar {
+  max-width: 50rem;
+  border-color: #212121;
+  border-width: 1px;
+  border-style: solid;
+}
+#new_conversation_body {
+  max-width: 50rem;
+  height: 25rem;
+  border-color: #212121;
+  border-width: 0 1px 1px;
+  border-style: solid;
+  font-size: 1.7rem;
+}

@@ -1,0 +1,25 @@
+
+= form_for @sba_application, url: certificate_type_application_type_sba_applications_path(@certificate_type, @sba_application.kind) do |f|
+
+  // 8A: remove when 8a is live
+  = hidden_field_tag :questionnaire_id, params[:questionnaire_id]
+  = hidden_field_tag :original_certificate_id, params[:original_certificate_id]
+
+  - unless params[:master_application_id].blank?
+    = hidden_field_tag :master_application_id, params[:master_application_id]
+    = hidden_field_tag :contributor_section_id, params[:contributor_section_id]
+    = hidden_field_tag :contributor_id, params[:contributor_id]
+    = hidden_field_tag :section_id, params[:section_id]
+
+  = render_first_page @sba_application
+
+  = submit_tag "Accept", class: "accept_button"
+
+  img src="#{find_asset_path('accept-loader.gif')}" class="accept-loader" alt="Accept wait button"
+
+javascript:
+  $(".accept-loader").hide();
+  $(".accept_button").click(function () {
+    $(".accept_button").hide();
+    $(".accept-loader").show();
+  });

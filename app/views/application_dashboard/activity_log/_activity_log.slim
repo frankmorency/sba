@@ -1,0 +1,11 @@
+.usa-grid-full style="max-width:1250px"
+  .certify-page-header
+    .certify-page-header__primary
+      br
+      = link_to t('activity_log.export'), export_sba_application_application_dashboard_activity_log_index_path, class: "link export-link", title: "Export Activity Log"
+      p &nbsp;
+      h1= t('activity_log.title')
+      .section-block
+        ol.timeline
+          - @activities.each do |activity_item|
+            = render partial: "application_dashboard/activity_log/activity_item", locals: {activity_item: activity_item}

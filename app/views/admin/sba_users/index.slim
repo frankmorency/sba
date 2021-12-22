@@ -1,0 +1,12 @@
+h2 SBA Users by Role
+
+table
+  thead
+    tr
+      th scope="col" Roles
+      th scope="col" Users
+  - @roles.each do |r|
+    - unless (r.name == 'vendor_admin' || r.name == 'vendor_editor' || r.name == 'contributor' || r.name == 'vendor_viewer')
+      tr
+        td = r.name
+        td = r.users.map(&:email).join ', '

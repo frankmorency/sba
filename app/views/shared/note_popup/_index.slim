@@ -1,0 +1,83 @@
+- note_post_path ||= sba_application_application_dashboard_notes_path(sba_application_id: application.id)
+
+#note-main-popup.note-popup
+  a#note-popup-toggle.note-popup__toggle href="javascript:void(0)"
+    header.note-popup__header
+      h4#note-popup__heading.note-popup__heading New SBA Note
+      button#note-popup-close.note-popup__close type="button"  Close
+  = form_tag note_post_path, id: 'new-note-form', class: 'new-note-form', method: 'post' do
+    fieldset.questions
+      legend.usa-sr-only New Note
+      label for="note_subject"  Subject
+      input#note_subject type="text" /
+      label for="note_message"  Message
+      textarea#note_message name=""
+    fieldset.question.tags
+      h4 Tags
+      = generate_note_tags(application, 3, true)
+    button#create_note type="submit"  Add SBA note
+
+javascript:
+    // Click Add SBA Note button
+    $("button#create_note").on("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var subject = $("#note_subject").val();
+        var message = $("#note_message").val();
+
+        var selected_checkboxes = [];
+        $('input:checkbox[name=note-tags]:checked').each(function () {
+            selected_checkboxes.push($(this).val());
+        });
+        var tags = selected_checkboxes.length > 0 ? selected_checkboxes : null;
+
+        $.ajax({
+            url: '#{note_post_path}',
+            type: 'POST',
+            beforeSend: function (jqXHR) {
+                jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+            },
+            dataType: "json",
+            data: {subject: subject, message: message, tags: tags},
+            success: function (data, textStatus, jqXHR) {
+                // Minimize Notes popup
+                $("#new-note-form").toggleClass("hidden");
+
+                // Clear all note fields
+                $("#note_subject").val('');
+                $("#note_message").val('');
+
+                $('input:checkbox[name=note-tags]:checked').each(function () {
+                    $(this).prop('checked', false);
+                });
+
+                // Display success message in header
+                $('#note-popup__heading').text(jqXHR.responseJSON["message"]);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 401) {
+                    // Redirect to Login
+                    window.location.href = "/users/sign_in";
+                } else {
+                    $('#note-popup__heading').text(jqXHR.responseJSON["message"]);
+                }
+            }
+        });
+
+    });
+
+    $('#compose-note').on('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        $('#note-main-popup').addClass("visible");
+    });
+
+    $('#note-popup-close').on('click', function () {
+        $('#note-main-popup').removeClass("visible");
+    });
+
+    $('#note-popup-toggle').on('click', function () {
+        $('#note-popup__heading').text('New SBA Note');
+        $("#new-note-form").toggleClass("hidden");
+    });

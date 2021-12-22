@@ -1,0 +1,48 @@
+- if @email_notification_histories.where("program IN (?)", "8(a)" ).empty?
+  | There are currently no email notifications for this firm's 8(a) Annual Reviews.
+- else
+    - eight_a_emails = @email_notification_histories.where("program IN (?)", "8(a)" )
+    p
+    table#manage.display.font-marginsize cellspacing="0"
+      thead
+        tr
+          th scope="col" Name
+          th scope="col" Email
+          th scope="col" Notice
+          th scope="col" Date
+          th scope="col" Status/ Errors
+      tbody
+        - eight_a_emails.each do |eight_a_email|
+          tr id = "#{eight_a_email.id}"
+          - if eight_a_email.error.nil? || eight_a_email.error == "sam org email sent"
+            - if eight_a_email.error.nil? && @user
+              td
+                = @user.first_name.humanize + " " + @user.last_name.humanize
+            - else
+              - sam_first_name, sam_last_name = @sam_org&.govt_bus_poc_first_name, @sam_org&.govt_bus_poc_last_name
+              td
+                = sam_first_name.humanize + " " + sam_last_name.humanize
+            td
+              = eight_a_email.email
+            td
+              - #if it is 60 day email then it's notice 1, if 30-day reminder email, then its notice 2
+              = eight_a_email.created_at.strftime("%Y") +  " - Notice " + (eight_a_email.days== 60? 1 : 2).to_s
+            td
+              = eight_a_email.created_at.strftime("%m/%d/%Y")
+            - if eight_a_email.error
+              td
+                = "Notice sent to SAM.org profile email address"
+            - else
+              td
+                = "Notice sent"
+          - else
+            td
+              = "-"
+            td
+              = "-"
+            td
+              = "-"
+            td
+              = eight_a_email.created_at.strftime("%m/%d/%Y")
+            td
+              = "Error - Notice not sent"

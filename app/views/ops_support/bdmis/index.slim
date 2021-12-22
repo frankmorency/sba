@@ -1,0 +1,13 @@
+div#business_search
+  .usa-width-one-whole.business_search_result
+  .usa-width-one-whole.results
+    h3 BDMIS Import Search
+    = form_tag '', method: 'get' do
+      fieldset.usa-fieldset-inputs.usa-sans
+        = label_tag(:duns, 'DUNS Number')
+        = text_field_tag :duns
+      = submit_tag 'Search'
+    - unless @migrations.nil?
+      hr
+      .usa-width-one-whole.business_search_result
+        = render partial: 'ops_support/bdmis/bdmis_migration_result', locals: {migrations: @migrations, can_retry: @can_retry}

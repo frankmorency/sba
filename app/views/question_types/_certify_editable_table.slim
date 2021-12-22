@@ -1,0 +1,3 @@
+div id="#{question.dom_id}"
+  = hidden_field_tag "#{question.dom_id}", 'yes', id: "#{question.dom_id}_yes"
+= render partial: "question_types/certify_editable_table/#{question.question.strategy.underscore}", locals: {question: question}

@@ -1,0 +1,23 @@
+.usa-width-one-whole
+  = simple_format(q.title.gsub('\n','<br />'), {})
+  - if q.question.question_type.is_a?(QuestionType::RepeatingQuestion) || q.question.question_type.is_a?(QuestionType::CompositeQuestion)
+    - answer = q.question.answers.set_for(@sba_application).first
+    - detail = answer.details.first
+    - q.sub_questions.each do |sub_question|
+      .usa-width-one-whole
+        p
+          = simple_format(sub_question.title.gsub('\n', '<br />'), {})
+        p
+          b Response:
+          | &nbsp;
+          = detail.to_a[sub_question.position.to_i][1].to_s.titlecase if detail
+
+  - else
+    p
+      b Response:
+      | &nbsp;
+      = q.value.to_s.titlecase
+
+  br
+
+

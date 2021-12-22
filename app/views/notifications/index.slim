@@ -1,0 +1,7 @@
+h2
+  = t('notifications.title')
+- if @notifications.any?
+  = render partial: @notifications
+  = will_paginate
+- else
+	= render partial: 'shared/notifications/no_notifications'

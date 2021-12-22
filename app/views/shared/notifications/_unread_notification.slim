@@ -1,0 +1,6 @@
+div class="unread notification #{unread_notification['event_type']}" data-notify-id="#{unread_notification['id']}"
+  a href="#{unread_notification['certify_link'] }"
+    = unread_notification['body']
+
+  = render partial: "shared/notifications/notification_time", locals: {notification: unread_notification}
+

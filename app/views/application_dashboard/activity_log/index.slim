@@ -1,0 +1,15 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+= render partial: 'shared/eight_a/fun_bar', locals: {application: @sba_application }
+
+- if @activities.any?
+  = render partial: "application_dashboard/activity_log/activity_log"
+  = paginate @activity_list, inner_window: @window_size, outer_window: 1
+- else
+  = render partial: "application_dashboard/activity_log/no_activities"
+
+= render partial: 'shared/note_popup/index', locals: {application: @sba_application}
+
+javascript:
+  $(document).ready(function () {
+    $('#activity_log_tab').addClass('current');
+  });

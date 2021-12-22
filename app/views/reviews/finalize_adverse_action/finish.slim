@@ -1,0 +1,12 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+
+ 	h1 = "#{@adverse_action_text} Approved"
+	p.usa-font-lead = "You approved the #{@adverse_action_text} of #{@sba_application.organization.name}. The firm’s 8(a) certificate status was updated to #{@adverse_action_text_pt}."
+	p.usa-font-lead
+		b
+			| To send the firm a Notice of #{@adverse_action_text}, send them an information request.
+		|  Remember to copy and paste the body of your notice into the “Information Requested” field.
+
+	= link_to "Send information request", program_request_for_info_path(:start, information_request: {organization_id: @sba_application.organization.id}), class: "usa-button usa-button-big"

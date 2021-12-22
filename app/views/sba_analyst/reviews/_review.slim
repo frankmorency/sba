@@ -1,0 +1,92 @@
+.usa-width-one-whole.review_outer
+  .usa-width-one-fourth.review_nav
+    = render partial: 'sba_analyst/reviews/nav', locals: {active: :case_overview}
+    
+  .usa-width-three-fourths.review_main
+    h1 Case Overview
+
+    = render partial: 'organizations/profile', locals: {org: @organization, search_result: false, sam_snapshot: @sba_application.try(:sam_snapshot)}
+
+    - if @sba_application && @sba_application.sam_snapshot
+      div.usa-width-one-whole
+        p
+          | SAM.gov data accurate as of 
+          = Time.at(@sba_application.sam_snapshot["time_of_snapshot"]).strftime("%m/%d/%Y") if @sba_application.sam_snapshot["time_of_snapshot"]
+        p  
+          | This may not match data on the Vendor Overview.
+
+    div.usa-width-one-whole#check-the-application
+      br
+      h2 Check the application
+      p Before starting a review, check the application for completeness. Open all the attachments to make sure everything is included and the application is ready for review. If the application is incomplete, use the "Return to vendor" button to send it back.
+      br
+      .usa-width-one-third
+        a#open_app_href href="#{questionnaire_organization_sba_application_path(@certificate.current_application.questionnaire, current_organization.id, @certificate.current_application.id)}"
+          button.usa-button-outline#open_app_sum_button Open application summary
+
+      .usa-width-one-third
+        a#ret_to_ven_href href="#{return_for_modification_sba_analyst_sba_application_dashboard_index_path(@certificate.current_application.id)}"
+          button.usa-button-outline#ret_to_vendor_button Return to Vendor
+
+      br.few-more-breaks
+
+    div.usa-width-one-whole
+      h2.usa-width-one-third = title
+
+      .usa-width-one-whole
+        .usa-width-two-thirds.review_left.wide
+          = form_for review, as: :review, url: url do |f|
+            - if @review.new_record?
+              = f.label :type, 'Review type'
+              = f.select :type, review_types
+
+            = f.fields_for :current_assignment do |ca|
+              - if can? :assign_or_change_current_case_reviewer, current_user
+                = label_tag :current_reviewer, 'Current Reviewer'
+                = current_reviewer_dropdown @review, analysts, ca
+
+              - if can? :assign_or_change_case_review_analyst, current_user
+                = label_tag :owner_id, 'Owner'
+                = owner_dropdown @review, analysts, ca
+
+              - if (can? :assign_or_change_case_review_supervisor, current_user) && !(@review.determination_made?)
+                = label_tag :supervisor_id, 'Supervisor'
+                = supervisor_dropdown @review, analysts, ca
+
+              = hidden_field_tag 'review[current_assignment_attributes][review_id]', @review.id
+
+            = submit_tag submit_text, id: 'submit_button', class: 'align-right'
+        br
+        .usa-width-one-third.review_right.narrow
+          - if @review && @review.persisted? && (@assessments.size == 0)
+            br
+            br
+            | Review type:
+            br
+            = review.display_type
+            br
+            br
+            = link_to 'Cancel review', "/sba_analyst/reviews/#{@review.id}", class: 'cancel-co-review', method: :delete, style: 'color: #cd2026', 'data-confirm': 'Cancelling this review will delete all notes and progress made on this review. Are you sure?'
+
+javascript:
+  $(document).ready(function () {
+    $.validator.addMethod("valueNotEquals", function (value, element, arg) {
+      return arg != value;
+    }, "Value must not equal arg.");
+
+    $("#edit_review").validate({
+      rules: {
+        "review[type]": {
+          valueNotEquals: '',
+          required: true
+        }
+      },
+      errorElement: 'span'
+    });
+
+    if ($("div:contains('You are in view-only mode')").length != 0){
+      $("#open_app_sum_button, #ret_to_vendor_button").toggleClass('usa-button-disabled usa-button-outline');
+      $('#open_app_href, #ret_to_ven_href').click(function () {return false;});
+    }
+
+  });

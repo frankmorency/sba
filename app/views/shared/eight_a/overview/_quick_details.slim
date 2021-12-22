@@ -1,0 +1,20 @@
+table.quick-details
+  tbody
+    - if current_user.is_vendor_or_contributor?
+      tr.larger
+        th Status:
+        td
+          span class="#{style}" #{section.status.humanize}
+    tr
+      th Last Update:
+      td #{section.updated_at.strftime("%m/%d/%y")}
+    tr
+      th Started:
+      td #{section.created_at.strftime("%m/%d/%y")}
+    - if display_submitted
+      tr
+        th Submitted By:
+        td #{@sba_application.organization.users.with_role(:vendor_admin).try(:first).try(:name)}
+    tr
+      th Assigned To:
+      td #{section.sba_application.creator.try(:first_name)} #{section.sba_application.creator.try(:last_name)} 

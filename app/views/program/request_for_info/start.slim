@@ -1,0 +1,16 @@
+.usa-grid-full
+
+  h2 = @info_request.organization_header
+
+  h1 Request additional information outside an 8(a) Annual Review
+
+  p.usa-font-lead When you request information outside of the Annual Review process, you will be able to send messages to the firm, write notes, refer the file, and make a recommendation.
+
+  = link_to program_request_for_info_path(:request_info, information_request: {organization_id: @info_request.organization_id}), class: "usa-button", style: 'padding-top: 6px' do
+    | Get Started
+    svg.sba-c-icon.sba-u-margin-left--1 style="padding-top: 10px; fill: white"
+      use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/landing-icons/sprite.svg#arrow-right"]
+
+  = link_to 'Cancel', :back
+
+

@@ -1,0 +1,16 @@
+li
+  = link_to '<span>Dashboard</span>'.html_safe, (can? :ensure_vendor, current_user) ? vendor_admin_dashboard_index_path : '/sba_analyst/dashboard', class: 'usa-nav-link' unless can?(:ensure_contributor, current_user)
+
+  - if can?( :ensure_vendor, current_user)
+    - unless current_user.organizations.blank?
+      li class=('current-top-nav' if params['controller'] == "vendor_admin/my_certifications" )
+        = link_to '<span>Programs</span>'.html_safe, vendor_admin_my_certifications_path, class: 'usa-nav-link'
+      li class=('current-top-nav' if params['controller'] == "vendor_admin/my_businesses" || params['controller'] == "vendor_admin/access_requests" )
+        = link_to '<span>Business</span>'.html_safe, vendor_admin_my_businesses_path, class: 'usa-nav-link'   
+  - if can?( :ensure_vendor, current_user) || can?( :contribute, current_user)
+      li class=('current-top-nav' if params['controller'] == "vendor_admin/my_documents" )
+        = link_to '<span>Documents</span>'.html_safe, vendor_admin_my_documents_path, class: 'usa-nav-link'
+      li class=('current-top-nav' if params['controller'] == "vendor_admin/my_profile" )
+        = link_to '<span>Profile</span>'.html_safe, vendor_admin_my_profile_index_path, class: 'usa-nav-link'
+      li style="display:none"
+        = link_to '<span>Notifications</span>'.html_safe, '', class: 'usa-nav-link'

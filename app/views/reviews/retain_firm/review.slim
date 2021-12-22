@@ -1,0 +1,96 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Determination: Step 2 of 2
+        h1 Review and complete
+    p.usa-font-lead After you complete this step, the firm will receive their letter and be retained in Certify.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        .review-info
+          .review-info__item
+            .review-info__content
+              p
+                div
+                  strong
+                    ' Send letter to:
+                  span[data-print="retain_firm_deliver_to"]
+                div
+                  = session[:deliver_to]
+              p
+                div
+                  strong
+                    ' Letter subject:
+                  span[data-print="retain_firm_subject"]
+                div
+                  = session[:subject]
+              p
+                div
+                  strong
+                    ' Letter content:
+                  span[data-print="retain_firm_message"]
+                div
+                  = sanitize(session[:message], tags: %w(em u p strong ul ol li), attributes: nil)
+  = form_tag( wizard_path, {method: :put, id: :new_eight_a_retain_firm} ) do
+    .review-info.no-border
+      .usa-width-one-whole style="margin-left: 1px;"
+        input type="checkbox" id="accept_terms" class="signed" name="thischeckbox"
+        label class="used-refer-case" for="accept_terms" I used “Refer case within SBA” to get approval for this action.
+        br
+      hr
+    p
+      = submit_tag("Complete this Annual Review", class: "usa-button", id: "form_submit")
+      = link_to "Start over", wizard_path(:compose_message)
+
+javascript:
+    $(document).ready(function () {
+
+        $('#error-alert-container').hide();
+
+        $("#new_eight_a_retain_firm").validate({
+            ignore: ".ignore",
+            onkeyup: false,
+            onfocusout: false,
+            errorPlacement: function(error, element) {
+                if(element.is($("#accept_terms"))){
+                    $(".used-refer-case").after(error);
+                } else {
+                    element.after(error);
+                }
+            },
+            rules: {
+                "thischeckbox": {
+                    required: true
+                }
+            },
+            messages: {
+                "thischeckbox": "<div> Please confirm the statement above by checking the box.</div>"
+            },
+            errorElement: 'span',
+            invalidHandler: function(event, validator) {
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    $('#error-alert-container').show();
+                }
+            },
+            showErrors: function(errorMap, errorList) {
+                this.defaultShowErrors();
+                var content = '';
+                for (i = 0; i < errorList.length; i++) {
+                    content+="<p class='usa-alert-text'>"+errorList[i].message+"</p>";
+                }
+                $("#thischeckbox-error").appendTo(".used-refer-case");
+                $('h3.usa-alert-heading').after(content);
+            }
+        });
+
+        // Click Submit button
+        $('#form_submit').on("click", function(event) {
+            event.preventDefault();
+            $('h3.usa-alert-heading').siblings().remove();
+            $("#new_eight_a_retain_firm").submit();
+        });
+
+    });

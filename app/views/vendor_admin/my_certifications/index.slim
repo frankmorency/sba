@@ -1,0 +1,9 @@
+.usa-width-one-whole
+  section.usa-width-one-whole
+    article.usa-width-one-whole
+      - if can? :work_on_edwosb_wosb_application, current_user
+        h1 Join a new program
+        - if @certificate_type_ids.blank?
+          p You have already started the maximum allowed applications for SBA Contracting Programs. You cannot add a new program at this time.
+        - else
+          = render partial: 'certification', locals: { certificate_type_ids: @certificate_type_ids }

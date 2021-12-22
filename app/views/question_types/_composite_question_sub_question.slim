@@ -1,0 +1,9 @@
+.composite_questions.composite_question id="#{question.name}#{index}"
+  .panel
+    - question.sub_questions.each do |sub_question|
+      - unless sub_question.header.blank? 
+        h3
+          = sub_question.header
+      - sub_question.array_index = index
+      - sub_question.value = answer_set.with_indifferent_access[sub_question.name] if answer_set
+      = render_question sub_question

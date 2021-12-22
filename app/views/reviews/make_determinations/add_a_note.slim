@@ -1,0 +1,62 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Determination: Step 4 of 5
+        h1 Add SBA Note
+        p.usa-font-lead Please write a note explaining your determination to SBA staff. The firm will not be able to able to view this note.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_for @determination,  url: wizard_path, id: 'new-note-form', class: 'new-note-form', method: :put do |f|
+          = f.hidden_field 'determine_eligible', value: params["eight_a_determination"]["determine_eligible"]
+          = f.hidden_field 'determine_eligible_for_appeal', value: params["eight_a_determination"]["determine_eligible_for_appeal"]
+          = f.hidden_field 'individual_id', value: params["eight_a_determination"]["individual_id"]
+
+          fieldset.questions
+            legend.usa-sr-only New Note
+            label[for="note_subject"] Title
+            input#note_subject type="text" name="note_subject"
+            label[for="note_message"] Note
+            textarea#note_message name="note_message"
+
+          fieldset.question.tags
+            h4.validation-error Tags
+            = generate_note_tags(@sba_application, 2, false)
+          .certify-quick-note
+            p
+              | This note will be created when you complete this process.
+          .actions
+            .actions__main
+              = f.submit "Next"
+              = link_to "Back", previous_wizard_path(eight_a_determination: {determine_eligible: params["eight_a_determination"]["determine_eligible"], determine_eligible_for_appeal: params["eight_a_determination"]["determine_eligible_for_appeal"]})
+
+javascript:
+  $(function() {
+    $("#new_eight_a_determination").validate({
+      errorPlacement: function (error, element) {
+        if (element.is($(".tag"))) {
+          $(".validation-error").after(error);
+        } else {
+          element.after(error);
+        }
+      },
+      rules: {
+        "note_subject": {
+          required: true
+        },
+        "note_message": {
+          required: true
+        },
+        "note_tags[]": {
+          required: true
+        }
+      },
+      messages: {
+        "note_subject": "A subject is required.",
+        "note_message": "A message is required.",
+        "note_tags[]": "Select at least one tag."
+      }
+    });
+  });

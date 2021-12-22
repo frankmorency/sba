@@ -1,0 +1,13 @@
+section.text-tiny.breadcrumb
+  p
+  - if( can? :mange_help_pages, current_user )
+    = link_to 'Edit', edit_help_pages_path
+
+  .usa-width-one-whole#title-editor
+    = raw @page.title
+
+  .usa-width-one-whole
+    .usa-width-two-thirds#left-panel-editor
+      = raw @page.left_panel
+    .usa-width-one-third#right-panel-editor
+      = raw @page.right_panel

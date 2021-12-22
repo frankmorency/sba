@@ -1,0 +1,41 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+en:
+  messages:
+    title: 'Messages'
+    no_messages: 'Thread contains no messages'
+    new:
+      title: 'New Message'
+      subhead: 'Start a new conversation with'
+      topic: 'Topic'
+      message: 'Message'
+      placeholder: 'Add a topic'
+      send: 'Send Message'
+    empty:
+      title: 'No Messages Yet'
+      subhead: 'Messages regarding this application will appear here. You may also send a mesage to start a conversation.'
+    thread:
+      back_to_all: 'Back to all messages'
+      reply: 'Reply'
+      from: 'from'
+      cancel: 'Cancel'
+      send: "Send Message"

@@ -1,0 +1,226 @@
+h4 Document Upload
+p Please name your file ”FileName_Year" (i.e., ”PersonalFederalTaxReturn_2017.pdf”) — not "attachment1.pdf.” Max file size is 25 MB.
+p Use your web browser to upload files or drag them from your computer.
+
+.dropzone id="#{question_name}-dz-area"
+  .dz-default.dz-message
+    span#upload-error-message.usa-alert-error.usa-alert-no_icon.hidden
+    a> class="dz-clickable" id="dz-select-#{question_name}" Choose a .pdf file
+    | or drag it here
+br
+.you-can-edit-text
+  | You can edit the type and comments sections of the table by clicking on their text fields.
+#file_list[name="#{question_name}"]
+  table.edit_table#file_list_append[name="#{question_name}"]
+    thead
+      tr
+        th scope="col"   Name
+        th scope="col"   Type (edit)
+        th scope="col"   Date
+        th scope="col"   Comments (edit)
+        th scope="col"   Action
+
+.right-align
+  .button_wrapper
+    button#attach.usa-button-disabled[name="#{question_name}" disabled=""] Upload
+    a.delete-cert#upload_cancel name="#{question_name}" href='javascript:void(0)' Cancel
+
+javascript:
+  $(document).ready(function () {
+
+    //Check if there are files to edit
+
+    // When at least one document is uploaded, enable attach button
+    var num_docs_selected = $("tr[name='upload_document']").length;
+    if (num_docs_selected > 0){
+      $("button#attach[name='#{question_name}']").attr('class', 'usa-button');
+      $("button#attach[name='#{question_name}']").prop('disabled', false);
+    }
+
+    // Click 'Select files to upload' button
+    $("#dz-select").on("click", function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+
+    // Click Cancel button
+    $('#upload_cancel[name="#{question_name}"]').on("click", function(event) {
+      $('#file_list_append').children().children().not(':first').remove();
+      $('.box1[name="#{question.unique_id}"]').hide();
+      $('.box2[name="#{question.unique_id}"]').hide();
+    });
+
+    // Click document delete icon
+    $('#file_list[name="#{question_name}"]').on('click', '.remove', function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      $(this).parent().parent().remove();
+      if ($("#file_list_append").children("tbody").children("tr").length < 1) {
+        $("button#attach[name='#{question_name}']").attr('class', 'usa-button-disabled');
+        $("button#attach[name='#{question_name}']").prop('disabled', true);
+      }
+    });
+
+    // Click Save button
+    $('#attach[name="#{question_name}"]').on("click", function(event) {
+      event.preventDefault();
+      // assemble document data as json
+      var documents_array = '';
+      index = 0;
+
+      jQuery.each( $('#file_list_append[name="#{question_name}"]').children('tbody').children("tr[name='upload_document']"), function(i, document) {
+        var file_name = document.querySelector("#file_name").value;
+        var selected_option_index = document.querySelector("#document_types").selectedIndex;
+        var document_type_id = document.querySelector("#document_types").item(selected_option_index).id;
+        var document_type = document.querySelector("#document_types").item(selected_option_index).value;
+        var comment = document.querySelector("#comment").value;
+
+        if (index == 0) {
+          var json_string = '\"'+document.id+'\":{\"name\":\"' + file_name + '\",\"document_type_id\":' + document_type_id + ',\"comment\":\"' +comment+'\", \"document_type\":\"' +document_type+'\"}';
+        } else{
+          var json_string = ',\"'+document.id+'\":{\"name\":\"' + file_name + '\",\"document_type_id\":' + document_type_id + ',\"comment\":\"' +comment+'\", \"document_type\":\"' +document_type+'\"}';
+        }
+
+        index++;
+        documents_array+= json_string;
+      });
+
+      var documents = jQuery.parseJSON('{'+documents_array+'}');
+
+      $.ajax({
+        url: '/documents/attach',
+        type: 'POST',
+        beforeSend: function(jqXHR) {jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        dataType: "json",
+        data: {documents: documents},
+        success: function(data, textStatus, jqXHR) {
+          $("#loading-icon").css('display', 'hidden');
+          // display document names and ids next to question
+
+          // Attach selected documents to tentatively_attached table
+          jQuery.each(jqXHR.responseJSON["documents"], function (i, document) {
+            var content = "<td>" + document[Object.keys(document)]['original_file_name'] + "</td>" +
+              "<td>" + Object.keys(document) + "</td>" +
+              "<td>" + moment(document[Object.keys(document)]['created_at']).format('MM/DD/YYYY')+ "</td>" +
+              "<td>" + document[Object.keys(document)]['comment'] + "</td>" +
+              "<td><a class='remove' href='javascript:void(0)' id=\"" + document[Object.keys(document)]['id'] + "\">Remove</a></td>";
+
+            $('table#tentatively_attached[name="#{question.id}"] tbody').append("<tr id=\"" + document[Object.keys(document)]['id'] + "\">" + content + '</tr>');
+
+            //Essential! Required to make sure newly associated documents are saved when Save and Continue button pressed
+            $('table#tentatively_attached[name="#{question.id}"]').after("<input type=\"hidden\" id=\"answers_#{question.id}_document_ids_\" name=\"answers[#{question.id}][document_ids][]\" value=\"" + document[Object.keys(document)]['id'] + "\">");
+
+          });
+
+          // make the document list visible
+          $('#document_list[name="#{question.id}"]').css('display', 'inline');
+          // make the newly associated docs visible
+          $('#to_be_attached[name="#{question.id}"]').css('display', 'inline');
+
+          // set the hidden input tag value to pass validation
+          $('input[name="answers[#{question.id}][attachment]"]').val("has_attachments");
+          // display document list next to question
+          $('#document_list').css('display','inline');
+          // remove the attachment error msg if showing
+          $('span#answers_#{question.id}_attachment-error').remove();
+          // remove documents from upload tab
+          $('#file_list_append').children().children().not(':first').remove();
+          // disable the attach button
+          $("button#attach[name='#{question_name}']").attr('class', 'usa-button-disabled');
+          $("button#attach[name='#{question_name}']").prop('disabled', true);
+
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          if(jqXHR.status == 401){
+            // Redirect to Login
+            window.location.href = "/users/sign_in";
+          }else {
+            $("span#upload-error-message").text(jqXHR.responseJSON["message"]);
+            $("span#upload-error-message").show();
+          }
+        }
+      });
+    });
+
+	  // disable auto discover
+	  Dropzone.autoDiscover = false;
+
+    $("##{question_name}-dz-area").dropzone({
+        url: "/documents/upload",
+        method: "POST",
+        clickable: "a#dz-select-#{question_name}",
+        autoProcessQueue: true,
+        addRemoveLinks: true,
+        maxFilesize: 25,  //mb
+        previewTemplate : "<div class='hide-display'></div>",
+        acceptedFiles: "application/pdf, .pdf",
+        parallelUploads: 2,
+        sending: function(file, xhr, formData) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          formData.append('question_name', "#{question_name}");
+          $("#loading-icon").css('visibility','visible');
+        },
+        success: function (file, response) {
+          $("#loading-icon").css('visibility','hidden');
+          // reset the Upload tab error message if it's showing
+          $("span#upload-error-message").text("");
+          $("span#upload-error-message").hide();
+
+          // gather relevant response parameters
+          var document_id = response["document_id"];
+          var name = response["file_name"];
+          var size = formatBytes(response["file_size"], 2);
+          var document_types = response["document_types"];
+          var dropdown_options = '';
+
+          // Create the values for the document type dropdown
+          jQuery.each( document_types, function( i, val ) {
+            dropdown_options+= "<option id=\""+val.id+"\">"+val.name+"</option>";
+          });
+
+          // Append the document information
+          $('#file_list_append[name="#{question_name}"]').append("" +
+                  "<tr name=\"upload_document\" id=\""+document_id+"\">" +
+                  "<td>" +
+                  "<input title=\"document name\" type=\"text\" name=\"file_name\" id=\"file_name\" value=\"" + name + "\" />" +
+                  "</td>" +
+                  "<td>" +
+                  "<select title=\"document types\" id=\"document_types\">" + dropdown_options + "</select>" +
+                  "</td>" +
+                  "<td>"+"#{Time.now.utc.strftime('%m/%d/%Y')}"+"</td>" +
+                  "<td>" +
+                  "<input title=\"comments\" type=\"text\" name=\"comment\" id=\"comment\" placeholder=\"Comments\" />" +
+                  "</td>" +
+                  "<td>" +
+                  "<a class=\"delete-cert remove\" id=\""+document_id+"\" href=\"javascript:void(0)\">Remove</a>" +
+                  "</td>" +
+                  "</tr>");
+
+          // Enable the attach button if it is currently disabled
+          if ($("button#attach[name='#{question_name}']").attr('class') == 'usa-button-disabled'){
+            $("button#attach[name='#{question_name}']").attr('class', 'usa-button');
+            $("button#attach[name='#{question_name}']").prop('disabled', false);
+          }
+
+        },
+        error: function (file, response) {
+          if(response.error === "You need to sign in or sign up before continuing."){
+            // Redirect to Login
+            window.location.href = "/users/sign_in";
+          }else{
+            $("span#upload-error-message").text(response["message"]);
+            $("span#upload-error-message").show();
+          }
+        }
+    });
+
+    function formatBytes(bytes,decimals) {
+      if(bytes == 0) return '0 Byte';
+      var k = 1000;
+      var dm = decimals + 1 || 3;
+      var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+      var i = Math.floor(Math.log(bytes) / Math.log(k));
+      return (bytes / Math.pow(k, i)).toPrecision(dm) + ' ' + sizes[i];
+    }
+
+  });

@@ -1,0 +1,7 @@
+- if can? :view_search, current_user
+  .navigation-tools
+    = form_tag sba_analyst_dashboard_index_path, id: 'analyst-search', method: 'get', class:'usa-search' do
+      div role="search"
+        = text_field_tag 'query', params[:query] || nil, type: 'search'
+        button type="submit"
+          span.usa-search-submit-text Search

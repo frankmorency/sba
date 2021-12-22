@@ -1,0 +1,33 @@
+h4
+  ' Refer this case to:
+= form_tag(wizard_path, {method: :put, id: :note_form}) do
+  - @list_users.each_with_index do |user|
+    = radio_button_tag(:individual_id, user.id)
+    - tag_title = "#{user.name} (#{user.duty_stations.pluck(:name)&.join(', ')})".html_safe
+    = label_tag("individual_id_#{user.id}", tag_title, value: user.id)
+  br style='clear: both;' 
+  - if @list_users.empty?
+    p None found
+    = link_to 'Go back', '#', :onclick => 'window.history.back();return false;'
+  - else
+    .actions style='clear: both;'
+      .actions__main
+        = submit_tag 'Next'
+        = link_to 'Cancel', '#', :onclick => 'window.history.back();return false;'
+
+javascript:
+    $(function () {
+        $("#note_form").validate({
+            errorPlacement: function (error, element) {
+                $(".actions").before(error);
+            },
+            rules: {
+                "individual_id": {
+                    required: true
+                }
+            },
+            messages: {
+                "individual_id": "Select an individual"
+            }
+        });
+    });

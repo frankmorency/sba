@@ -1,0 +1,144 @@
+
+.end_of_line {
+  @include omega();
+}
+
+.review_outer {
+  h1, h2, h3, h4, h5, .usa-heading {
+    font-family: "Source Sans Pro";
+    color: black;
+  }
+  @include fill-parent();
+
+  margin-top: 60px;
+
+  h1 {
+    margin-top: 0px;
+  }
+
+  .business-bg {
+    background-color: #e5e3e1;
+    padding: 5px;
+  }
+
+  .main_row {
+    display:block;
+    border-bottom: 1px solid black;
+    margin-bottom: 30px;
+  }
+
+  .rev_table {
+    border-color: black;
+    border-style:solid;
+    border-width: 1px 1px 1px 1px ;
+    margin-bottom:25px
+  }
+
+  .table_fname {
+    width:320px;
+    word-wrap:break-word;
+    display: inline-block;
+    border-color: white;
+    border-style:solid;
+    border-width: 0 0 1px 1px ;
+  }
+
+  .table_date {
+    xborder-color: black;
+    xborder-style:solid;
+    xborder-width: 0 0 1px 1px;
+  }
+
+  .table_to_date {
+    xborder-color: black;
+    xborder-style:solid;
+    xborder-width: 0 1px 1px 1px;
+  }
+
+  .review_nav {
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 25px;
+
+    ul {
+      margin-top: 0px;
+      padding-top: 0px;
+      padding-left: 0px;
+
+      li {
+        border-bottom: 1px solid black;
+        padding-left: 20px;
+
+        a {
+          color: black;
+        }
+      }
+
+      li.selected {
+        border-left: 4px solid #4773aa;
+        a {
+          color: #4773aa;
+        }
+      }
+
+      li.last {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .review_bottom {
+  }
+
+  .review_main {
+    margin-top: 0px;
+    padding-top: 0px;
+
+    h2 {
+      margin-top:0;
+    }
+
+    h3 {
+      margin-top:-2px;
+    }
+
+    .table-top {
+      margin-top: 30px;
+    }
+
+    .business_bg {
+      background: #666;
+    }
+
+    .review_left {
+      margin-top: 0px;
+      padding-top: 0px;
+
+      form {
+        margin-top: 0px;
+        padding-top: 0px;
+        margin-right: 60px;
+      }
+
+    }
+
+    .review_right {
+      padding-right: 25px;
+
+      p strong {
+        color: #5b616b;
+      }
+
+    }
+
+    .review_left.wide {
+    }
+
+    .review_right.narrow {
+      width:250px;
+      word-wrap:break-word;
+      display: inline-block;
+      margin-top:-29px
+    }
+  }
+}

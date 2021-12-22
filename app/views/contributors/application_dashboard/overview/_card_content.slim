@@ -1,0 +1,16 @@
+- unless @sba_application.submitted?
+  h2 Sections of the Application
+
+- @first_section.children.where(type: 'Section::ContributorSection').each do |section|
+  - section.children.each_with_index do |sub_section, index|
+    - contributor_section = sub_section.child_with_user_data(current_user)
+
+    - if contributor_section
+      = render partial: 'contributors/application_dashboard/overview/individual_contributor_card', locals: {index: index, contributor_section: contributor_section, section: section, sub_section: sub_section}
+      - if @sba_application.submitted?
+        .usa-width-one-whole.hide id="#{contributor_section.name}_content"
+          h2 #{sub_section.title}
+          a href="javascript:void(0);" id="#{contributor_section.name}_show_cards" class="close_8a_detail"
+            |  close
+          - unless contributor_section.sub_application.nil?
+            = render partial: 'contributors/application_dashboard/overview/section_answers', locals: {editable: false, business_partner_summaries: [], sba_application: contributor_section.sub_application, role: nil}

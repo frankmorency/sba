@@ -1,0 +1,68 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Letter of Intent to Terminate: Step 2 of 2
+        h1 Review your Letter of Intent to Terminate
+    p.usa-font-lead Please review the information below.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_tag wizard_path, {method: :put, id: :intent_to_terminate_letter_form} do
+          .review-info
+            .review-info__item
+              .review-info__content
+                p
+                  div
+                    strong
+                      ' Send letter to:
+                    span[data-print="intent_to_terminate_recipient"]
+                  div
+                    = session[:recipient]
+                p
+                  div
+                    strong
+                      ' Letter subject:
+                    span[data-print="intent_to_terminate_subject"]
+                  div
+                    = session[:subject]
+                p
+                  div
+                    strong
+                      ' Letter content:
+                    span[data-print="intent_to_terminate_message"]
+                  div
+                    = sanitize(session[:message], tags: %w(em u p strong ul ol li), attributes: nil)
+          .sba-u-margin-bottom--3
+            ul.sba-c-unstyled-list
+              li
+                span#assert_approval_error.sba-c-input-error-message.hide[aria-atomic="true" role="alert"]
+                  | Please check this box if you want to proceed.
+                input#assert_approval.sba-c-checkbox[type="checkbox" name="approval" value="Has approval" required="required"]
+                label.sba-c-label[for="assert_approval"]
+                  | I used “Refer case within SBA” to get approval for this action.
+          .actions
+            .actions__main
+              = submit_tag "Send letter", class: "usa-button", id: "submition-btn", :data => { disable_with: t('messages.new.send') }
+              = link_to "Start over", wizard_path(:compose_message)
+
+javascript:
+  $(document).ready(function() {
+
+    $("#submition-btn").click(function(event){
+      event.preventDefault();
+      if( !$("#assert_approval").prop('checked')){
+        $("#assert_approval_error").removeClass("hide")
+      } else {
+        $("#intent_to_terminate_letter_form").submit();
+      }
+    });
+
+    $("#assert_approval").change(function () {
+      if ($(this).is(':checked')) {
+        $("#assert_approval_error").addClass("hide")
+      }
+    });
+
+  });

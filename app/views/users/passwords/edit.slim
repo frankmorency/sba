@@ -1,0 +1,55 @@
+section.usa-grid-full
+  h1 Reset password
+  p.usa-font-lead
+    | Your password must contain at least 12 characters: one lowercase character, one uppercase character, 1 digit and 1 special character.
+  .usa-width-two-thirds
+    = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+      = f.hidden_field :reset_password_token
+      .field
+        = f.label :passphrase
+        a.usa-show_multipassword title="Show my typing" href="#" aria-controls="password" Show my typing
+        = f.password_field :password, autocomplete: 'off'
+      .field.password-strength
+      .field
+        = f.label :confirm_passphrase
+        = f.password_field :password_confirmation, autocomplete: "off"
+      .actions
+        .button_wrapper
+          button#submit.usa-button-disabled.display-inline disabled="" type="submit" Reset Password
+
+
+javascript:
+  $(document).ready(function () {
+
+  enableSubmitButton();
+
+
+      $("#edit_user").validate({
+          rules: {
+              "user[password]": {
+                  required: true,
+                  remote: {
+                      type: 'post'
+                  }
+              },
+              "user[password_confirmation]": {
+                  required: true,
+                  equalTo: '#user_password'
+              }
+          },
+          messages: {
+              "user[password]": {
+                  required: "Password is required.",
+                  remote: "Password must be strong."
+              },
+              "user[password_confirmation]": {
+                  required: "Password confirmation is required.",
+                  equalTo: "Password and Password confirmation must match."
+              }
+          },
+          errorElement: 'span'
+      });
+
+      var myPasswordStrengthMeter = new PasswordStrengthMeter();
+      myPasswordStrengthMeter.open('user_password');
+  });

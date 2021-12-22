@@ -1,0 +1,4 @@
+h1 ASMPP Cases Declined
+p These cases were declined because the firm is ineligible to participate in the All Small MPP Program.
+= render partial: 'shared/mpp/supervisors_cases_links' if current_user.can?(:ensure_mpp_user)
+= render partial: 'cases_table', cases: @cases 

@@ -1,0 +1,15 @@
+<div class="take-action-box">
+  <p>Take Action on Your Certification Duration Tenure by submitting an inquiry to the SBA Review Team.</p>
+  <p>Inquiries have an indefinite time to process currently. </p>
+  <p>Check back here via the Take Action Tab for status updates.</p>
+  <p><strong>These inquiries are regarding Covid 19 only! For general inquiries contact our helpdesk team.</strong></p>
+</div>
+
+
+<% if @voluntary_suspension.persisted? %>
+<p>You already submitted that!</p>
+<% else %>
+<%= render partial: "form", locals: {
+  voluntary_suspension: @voluntary_suspension
+} %>
+<% end %>

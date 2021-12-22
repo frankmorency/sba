@@ -1,0 +1,117 @@
+section.usa-grid-full
+  article#main-content
+    h1 Access Requests
+    p.usa-font-lead The users below have requested access use to certify.SBA.gov.
+    p Please ensure that roles, programs, and business units are correct. If there are any errors, the request is to be rejected and the user will need to resubmit their request.
+
+    - unless @access_requests.where(status: "requested").empty?
+      - @access_requests.where(status: "requested").each do |req|
+        .action-item
+          .action-item__context
+            h4.action-item__title = req.user.name
+            p
+              strong Role:
+              span data-print="access_role" = " #{req.capasity}"
+            p
+              strong Program:
+              span data-print="program" = " #{req.program}"
+            
+            - if req.program == "8(a)"
+              p
+                strong Business Unit:
+                span data-print="business_unit" = " #{req.business_unit}"
+              p
+                strong Duty Station:
+                span data-print="duty_station" = " #{req.duty_stations.map{|dt| dt.name }.join(", ")}"
+          .action-item__actions id="request-#{req.id}"
+            a.usa-button.usa-button-secondary id="reject-#{req.id}" onclick="rejectRequest(#{req.id})" href="#" Reject
+            a.usa-button id="approve-#{req.id}" onclick="approveRequest(#{req.id})" href="#" Approve
+    - else
+      .action-item.empty
+        .action-item__context 
+          h4.action-item__title You have no new access requests
+
+
+= render partial: 'layouts/application/sidenav/sba_analyst'
+
+h1 Revoke analyst access
+
+div.overflow-auto
+  #table-search
+    table.searchable
+      thead
+        tr
+         th scope = 'col' = sortable 'Name', model: AccessRequest
+         th Organization
+         th Role Requested
+         th scope = 'col' = sortable 'Request expires', model: AccessRequest
+         th Status
+         th scope = 'col' Actions
+
+      - @access_requests.where(status: ["accepted"]).each do |req|
+        tr
+          td = mail_to req.user.email, req.user.name, class: 'mailto-link'
+          td = req.user.max_bureau || 'SBA'
+          td = req.role_name
+          td = l(req.request_expires_on)
+          td = req.status.titleize
+          - if req.user != current_user
+            - if req.requested?
+              td
+                = link_to 'Accept', sba_analyst_role_access_request_accept_path(req.id), method: :put, 'data-confirm': "Are you sure you want to accept access?"
+                br
+                = link_to 'Deny', sba_analyst_role_access_request_reject_path(req.id), class: "error", method: :put, 'data-confirm': "Are you sure you want to reject access?"
+            - else
+              td
+                = link_to 'Revoke', sba_analyst_role_access_request_revoke_path(req.id), class: "error", method: :put, 'data-confirm': "Are you sure you want to revoke access?"
+          - else
+            td = ""
+
+= will_paginate(@access_requests.where.not(status: "requested")) unless @access_requests.empty?
+
+javascript:
+ function approveRequest(reqId){
+    var confirmed = confirm('Approve this person to access certfiy.SBA.gov?');
+    if (confirmed) {
+      $.ajax({
+        url: '/sba_analyst/role_access_requests/' + reqId + '/accept',
+        type: 'PUT',
+        beforeSend: function(jqXHR) {jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        success: function(data, textStatus, jqXHR) {
+          $("#approve-" + reqId).parent().parent().addClass('approved');
+          setTimeout(function(){
+            $('.action-item__actions#request-' + reqId).html('<p class="action-item__feedback">Approved</p>')
+          }, 500);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          console.log("Approval failed.");
+          location.reload();
+        }
+      });
+    }
+    return false;
+  }
+
+  function rejectRequest(reqId){
+    var confirmed = confirm("Reject this person's request to access certfiy.SBA.gov?");
+    if (confirmed) {
+      $.ajax({
+        url: '/sba_analyst/role_access_requests/' + reqId + '/reject',
+        type: 'PUT',
+        beforeSend: function(jqXHR) {jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        success: function(data, textStatus, jqXHR) {
+          console.log("Rejected success.");
+          $("#reject-" + reqId).parent().parent().addClass('rejected');
+          setTimeout(function(){
+            $('.action-item__actions#request-' + reqId).html('<p class="action-item__feedback">Rejected</p>')
+          }, 500);
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          console.log("Rejected failed.");
+          location.reload();
+        }
+      });
+    }
+    return false;
+  }
+

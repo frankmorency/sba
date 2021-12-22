@@ -1,0 +1,37 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+
+  h1 Refer case within SBA
+
+  p.usa-font-lead If you refer this case to another person at the SBA, that person’s name will show on the Application Overview page under "Currently with."
+
+  h4 Refer case to...
+
+  = form_for @referral, url: wizard_path, method: :put do |f|
+    - @offices.each do |office|
+      = f.radio_button :office_id, office.id
+      - if office.title == 'District Office'
+        = f.label :office_id, "Someone in the firm’s District Office", value: office.id, class: 'radio_label'
+      - else
+        = f.label :office_id, office.title, value: office.id, class: 'radio_label'
+
+    = f.submit "Next"
+    = link_to 'Start Over', sba_application_application_dashboard_overview_index_path(@sba_application.id)
+
+javascript:
+    $(function() {
+        $("#new_referral").validate({
+            errorPlacement: function (error, element) {
+              $(".radio_label").last().after(error);
+            },
+            rules: {
+                "referral[office_id]": {
+                    required: true
+                }
+            },
+            messages: {
+                "referral[office_id]": "Select an office"
+            }
+        });
+    });

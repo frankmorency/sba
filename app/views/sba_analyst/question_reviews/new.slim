@@ -1,0 +1,91 @@
+= render partial: 'versions/banner', locals: {application: @sba_application} unless @sba_application.version_number == 1
+
+= form_tag sba_analyst_review_assessments_path(@review) do |ass|
+  .usa-width-one-whole#question-review
+    .usa-width-one-fourth
+      = render partial: 'sba_analyst/reviews/nav', locals: {active: :question_review}
+
+    .usa-width-three-fourths
+      .usa-width-one-whole
+        h1 Question review
+
+      - @questions_by_section.each do |title, questions|
+        .usa-width-one-whole.question-separator
+          h3 = title
+          - questions.each do |q|
+            .usa-width-one-whole
+              .usa-width-two-thirds
+                div
+                  = question_review_display(q)
+                div
+                  - unless q.comment.blank?
+                    br
+                    p
+                      b Comment:
+                      | &nbsp;
+                      = q.comment
+
+                  div.table-top
+                    - unless q.documents.empty?
+                      p
+                        strong Attachments:
+                      table
+                        thead
+                          tr
+                            th scope="col" Name
+                            th scope="col" Document type
+                            th scope="col" Uploaded
+                        - q.documents.each do |doc|
+                          tr
+                            td = link_to doc.original_file_name, pdf_viewer_organization_document_path(id: doc.id, organization_id: @organization.id), method: :get, class: "usa-button-outline", target: "_blank"
+                            td = doc.document_type.name
+                            td = l doc.updated_at.to_date
+
+              - if can? :manage_assessment, current_user
+                .usa-width-one-third
+                  = fields_for 'assessments[]', q.assessment do |ass|
+                    = render partial: 'assessments/form', locals: {ass: ass, assessment: q.assessment, statuses: @statuses}
+                    br
+
+                  - first_assessment = q.assessments.select(&:persisted?).first
+
+                  - if q.assessments.select(&:persisted?).count < 2 && first_assessment.try(:short?)
+                    = render partial: 'assessments/assessment', object: first_assessment, locals: {brief: false}
+                  - elsif first_assessment
+                    div id="assessments_brief_#{q.id}"
+                      = render partial: 'assessments/assessment', object: first_assessment, locals: {brief: true}
+                      = link_to "Show more", "#", class: 'expand_notes', "data-identifier": q.id
+                      br
+                      br
+                    div id="assessments_long_#{q.id}" class="hide-display"
+                      = render collection: q.assessments.select(&:persisted?), partial: 'assessments/assessment', locals: {brief: false}
+                      = link_to "Show less", "#", class: 'collapse_notes', "data-identifier": q.id
+                      br
+                      br
+
+      .usa-width-one-whole
+        = submit_tag "Save and commit", id: 'save_notes', disabled: @review.determination_made?
+
+javascript:
+  $(function (){
+    $(".note_link").click(function (event) {
+      $(this).next().toggle();
+      event.preventDefault();
+    });
+
+    $("save_notes").click(function(event) {
+      event.preventDefault();
+    });
+
+    $(".expand_notes").click(function(event) {
+      $("#assessments_long_" + $(this).data('identifier')).show();
+      $("#assessments_brief_" + $(this).data('identifier')).hide();
+      event.preventDefault();
+    });
+
+    $(".collapse_notes").click(function (event) {
+      $("#assessments_long_" + $(this).data('identifier')).hide();
+      $("#assessments_brief_" + $(this).data('identifier')).show();
+      event.preventDefault();
+    });
+  });

@@ -1,0 +1,126 @@
+= form_tag step_2_path, class: 'new_user', id: 'new_user' do
+  .usa-one-whole
+
+    .new_registration
+
+      h1 Create certify.SBA.gov Account
+
+      p.usa-font-lead Before you get started, make sure your business has a <a href="https://sam.gov">SAM.gov</a> account. We will need your information from <a href="https://sam.gov">SAM.gov</a> in order to connect your business with certify.SBA.gov.
+
+      .usa-content
+        p You must be an owner or legal representative of the firm registering for certify.SBA.gov and have signature authority on the firm’s behalf.
+
+      .usa-width-one-whole.grey-box
+        .usa-width-two-thirds.grey-box
+          .usa-width-two-thirds.left_box_border_right#leftborder
+            .usa-input-grid
+              label for="user_first_name" First Name
+              input id="user_first_name" name="user[first_name]" type="text" autofocus="true"
+
+            .usa-input-grid
+              label for="user_last_name" Last Name
+              input id="user_last_name" name="user[last_name]" type="text"
+
+            .usa-input-grid
+              label for="user_email" Email Address
+              input id="user_email" name="user[email]" type="text"
+
+            .usa-input-grid
+              label for="user_confirm_email" Confirm Email Address
+              input id="user_confirm_email" name="user[confirm_email]" type="text"
+
+          br
+          .usa-width-one-whole
+            .actions
+              .actions__main
+                button#submit type="submit" Continue
+                p.actions__next Next you will create a password.
+
+          .usa-width-one-third.right_box_noborder_right
+
+        aside.usa-width-one-third
+          h2 Are you a federal employee?
+          p
+            ' If you are a federal employee or an SBA contracting officer, please visit the
+            = link_to "employee account page", max_gov_path
+            | .
+          h2 Already have an account?
+          p
+            ' If you have already registered for a certify.SBA.gov account, please
+            = link_to "sign in", new_user_session_path
+            | .
+
+javascript:
+  $(document).ready(function () {
+
+    $('#error-alert-container').hide();
+
+    $("#new_user").validate({
+      ignore: ".ignore",
+      onkeyup: false,
+      onfocusout: false,
+      errorPlacement: function(error, element) {
+        if(element.is($("#accept_terms"))){
+          $(".iaccept").after(error);
+        } else {
+          element.after(error);
+        }
+      },
+      rules: {
+        "user[first_name]": {
+          required: true
+        },
+        "user[last_name]": {
+          required: true
+        },
+        "user[email]": {
+          required: true,
+          email: true
+        },
+        "user[confirm_email]": {
+          required: true,
+          email: true,
+          equalTo: '#user_email'
+        }
+      },
+      messages: {
+        "user[first_name]": "First name is required.",
+        "user[last_name]": "Last name is required.",
+        "user[email]": {
+          required: "Email is required.",
+          email: "Please enter a valid email address."
+        },
+        "user[confirm_email]": {
+          required: "Email confirmation is required.",
+          email: "Please enter a valid email address.",
+          equalTo: "Email and email confirmation must match."
+        }
+      },
+      errorElement: 'span',
+      invalidHandler: function(event, validator) {
+        var errors = validator.numberOfInvalids();
+        if (errors) {
+          $('#error-alert-container').show();
+        }
+      },
+      showErrors: function(errorMap, errorList) {
+        this.defaultShowErrors();
+        var content = '';
+        for (i = 0; i < errorList.length; i++) {
+          content+="<p class='usa-alert-text'>"+errorList[i].message+"</p>";
+        }
+        $("#thischeckbox-error").appendTo(".iaccept");
+        $('h3.usa-alert-heading').after(content);
+      }
+    });
+
+    // Click Submit button
+    $('#submit').on("click", function(event) {
+      // event.preventDefault();
+      $('h3.usa-alert-heading').siblings().remove();
+    });
+
+    var myPasswordStrengthMeter = new PasswordStrengthMeter();
+    myPasswordStrengthMeter.open('user_password');
+
+  });

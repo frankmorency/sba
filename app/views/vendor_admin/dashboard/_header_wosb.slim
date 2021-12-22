@@ -1,0 +1,14 @@
+/ p
+/   = program.teaser
+
+/ p
+/   - if certificate_not_present?('wosb')
+/     ' Get started now on your
+/     = link_to 'WOSB self-certification', new_certificate_type_sba_application_url(certificate_type_id: 'wosb')
+/     ' .
+
+/ p
+/   - if certificate_not_present?('edwosb')
+/     ' Get started now on your
+/     = link_to 'EDWOSB self-certification', new_certificate_type_sba_application_url(certificate_type_id: 'edwosb')
+/     ' .

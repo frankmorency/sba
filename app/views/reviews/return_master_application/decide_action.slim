@@ -1,0 +1,29 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Recommendation: Step 1 of 3
+        h1 Return to Firm for Revisions
+
+        p This application is not sufficiently complete to accept for processing.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_for @return, url: wizard_path, method: :put do |f|
+          fieldset.questions
+            h4 What would you like to do?
+            ul#response.usa-unstyled-list
+              li
+                = f.radio_button :letter, true, id: "letter_15", required: true
+                label for="letter_15"  Send the firm a 15-day letter
+              li
+                = f.radio_button :letter, false, id: "full_return", required: true
+                label for="full_return"  Return the entire application to the firm and remove it from my workload
+
+          .actions
+            .actions__main
+              = f.submit "Next", class: "usa-button", id: "submition-btn"
+              = link_to "Cancel", sba_application_application_dashboard_overview_index_path(@sba_application)
+              p
+                em Next step: Send Message to Firm

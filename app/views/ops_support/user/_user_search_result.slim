@@ -1,0 +1,32 @@
+- if users.blank?
+  h3.no-match-found No Match Found
+  .usa-width-one-whole.business_search_result
+    h5 Sorry, no users matched your search terms. Please check the name or email address and try again.
+- else
+  h3 User Search Results
+
+  .usa-width-one-whole
+    = form_tag '', method: :get, class: 'usa-search ' do
+      = hidden_field_tag :sort, params[:sort]
+      = hidden_field_tag :direction, params[:direction]
+
+    table.searchable
+      thead
+        tr
+          th = sortable 'Name', model: User
+          th = user_type.eql?('gov_user') ? 'Agency' : 'Organization'
+          - if user_type.eql?('gov_user')
+            th = 'Responsibility'
+          th = 'Email'
+          th = 'Phone Number'
+
+      - users.each do |user|
+        tr
+          td = link_to user.name, ops_support_user_path(user.id)
+          - if user_type.eql?('vendor_user')
+            td = user.one_and_only_org.to_sam.legal_business_name if !user.has_no_orgs? && user.one_and_only_org.to_sam
+          - if user_type.eql?('gov_user')
+            td = user.max_agency
+            td = user.roles.map{|r| r.name}.join(",")
+          td = user.email
+          td = user.phone_number

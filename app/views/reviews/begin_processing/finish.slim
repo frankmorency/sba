@@ -1,0 +1,15 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+
+  h1 #{@organization.name} Application was accepted for processing on #{l Time.now}.
+
+  p.usa-font-lead
+    | The SBA has until
+    '
+    b #{l @due_date}
+    '
+    | to make a determination on this case.
+
+  = link_to 'Return to application', sba_application_application_dashboard_overview_index_path(@sba_application.id), class: "usa-button"
+  = link_to 'Add SBA note', wizard_path(:add_a_note), class: "usa-button usa-button-knockout"

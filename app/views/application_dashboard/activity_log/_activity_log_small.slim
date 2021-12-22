@@ -1,0 +1,9 @@
+h2= t('activity_log.small_list.title')
+
+.section-block
+  ol.timeline
+    - @activities.take(7).each do |activity_item|
+      = render partial: "application_dashboard/activity_log/activity_item", locals: {activity_item: activity_item}
+
+= link_to t('activity_log.view_all'), sba_application_application_dashboard_activity_log_index_path(sba_application_id: @sba_application.id)
+

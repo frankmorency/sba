@@ -1,0 +1,26 @@
+- if @documents.empty?
+  | There are currently no uploaded documents
+- else
+  table#manage.display.font-marginsize cellspacing="0"
+    thead
+      tr
+        th scope="col" Document Name
+        th scope="col" Create Date
+        th scope="col" Status
+        th scope="col" Action
+    tbody
+      - @documents.each do |document|
+        - if document.user && document.user.is_vendor_or_contributor?
+          tr  id="#{document.id}"
+            td
+              = document.original_file_name
+            td
+              = document.created_at.strftime("%m/%d/%Y")
+            td
+              = document.is_active ? 'Active' : 'Inactive'
+            td
+              - if document.av_status == "OK"
+                = link_to 'View', pdf_viewer_organization_document_path(id: document.id, organization_id: current_organization.id), method: :get, class: "usa-button-outline",target: "_blank"
+  .right-align
+    - if can? :view_document_library, current_user
+      a href="/my_documents" Manage documents 

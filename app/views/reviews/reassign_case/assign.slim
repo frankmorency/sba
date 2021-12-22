@@ -1,0 +1,51 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+
+  h1 Assign Case
+
+  p.usa-font-lead Assign this case to another analyst or supervisor.
+
+  = form_tag wizard_path, {method: :put, id: :assign}
+    = render partial: 'reviews/reassign_case/assign_case_form', locals: {app: @sba_application}
+    div
+      .sba-l-col.sba-u-bgcolor--gray-lightest.sba-u-padding--2.sba-u-margin-top--2
+        ul.usa-unstyled-list
+          li
+            input#another_district_office[type="radio" name="user_id" value="another"]
+            label.sba-u-margin-top--0[for="another_district_office"]
+              | Choose someone from another district office
+        #followup1.sba-c-follow-up.hidden
+          label.sba-u-margin-top--0[for="followup1"]
+            | District offices
+          = select_tag @dt, options_for_select(DutyStation.stations_with_district_office_sba_users.collect {|u| [u.name, u.id]}.insert(0, "")), id: "new_district_office", name: "new_district_office"
+    .actions
+      .actions__main
+        = submit_tag "Assign case"
+        = link_to 'Start Over', sba_application_application_dashboard_overview_index_path(sba_application_id: @sba_application.id)
+javascript:
+    $(document).ready(function () {
+        $("[name='user_id']").click(function () {
+            if (this.value == 'another') {
+                $("#followup1").removeClass("hidden")
+                $("#new_district_office").attr('required', true);
+            } else {
+                $("#followup1").addClass("hidden")
+                $("#new_district_office").attr('required', false);
+            }
+        });
+
+        $("#assign").validate({
+            errorPlacement: function (error, element) {
+                $(".usa-grid-full>h1").after(error);
+            },
+            rules: {
+                "user_id": {
+                    required: true
+                }
+            },
+            messages: {
+                "user_id": "Select an individual"
+            }
+        });
+    });

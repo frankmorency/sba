@@ -1,0 +1,11 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        h1 Recommendation Submitted
+    p.usa-font-lead = "You recommended that #{@sba_application.organization.name} be #{@recommendation_title.downcase} from the 8(a) program."
+    p.usa-font-lead The person you reassigned this case to will receive it in their workload. You do not need to take any other actions.
+    p
+      = link_to "Go to my dashboard", root_path, class: "usa-button usa-button-big"

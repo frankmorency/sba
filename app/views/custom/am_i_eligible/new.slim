@@ -1,0 +1,268 @@
+#am-i
+  h1 Is there an SBA Contracting Program for me?
+
+  .usa-width-one-whole.usa-content
+    p.lead-para The Federal Government is the largest buyer of products and services in the US. The SBA has a variety of programs to help small businesses compete for these federal contracts. Is your business eligible for one of our contracting programs?
+
+  .usa-width-one-whole
+    .usa-width-one-third.grey-box-text
+      h2  8(A)
+
+      p The <b>8(a) Business Development (BD) Program</b> offers a broad scope of assistance to firms that are owned and controlled at least 51% socially and economically disadvantaged individual(s).
+
+    .usa-width-one-third.grey-box-text
+      h2  WOSB
+
+      p The <b>Women-Owned Small Business (WOSB)</b> Federal Contract Program allows set-asides for WOSBs in industries where firms are underrepresented. WOSBs must be at least 51% owned and controlled by women.
+
+    .usa-width-one-third.grey-box-text
+      h2  HUBZone
+
+      p The <b>Historically Underutilized Business Zone (HUBzone)</b> Program allows federal contract set-asides for small businesses in economically depressed communities.
+
+  .usa-width-one-whole.usa-content
+    br
+    h3 Answer the questions below to find out if your firm may meet criteria to participate in one of these programs.
+    p <i class="outside-i">Firms owned by Indian Tribes, Alaska Native Corporations, Native Hawaiian Organizations, Community Development Corporations, and small agricultural cooperatives may have different criteria for acceptance into SBA’s small business programs. Refer to SBA.gov for more information</i>.
+
+  .usa-width-one-whole
+    br
+    h2 About your business
+
+  .usa-width-one-whole
+    .questions
+      - @am_i_eligible.questions.each do |qp|
+        = render partial: "custom/am_i_eligible/#{qp[:type]}", locals: {name: qp[:name], text: qp[:text], details: '', success: qp[:success], failure: qp[:failure], details_file: qp[:details_file]}
+
+  .usa-grid-full
+    #special.failure-box.usa-width-one-whole.hidden
+      i.fa.fa-exclamation-triangle
+      br
+      span.message
+
+  #results.usa-width-one-whole.results-based
+    p
+      | The results below are a preliminary assessment of which SBA contracting programs may be a good fit for your firm. If you’re ready to get started with applying to any of these programs, use the links within the results below to get started today!
+
+  #success.usa-width-one-whole.hidden
+    h4
+      i.fa.fa-check-circle
+      | It appears your company MAY BE ELIGIBLE for participation in the following SBA contracting programs:
+
+  #failure.usa-width-one-whole.hidden
+    h4
+      i.fa.fa-times-circle
+      | It appears your company MAY NOT BE ELIGIBLE for participation in the following SBA contracting programs:
+
+    #eighta.you-may-not-be-eligible-box
+      h3 8(a)
+      .eligible
+        p
+          b Based on the information you provided, you may be eligible for the 8(a) BD Program.
+        h3
+          | Learn more about
+          '
+          a href="https://www.sba.gov/contracting/government-contracting-programs/8a-business-development-program" target="_blank" how to apply
+          '
+          | for the program
+
+      .not_eligible
+        p
+          b Based on the information you provided, you may not be eligible for the 8(a) BD Program.
+        p A firm and/or any qualifying individuals that have previously participated in the 8(a) BD Program are not eligible to participate again.
+        p
+          a href="https://www.sba.gov/contracting/government-contracting-programs/8a-business-development-program" target="_blank" Learn more about the 8(a) BD Program
+
+    #wosb.you-may-not-be-eligible-box
+      h3 Women-Owned Small Business (WOSB)
+      .eligible
+        p
+          b Based on the information you provided, you may be eligible for the WOSB Program.
+        h3
+          | Learn more about
+          '
+          a href="https://www.sba.gov/contracting/government-contracting-programs/women-owned-small-businesses" target="_blank" how to apply
+          '
+          | for the program
+
+
+      .not_eligible
+        b Based on the information you provided, you may not eligible for the WOSB Program because the firm must be owned by women.
+        p <a href="https://www.sba.gov/contracting/government-contracting-programs/women-owned-small-businesses" target="_blank">Learn more about the WOSB Contract Program</a>
+
+    #edwosb.you-may-not-be-eligible-box
+      h3 Economically Disadvantaged Women-Owned Small Business (EDWOSB)
+      .eligible
+        p
+          b Based on the information you provided, you may be eligible for the EDWOSB program.
+        h3
+          | Learn more about
+          '
+          a href="https://www.sba.gov/contracting/government-contracting-programs/women-owned-small-businesses" target="_blank" how to apply
+          '
+          | for the program
+
+
+      .not_eligible
+        p
+          b Based on the information you provided, you may not eligible for the EDWOSB program because the firm must be economically disadvantaged.
+        p
+          a href="https://www.sba.gov/contracting/government-contracting-programs/women-owned-small-businesses" target="_blank" Learn more about the EDWOSB program
+
+    #hubzone.you-may-not-be-eligible-box
+      h3 Historically Underutilized Business Zone (HUBZone) Program
+      .eligible
+        p
+          b Based on the information you provided, you may be eligible for the HUBZone Program.
+        h3
+          | Learn more about
+          '
+          a href="https://www.sba.gov/contracting/government-contracting-programs/hubzone-program" target="_blank" how to apply
+          '
+          | for the program
+
+      .not_eligible
+        p
+          b Based on the information you provided, you may not be eligible for the HUBZone Program.
+        p A firm and at least 35% of its employees must reside in a certified HUBZone.
+        p
+          a href="https://www.sba.gov/contracting/government-contracting-programs/hubzone-program" target="_blank" Learn more about the HUBZone Program
+
+  #email_results.usa-width-one-half
+    span &nbsp;
+    .button_wrapper.hidden#email_results
+      button#email_results_button.email-result-button Email my results
+
+    div.usa-alert.usa-alert-success.hidden#email_success
+      div.usa-alert-body
+        h3.usa-alert-heading Success!
+        p.usa-alert-text
+
+    div.usa-alert.usa-alert-error.hidden#email_error role="alert"
+      div.usa-alert-body
+        h3.usa-alert-heading There was an error.
+        p.usa-alert-text
+
+    div.hidden#email-container
+      = label_tag 'eligibility-results-email', 'Please enter your email below. It will not be saved.', style: 'display:block'
+      = text_field_tag 'eligibility-results-email', nil, placeholder: 'Email address', style: 'display:inline'
+      button#send_email_button.button-margin-left Send
+
+  .usa-width-one-half
+    = button_to 'Clear all responses', '/custom/am_i_eligible/new', method: 'get', class: 'usa-button-gray'
+
+javascript:
+  $(function() {
+    var eligible = new AmIEligible(#{raw @am_i_eligible.to_json});
+
+    eligible.start();
+    $('.eligible').hide()
+    $('#not_eligible').hide()
+
+    $(".answer button").click(function() {
+      var value = $(this).data('value');
+      var question_id = '';
+
+      if (value == true){
+        question_id = $(this).attr('id').replace("yes_button_", "");
+      } else {
+        question_id = $(this).attr('id').replace("no_button_", "");
+      }
+
+      eligible.answerAndCheck(question_id, value);
+    });
+
+    $(".question .a a.change").click(function(e) {
+      var question_id = $(this).attr('id');
+      eligible.changeAnswer(question_id);
+      e.preventDefault();
+    });
+
+    $('button#naics_button').click(function (e) {
+      var question = $('input#naics_code').parent().parent().parent().parent().attr('id');
+      var answer = $('input#naics_code').val();
+      var value;
+      var certification_type;
+
+      if ($.inArray(answer, eligible.edwosb_naics_codes) != -1) {
+        value = true;
+        certification_type = 'edwosb';
+      } else if ($.inArray(answer, eligible.wosb_naics_codes) != -1) {
+        value = true;
+        certification_type = 'wosb';
+      } else {
+        value = false;
+      }
+
+      eligible.answerAndCheck(question, value, certification_type);
+    });
+
+    $("button#email_results_button").on('click', function (event) {
+      event.preventDefault();
+      $("div.usa-alert.usa-alert-success#email_success").hide();
+      $("div.usa-alert.usa-alert-error#email_error").hide();
+      $("#email-container").show();
+    });
+
+    $("button#send_email_button").on('click', function (event) {
+      event.preventDefault();
+
+      $("div.usa-alert.usa-alert-success#email_success").hide();
+      $("div.usa-alert.usa-alert-error#email_error").hide();
+
+
+      var json_string;
+
+      if ($("input[name='special_message']").length){
+        json_string = '{\"email_address\":\"' + $("input#eligibility-results-email").val() + '\",\"special_message\":\"' + $("input[name='special_message']").val() + '\"}';
+      } else {
+        json_string = '{\"email_address\":\"' + $("input#eligibility-results-email").val() + '\",\"eligibility_values\":{';
+
+        $("input[name='eligibility_value']").each(function (index) {
+          var certification = $(this).attr("id");
+          var message = "";
+
+          if ($("input[name='message_email']#"+certification+'_msg').val() !== undefined) {
+            message = $("input[name='message_email']#"+certification+'_msg').val();
+          }
+
+          if (index == 0) {
+            json_string += '\"' + $(this).attr("id") + '\":{\"message_email\":\"' + message + '\",\"value\":\"' + $(this).val() + '\"}';
+          } else {
+            json_string += ',\"' + $(this).attr("id") + '\":{\"message_email\":\"' + message + '\",\"value\":\"' + $(this).val() + '\"}';
+          }
+        });
+
+        json_string += '}}';
+      }
+
+      $.ajax({
+        url: '/am-i-eligible/email',
+        type: 'POST',
+        beforeSend: function (jqXHR) {
+          jqXHR.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+        },
+        dataType: "json",
+        data: {eligibility_result: jQuery.parseJSON(json_string)},
+        success: function (data, textStatus, jqXHR) {
+          $("p.usa-alert-text").text(jqXHR.responseJSON["message"]);
+          $("div.usa-alert.usa-alert-success#email_success").show();
+          $("#email-container").hide();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          if (jqXHR.status == 401) {
+            // Redirect to Login
+            window.location.href = "/users/sign_in";
+          } else {
+            $("p.usa-alert-text").text(jqXHR.responseJSON["message"]);
+            $("div.usa-alert.usa-alert-error#email_error").show();
+          }
+        }
+      });
+
+    });
+
+    $(".q").addClass( "makeitonehundredpercent" );
+    $("hr").remove(".no");
+
+  });

@@ -1,0 +1,172 @@
+- unique_id = question.dom_id('details').parameterize.underscore
+
+.hide
+  = text_area_tag question.dom_id('details'), (question.details unless (question.details.nil? || question.details == 'null')), id: question.dom_id('details')
+
+table.sba-c-table.sba-c-table--editable[aria-live="polite" aria-atomic="true" id="#{unique_id}_table"]
+  caption
+    | Payments, Distributions, and Compensation
+  thead
+    tr
+      th[data-custom-id="Name" data-required="true" scope="col"]
+        | Name
+      th[data-custom-id="Title" data-required="true" scope="col"]
+        | Title
+      th.js-sum[data-custom-id="Equity Interest" data-info-type="percent" data-max="100" data-min="0" data-pattern="[0-9]*" data-required="true" scope="col"]
+        | Equity Interest
+      th[data-custom-id="Reason" scope="col"]
+        | Reasons for Payment
+      th.js-sum[data-custom-id="Total Payments" data-info-type="usd" data-min="0" data-required="true" scope="col"]
+        | Total Payments
+      th[scope="col"]
+        | Actions
+  tbody
+    - if (question.details.nil? || question.details == 'null')
+      tr id="#{unique_id}_table_tr0_data"
+        th[colspan="6"]
+          em
+            | No items added yet
+    - else
+      tr [id="#{unique_id}_table_tr0_data" hidden="hidden"]
+        th[colspan="6"]
+          em
+            | No items added yet
+    - unless (question.details.nil? || question.details == 'null')
+      - row_count = 1
+      - JSON.parse(question.details).each_key do |key|
+        tr.is-added[id="#{key}_data"]
+          - col_count = 1
+          - JSON.parse(question.details)[key].each_pair do |second_key, value|
+
+            - case col_count
+            - when 1
+              - header = "Name"
+            - when 2
+              - header = "Title"
+            - when 3
+              - header = "Equity Interest"
+            - when 4
+              - header = "Reasons for Payment"
+            - when 5
+              - header = "Total Payments"
+
+            - if col_count == 1
+              th[scope="row" data-table-header="#{header}" id="#{second_key}_text"]
+                = value
+            - else
+              td[data-table-header="#{header}" id="#{second_key}_text"]
+                = value
+
+            - col_count+=1
+
+          td[data-table-header="Actions"]
+            .sba-c-task-panel
+              button.sba-c-button.sba-c-button--transparent.task-panel-toggle[type="button" aria-expanded="false" aria-controls="#{unique_id}_table_tr#{row_count}_fields_panel"]
+                svg.sba-c-icon[aria-hidden="true"]
+                  use[xmlns:xlink= "http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#ellipsis-h"]
+                span.sba-u-visibility--screen-reader
+                  | Toggle menu to edit this row
+              .task-panel-content[id="#{unique_id}_table_tr#{row_count}_fields_panel"]
+                ul.sba-c-task-panel__menu
+                  li.sba-c-task-panel__menu__item
+                    a.sba-c-task-panel__menu__link[href="#" aria-controls="#{unique_id}_table_tr#{row_count}_fields" id="#{unique_id}_table_tr#{row_count}_edit"]
+                      | Edit this item
+                  li.sba-c-task-panel__menu__item
+                    a.sba-c-task-panel__menu__link--emergency[href="#" id="#{unique_id}_table_tr#{row_count}_delete"]
+                      | Delete
+        - row_count+=1
+
+      - row_count = 1
+      - JSON.parse(question.details).each_key do |key|
+        tr[id="#{key}_fields" hidden="hidden"]
+          td[colspan="6"]
+            ul.sba-c-field-list
+              - col_count = 1
+              - JSON.parse(question.details)[key].each_pair do |second_key, value|
+
+                - case col_count
+                - when 1
+                  li
+                    label.sba-c-label[for="#{second_key}"]
+                      | Name
+                    input.valid[id="#{second_key}" type="text" required="true" aria-required="true" aria-invalid="false" value="#{value}"]
+                - when 2
+                  li
+                    label.sba-c-label[for="#{second_key}"]
+                      | Title
+                    input.valid[id="#{second_key}" type="text" required="true" aria-required="true" aria-invalid="false" value="#{value}"]
+                - when 3
+                  li
+                    label.sba-c-label[for="#{second_key}"]
+                      | Equity Interest
+                    .sba-c-input-ornament-container
+                      .sba-c-input-ornament.sba-c-input-ornament--right
+                        svg.sba-c-icon[aria-hidden="true"]
+                          use[xmlns:xlink= "http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#percent"]
+                      input.sba-u-input-width--3.js-percent.valid[id="#{second_key}" type="number" min="0" max="100" pattern="[0-9]*" required="true" aria-required="true" aria-invalid="false" value="#{value.to_s.chop}"]
+                - when 4
+                  li
+                    label.sba-c-label[for="#{second_key}"]
+                      | Reasons for Payment
+                    input.valid[id="#{second_key}" type="text" aria-invalid="false" value="#{value}"]
+                - when 5
+                  li
+                    label.sba-c-label[for="#{second_key}"]
+                      | Total Payments
+                    .sba-c-input-ornament-container
+                      .sba-c-input-ornament.sba-c-input-ornament--left
+                        svg.sba-c-icon[aria-hidden="true"]
+                          use[xmlns:xlink= "http://www.w3.org/1999/xlink" xlink : href="#{find_asset_path('landing-icons/sprite.svg')}#dollar-sign"]
+                      input.sba-u-input-width--10.js-usd.valid[id="#{second_key}" type="number" min="0" required="true" aria-required="true" aria-invalid="false" value="#{value.to_s[1..-1]}"]
+
+                - col_count+=1
+            .sba-c-table--editable__actions
+              button.sba-c-button[id="#{key}_save" aria-controls="#{key}_data #{key}_fields"]
+                | OK
+              a[id="#{key}_cancel" href="#" aria-controls="#{key}_data #{key}_fields"]
+                | Cancel
+        - row_count+=1
+
+button.sba-c-button[type="button" id="#{unique_id}_table_add_item"]
+  | Add item
+
+javascript:
+  $(document).ready(function () {
+    if ("#{question.details}" != "null"){
+
+      var table = $("##{unique_id}_table") ;
+
+      var table_cols = table.find('thead tr th').length;
+
+      for (var i = 0; i < table_cols; i++) {
+        var $table_header = table.find('thead tr th:nth-child(' + (i + 1) + ').js-sum');
+
+        // See if there are any sum classes
+        if ($table_header.length) {
+          var sum = 0;
+          // Get total values
+          table.find('tbody tr[id$="_data"] td:nth-child(' + (i + 1) + ')').each(function () {
+            formatted_number = $(this).text().replace("$", "").replace(/,/g, "");
+            sum += parseInt(formatted_number);
+          });
+
+          if (isNaN(sum)) {
+            sum = 0;
+          }
+
+          if ($table_header.attr("data-info-type") == "usd") {
+            var parts = sum.toString().split(".");
+            parts[0] = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+            sum = "$" + parts.join(".");
+          }
+          else if ($table_header.attr("data-info-type") == "percent") {
+            sum = sum + "%";
+          }
+
+          table.find('tfoot tr td:nth-child(' + (i + 1) + ')')
+            .text(sum)
+            .attr("data-table-header", $table_header.text());
+        }
+      }
+    }
+  });

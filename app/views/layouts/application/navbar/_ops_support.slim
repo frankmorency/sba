@@ -1,0 +1,31 @@
+li class=('current-top-nav' if params[:action] == 'index' && params['controller'] == "sba_analyst/dashboard" )
+  = link_to 'Dashboard'.html_safe, (can? :view_sba_analyst_dashboard, current_user) ? '/ops_support/user' : vendor_admin_dashboard_index_path, class: 'usa-nav-link'
+  - if can? :view_sba_analyst_dashboard, current_user
+    li class=('current-top-nav' if params[:action] == 'index' && params['controller'] == "sba_analyst/cases" )
+    - if can? :view_analyst_cases, current_user
+      li
+        = link_to 'Cases'.html_safe, sba_analyst_cases_path, class: 'usa-nav-link'
+    - if current_user.has_any_role?(:sba_ops_support_admin)
+      li
+        = link_to 'Permission'.html_safe, ops_support_people_requests_path, class: 'usa-nav-link'                
+        
+        - if Feature.active?(:agency_requirements)
+          li
+            button.usa-accordion-button.usa-nav-link aria-controls="top-nav-aria-requirements" aria-expanded="false" id="top-nav-requirements" Requirements
+            ul#top-nav-aria-requirements.usa-nav-submenu
+              li
+                = link_to 'New Requirements', new_sba_analyst_agency_requirement_path, class: 'usa-nav-link'
+              li
+                = link_to 'All Requirements', sba_analyst_agency_requirements_search_index_path, class: 'usa-nav-link'
+      - if can?(:assign_analyst_role, current_user)
+        li
+          = link_to 'Management'.html_safe, sba_analyst_role_access_requests_path, class: 'usa-nav-link'
+      li
+        = link_to 'Notifications'.html_safe, '#', style: 'display: none', class: 'usa-nav-link'
+
+      javascript:
+        $('#top-nav-aria-requirements').hide();
+        $('#top-nav-requirements').click(function () {
+          $('#top-nav-aria-requirements').toggle();
+          $('#top-nav-requirements').toggleClass('usa-nav-link-button-active');
+        });

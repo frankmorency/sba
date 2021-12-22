@@ -1,0 +1,178 @@
+.full-grey#wosb
+  br
+  .masthead
+    .usa-grid-full.masthead__content.sba-u-flex-direction--column
+      .usa-width-one-fourth.masthead__content__primary.sba-u-border--0
+        h1.masthead__primary-heading All cases
+        = render partial: 'shared/mpp/supervisors_cases_links' if current_user.can?(:ensure_mpp_user)
+    .usa-grid-full.certify-local-nav
+      ul.usa-nav-primary.usa-accordion
+        li
+          = link_to "8(a)", eight_a_sba_analyst_cases_path, class: "usa-nav-link"
+        li
+          = link_to "ASMPP", mpp_sba_analyst_cases_path, class: "usa-nav-link"
+        li
+          = link_to "WOSB", wosb_sba_analyst_cases_path, class: "usa-nav-link current"
+        / li
+          = link_to "VS", voluntary_suspension_sba_analyst_cases_path, class: "usa-nav-link"
+
+.sba-l-container
+  .sba-l-row
+    .sba-l-col--12.sba-u-padding-x--2
+      .certify-page-header
+        .certify-page-header__primary
+          h1
+            | WOSB cases
+  .sba-l-row
+
+  = form_for :wosb, url: all_cases_search_sba_analyst_cases_path, html: { id: "case-search", remote: true }  do |f|
+    .sba-l-col--12.sba-u-padding-x--2
+      .sba-l-row
+        .sba-u-measure--wide[role="search"]
+          div.usa-search.usa-search-big.sba-c-search--large
+            label.usa-sr-only[for="search-field-big"]
+              | Search big
+            = f.text_field :search, { id: "search-field-big", type: "search", placeholder: "Search firm name, firm owner, DUNS"}
+            button[type="button" onclick="sendAllSearchRequestSearchFieldWOSB(this)" style="font-size: 2rem; height: 4.4rem; width: 11.6rem; margin-top: 0;"]
+              span.usa-search-submit-text
+                | Search
+      .sba-l-row.sba-u-margin-x--neg2
+        .sba-l-sm-col--12.sba-l-md-col--golden-sm.sba-l-lg-col--4.sba-u-padding-x--2
+            h2.sba-u-font-size--h3
+              | Filter Cases
+            fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+              legend.sba-c-facet-set__legend
+                | Program
+              ul.sba-c-unstyled-list.check-pill
+                li
+                  = f.check_box :edwosb, {}, "edwosb"
+                  = f.label :edwosb, "EDWOSB", {class: 'sba-c-label'}
+                li
+                  = f.check_box :wosb, {}, "wosb"
+                  = f.label :wosb, "WOSB", {class: 'sba-c-label'}
+            fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+              legend.sba-c-facet-set__legend Review type
+              ul.usa-accordion
+                 li.sba-u-bgcolor--transparent
+                   div.usa-accordion-button.sba-u-padding--0.sba-u-padding-y--1.sba-u-bgcolor--transparent aria-controls="a1" aria-expanded="false" type="button"
+                     | Initial Application
+                   #a1.usa-accordion-content aria-hidden="true"
+                    fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+                      legend.sba-c-facet-set__legend.sba-c-facet-set__legend--l2 Status
+                      ul.sba-c-unstyled-list.check-pill
+                        li
+                          = f.check_box :ia_no_review, {}, "ia_no_review"
+                          = f.label :ia_no_review, "No Review", {class: 'sba-c-label'}
+                        li
+                          = f.check_box :ia_assigned_in_progress, {}, "ia_assigned_in_progress"
+                          = f.label :ia_assigned_in_progress, "Assigned", {class: 'sba-c-label'}
+                        li
+                          = f.check_box :ia_returned_for_modification, {}, "ia_returned_for_modification"
+                          = f.label :ia_returned_for_modification, "Returned", {class: 'sba-c-label'}
+                        li
+                          = f.check_box :ia_recommend_eligible, {}, "ia_recommend_eligible"
+                          = f.label :ia_recommend_eligible, "Recommend Eligible", {class: 'sba-c-label'}
+                        li
+                          = f.check_box :ia_recommend_ineligible, {}, "ia_recommend_ineligible"
+                          = f.label :ia_recommend_ineligible, "Recommend Ineligible", {class: 'sba-c-label'}
+                        li
+                          = f.check_box :ia_determination_made, {}, "ia_determination_made"
+                          = f.label :ia_determination_made, "Determination Made", {class: 'sba-c-label'}
+            fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+              legend.sba-c-facet-set__legend Certificate status
+              ul.sba-c-unstyled-list.check-pill
+                li
+                  = f.check_box :cs_ineligible, {}, "cs_ineligible"
+                  = f.label :cs_ineligible, "Ineligible", {class: 'sba-c-label'}
+                li
+                  = f.check_box :cs_active, {}, "cs_active"
+                  = f.label :cs_active, "Active", {class: 'sba-c-label'}
+                li
+                  = f.check_box :cs_expired, {}, "cs_expired"
+                  = f.label :cs_expired, "Expired", {class: 'sba-c-label'}
+            fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+              legend.sba-c-facet-set__legend
+                | Case ownership
+              ul.sba-c-unstyled-list
+                li
+                  = f.label :case_owner, {class: "sba-c-label"}
+                  = f.text_field :case_owner, {class: "ba-c-input", placeholder: "Type name" }
+            button[type="button" onclick="sendAllSearchRequestSearchFieldWOSB(this)" ]
+              span.usa-search-submit-text
+                | Search
+            br
+            br
+            fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+              legend.sba-c-facet-set__legend
+                | Current Reviewer
+              ul.sba-c-unstyled-list
+                li
+                  = f.label :current_reviewer, {class: "sba-c-label"}
+                  = f.text_field :current_reviewer, {class: "ba-c-input", placeholder: "Type name" }
+            button[type="button" onclick="sendAllSearchRequestSearchFieldWOSBreviewer(this)" ]
+              span.usa-search-submit-text
+                | Search
+        .sba-l-sm-col--12.sba-l-md-col--golden-lg.sba-l-lg-col--8.sba-u-padding-x--2.sba-u-lg-padding-left--6
+          .sba-u-display--flex.sba-u-justify-content--between
+            h2.sba-u-font-size--h3
+              span#case-numbers
+                = get_pagination_number(@current_page, @cases.total, CasesV2Search::MAX_SEARCH_RESULTS)
+              - if @cases.total > 0
+                = link_to download_sba_analyst_cases_path(format: "csv"), "aria-title": "Export", style: "margin-left: 2em;"  do
+                  svg.sba-c-icon.sba-c-icon--blue data-tooltip-text="Export CSV" aria-hidden="true"
+                    use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#download"
+            div
+              label.sba-u-visibility--screen-reader[for="sort"]
+                | Sort by
+              = f.select :sort, @sort_options.map { |p| [ p[:name], p[:value] ] }, {},  { onchange: "selectACSSendRequestSort(this, 'wosb_sort')" }
+          .sba-u-display--flex.sba-u-justify-content--between
+            .sba-c-facet-pills.sba-u-margin-bottom--3
+              span#case-breadcrumb-pills
+                - @breadcrumb_pills.each do |pill|
+                  - if pill[:label] == "Search"
+                    .sba-c-facet-pill[id="pill-#{pill[:id]}"]
+                      = "#{pill[:label]} - #{pill[:value]}"
+                      button.sba-c-facet-pill__close-button[type="button" title="Close" onclick="removePillForSearch(this)"] X
+                  - elsif pill[:label] == "Case Owner"
+                    .sba-c-facet-pill[id="pill-#{pill[:id]}"]
+                      = "#{pill[:label]} - #{pill[:value]}"
+                      button.sba-c-facet-pill__close-button[type="button" title="Close" onclick="removePillForSelectCaseOwner(this, 'wosb_case_owner')"] X
+                  - elsif pill[:label] == "Current Reviewer"
+                    .sba-c-facet-pill[id="pill-#{pill[:id]}"]
+                      = "#{pill[:label]} - #{pill[:value]}"
+                      button.sba-c-facet-pill__close-button[type="button" title="Close" onclick="removePillForSelectCurrentReviewer(this, 'wosb_current_reviewer')"] X
+                  - elsif pill[:label] == "Sort"
+                    .sba-c-facet-pill[id="pill-#{pill[:id]}"]
+                      = "#{pill[:label]} - #{pill[:value]}"
+                      button.sba-c-facet-pill__close-button[type="button" title="Close" onclick="removePillForSelectSort(this)"] X
+                  - else
+                    .sba-c-facet-pill[id="pill-#{pill[:id]}"]
+                      = "#{pill[:value]}"
+                      button.sba-c-facet-pill__close-button[type="button" title="Close" onclick="removePillBreadCrumb(this)"] X
+              span#reset-filter[class="#{@breadcrumb_pills.empty?}"]
+                - if @breadcrumb_pills.empty?
+                  = link_to("Clear all", wosb_sba_analyst_cases_path, {class: "sba-c-facet-pills__reset hidden", id: "clear_all"})
+                - else
+                  = link_to("Clear all", wosb_sba_analyst_cases_path, {class: "sba-c-facet-pills__reset", id: "clear_all"})
+            - if @cases.total > 0
+              div[style="min-width: 18em;"]
+                = link_to download_sba_analyst_cases_path(format: "csv"), "aria-title": "Export CSV", class: "sba-c-button sba-c-button--inverse"  do
+                  svg.sba-c-icon.sba-c-icon--blue.sba-u-margin-right--1 data-tooltip-text="Export CSV" aria-hidden="true"
+                    use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#download"
+                  | Download CSV of current page
+          div#search-results
+            = render "search_result", locals: {results: {}}
+
+javascript:
+  $('header.navigation').css('margin-bottom', '0');
+  $('section.usa-grid-full').css('max-width', '100%');
+
+css:
+  .sba-l-container {
+    margin-left: 0 !important;
+  }
+
+  .masthead__content {padding-top: 0.5rem !important; }
+  .certify-local-nav {margin-top: -8px;}
+  input::-webkit-input-placeholder { color: rgb(117, 117, 117);}
+  label {margin-top: 0;}

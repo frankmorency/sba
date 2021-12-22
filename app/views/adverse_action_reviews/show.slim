@@ -1,0 +1,32 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+javascript:
+    $('header.navigation').css('margin-bottom', '0');
+    $('section.usa-grid-full').css('max-width', '100%');
+
+= render partial: 'shared/eight_a/fun_bar', locals: {application: @sba_application }
+- path = @sba_application.is_really_a_review? ? organization_adverse_action_review_notes_path(@sba_application.organization, adverse_action_review_id: @sba_application.case_number) : sba_application_application_dashboard_notes_path(sba_application_id: @sba_application.id)
+
+.usa-grid-full style="max-width:1250px"
+  .certify-page-header
+    .certify-page-header__primary
+      h1 Overview
+.usa-grid-full
+  .usa-width-two-thirds
+    p
+	 		| This adverse action is being processed internally by the SBA. The firm cannot see any information until the AA/BD approves and sends the firm an official notice.
+    p
+	    | To see the internal SBA documentation about this case, go to the &nbsp;
+		= link_to 'Analyst Documents', organization_adverse_action_review_analyst_documents_path(@sba_application.organization, adverse_action_review_id: @sba_application.case_number)
+		|  and &nbsp;
+		= link_to "SBA Notes", path
+	    |  tabs.
+    p
+    	b Use the actions button above to recommend, refer, or approve this adverse action
+    	|  (termination, early graduation, or voluntary withdrawal).
+
+  .usa-width-one-third
+    = render partial: 'application_dashboard/determination_history_log/log'
+
+= render partial: 'shared/note_popup/index', locals: {note_post_path: organization_adverse_action_review_notes_path(@sba_application.organization, adverse_action_review_id: @sba_application.case_number), application: @sba_application}
+= render partial: 'application_dashboard/tab_javascript'

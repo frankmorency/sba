@@ -1,0 +1,9 @@
+- if liabilities
+  - 17.upto(27).each do |i|
+    - if liabilities[i]
+      tr
+        td class=(liabilities[i][:class] if liabilities[i][:class])
+          = liabilities[i][:label] if (!(defined? reviewer_mode) || i > 25)
+          = link_to liabilities[i][:label], "##{liabilities[i][:question_name]}" if (defined? reviewer_mode) && i < 26
+        td class=(liabilities[i][:class] if liabilities[i][:class])
+          = number_to_currency(liabilities[i][:value]) if liabilities[i][:value]

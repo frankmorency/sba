@@ -1,0 +1,186 @@
+.sba-l-container.sba-u-padding-x--0
+	.sba-l-row.sba-u-padding-x--0
+		.sba-u-padding-x--2.sba-l-col--12
+			= link_to edit_sba_analyst_agency_requirement_path(@agency_requirement), "aria-title": "Edit", style: "position: absolute; right: 1em; top: 5em;" do
+				svg.sba-c-icon.sba-c-icon--blue data-tooltip-text="Edit Requirement" aria-hidden="true"
+					use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#edit"
+			- if !@agency_requirement.agency_requirement_organizations.empty?
+				= link_to sba_analyst_agency_requirement_download_path(@agency_requirement, format: "csv"), "aria-title": "Export", style: "position: absolute; right: 2.9em; top: 5em;"  do
+					svg.sba-c-icon.sba-c-icon--blue data-tooltip-text="Export CSV" aria-hidden="true"
+						use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#download"
+			h3.sba-u-font-size--h3.sba-u-border-bottom--1
+				| Requirement
+				p = "Req ID: " + @agency_requirement.unique_number
+			= form_for @agency_requirement, url: sba_analyst_agency_requirements_path(@agency_requirement.id), html: { id: "new_agency_requirement_read_only" } do |f|
+				fieldset.sba-c-fieldset.sba-c-fieldset--inputs
+				.sba-l-row
+					ul.sba-c-unstyled-list.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+						li
+							= f.label :title, "Title:", class: "sba-c-label"
+							p = @agency_requirement.title
+						li
+							= f.label :description, "Description:", class: "sba-c-label"
+							p = @agency_requirement.description
+						li
+						  = f.label :received_on, "Received Date:", class: "sba-c-label"
+						  p = @agency_requirement.received_on&.strftime('%m/%d/%Y')
+						li
+						  label.sba-c-label for="add_naics" NAICS Code:
+						  p = @agency_requirement&.agency_naics_code&.code
+						li
+							= f.label :agency_offer_code_id, "Code:", class: "sba-c-label"
+							p = @agency_requirement&.agency_offer_code&.name
+					ul.sba-c-unstyled-list.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+						li
+							= f.label :duty_station_id, "District Office:", class: "sba-c-label"
+							p = @agency_requirement.duty_station&.name
+						li
+							label.sba-c-label[for="agency_requirement_estimated_contract_value"] Estimated Contract Value:
+							p = number_to_currency(@agency_requirement.estimated_contract_value)
+						li
+							label.sba-c-label[for="agency_requirement_contract_value"] Awarded Contract Value:
+							p = number_to_currency(@agency_requirement.contract_value)
+						li
+						  label.sba-c-label for="add_size_standard" Size Standard:
+						  p = @agency_requirement&.agency_naics_code&.size
+				br
+				br
+				.sba-l-row
+				  fieldset.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				    legend.sba-c-facet-set__legend Offer Data
+				    ul.sba-c-unstyled-list
+				      li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				    		= f.label :offer_solicitation_number, "Solicitation Number:", class: "sba-c-label"
+				    		p = @agency_requirement.offer_solicitation_number
+				      li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				      	= f.label :agency_offer_scope_id, "Scope:", class: "sba-c-label"
+				      	p = @agency_requirement.agency_offer_scope&.name
+				      li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				      	= f.label :agency_offer_agreement_id, "Agreement:", class: "sba-c-label"
+				      	p = @agency_requirement.agency_offer_agreement&.name
+				  / AGENCY
+				  fieldset.sba-l-col--12.sba-l-sm-col--6
+				    legend.sba-c-facet-set__legend Agency
+				    ul.sba-c-unstyled-list
+				      li.
+				    		= f.label :agency_office_id, "Agency:", class: "sba-c-label"
+				    		p = @agency_requirement.agency_office&.name
+				      li
+								= f.label :program_id, "SBA Program:", class: "sba-c-label"
+								- if @agency_requirement&.program&.name == "mpp"
+									p ASMPP
+								- elsif  @agency_requirement&.program&.name == "eight_a"
+									p 8(a)
+								- elsif  @agency_requirement&.program&.name == "wosb"
+									p WOSB
+								- else
+									p
+
+				      li
+				      	= f.label :agency_comments, "Comments:", class: "sba-c-label"
+				        p = @agency_requirement.agency_comments
+
+				.sba-l-row
+					legend.sba-c-facet-set__legend Contracting Officer Information
+					fieldset.sba-c-fieldset.sba-c-fieldset--inputs
+				    ul.sba-c-unstyled-list.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				      li
+								label.sba-c-label for="co_first_name" First Name:
+								p = @agency_requirement&.agency_co&.first_name
+				      li
+				        label.sba-c-label for="co_last_name" Last Name:
+				        p = @agency_requirement&.agency_co&.last_name
+				      li
+				        label.sba-c-label for="co_phone" Phone:
+				        p = @agency_requirement&.agency_co&.phone
+				      li
+				        label.sba-c-label for="co_email" Email:
+				        p = @agency_requirement&.agency_co&.email
+				    ul.sba-c-unstyled-list.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+				      li
+				        label.sba-c-label for="co_address1" Address 1:
+				        p = @agency_requirement&.agency_co&.address1
+				      li
+				        label.sba-c-label for="co_address2" Address 2:
+				        p = @agency_requirement&.agency_co&.address2
+				      li
+				        label.sba-c-label for="co_city" City:
+				        p = @agency_requirement&.agency_co&.city
+				      li
+								label.sba-c-label for="co_state"  State:
+								p = @agency_requirement&.agency_co&.state
+				      li
+				        label.sba-c-label for="co_zip"  Zip:
+				        p = @agency_requirement&.agency_co&.zip
+				.sba-l-row
+					fieldset.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+					  legend.sba-c-facet-set__legend Contract Information:
+					  ul.sba-c-unstyled-list
+					    li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+								= f.label :agency_contract_type_id, "Type:", class: "sba-c-label"
+								p = @agency_requirement&.agency_contract_type&.name
+					    li
+					    	= f.label :contract_awarded, "Contract Awarded:", class: "sba-c-label"
+					    	- if  @agency_requirement.contract_awarded == false
+					    		p Not Awarded
+					    	- else
+					    		p Awarded
+					    li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+								= f.label :contract_number, "Contract Number:", class: "sba-c-input"
+								p = @agency_requirement.contract_number
+					    li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+								= f.label :contract_comments, "Contract Comments:", class: "sba-c-label"
+								p = @agency_requirement.contract_comments
+					/! Additional Comments
+					fieldset.sba-l-col--12.sba-l-sm-col--6
+					  legend.sba-c-facet-set__legend Additional Comments
+					  ul.sba-c-unstyled-list
+					    li.sba-l-col--12.sba-l-sm-col--6.sba-u-sm-padding-right--2
+					    	= f.label :comments, "Comments:", class: "sba-c-label"
+					    	p = @agency_requirement.comments
+
+				fieldset.sba-c-fieldset.sba-c-fieldset--inputs
+				br
+				.sba-l-row
+					legend.sba-c-facet-set__legend.sba-u-margin-bottom--neg2
+						| Attached Documents
+					table.sba-c-table.sba-c-table--borderless
+						thead
+							th scope="col"  Document
+							th scope="col"  Type
+							th scope="col"  Comments
+						tbody
+							- @agency_requirement.agency_requirement_documents.each do |document|
+								tr
+									th data-table-header="Document" scope="row"
+									  = link_to_if document.av_status == "OK", document.original_file_name, sba_analyst_agency_requirement_agency_requirement_document_download_path(@agency_requirement, document)
+									td data-print="type" data-table-header="Type"
+									  = document.document_type
+									td data-print="doc_comments" data-table-header="Comments"
+									  = document.comment
+				.sba-l-row
+					legend.sba-c-facet-set__legend.sba-u-margin-bottom--neg2 Associated firm(s)
+	        table.sba-c-table.sba-c-table--borderless
+	          thead
+	            tr
+	              th scope="col"  DUNS
+	              th scope="col"  Firm name
+	          tbody
+	            - @agency_requirement.agency_requirement_organizations.each do |agency_ro|
+	              tr
+	                td data-table-header="DUNS" scope="row"
+	                  = agency_ro&.organization&.duns_number
+	                td data-table-header="Type"
+	                  = link_to agency_ro&.organization&.name, sba_analyst_dashboard_show_path(enc: $encryptor.encrypt("duns_number=#{agency_ro&.organization&.duns_number}"))
+css:
+	.sba-l-row {
+		min-width: 100%;
+	}
+
+	.float-icon {
+		float: right;
+	}
+
+	label {
+		font-weight: bold;
+	}

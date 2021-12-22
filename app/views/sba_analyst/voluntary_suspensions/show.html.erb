@@ -1,0 +1,51 @@
+  <div>
+    <h3>Firm Name</h3>
+    <%= @voluntary_suspension.organization.firm_name %>
+  </div>
+  <div>
+    <h3>Duns Number</h3>
+    <%= @voluntary_suspension.organization.duns_number %>
+  </div>
+  
+  <div>
+    <h3>Option</h3>
+    <%= @voluntary_suspension.option %>
+  </div>
+  <div>
+    <h3>Title</h3>
+    <%= @voluntary_suspension.title %>
+  </div>
+  <div>
+    <h3>Body</h3>
+    <%= @voluntary_suspension.body_formatted %>
+  </div>
+
+  <div>
+    <h3>Document</h3>
+    <%= link_to "Attachment",  @voluntary_suspension.document.expiring_url(10), target: "_blank" %>
+  </div>
+
+<% if @voluntary_suspension.submitted? %>
+
+<%= form_for([:sba_analyst, @voluntary_suspension]) do |f| %>
+  <%= hidden_field_tag :review_action, "extend"  %>
+  <%= f.button "Approve" %>
+<% end %>
+
+<%= form_for([:sba_analyst, @voluntary_suspension]) do |f| %>
+  <%= hidden_field_tag :review_action, "deny"  %>
+  <%= f.button "Reject" %>
+<% end %>
+
+<% else %>
+
+<div>
+  <% if @voluntary_suspension.denied? %>
+  Denied @ <%= @voluntary_suspension.denied_at %> by <%= @voluntary_suspension.denied_by.full_name %>
+  <% end %>
+  <% if @voluntary_suspension.extended? %>
+  Extended @ <%= @voluntary_suspension.extended_at %> by <%= @voluntary_suspension.extended_by.full_name %>
+  <% end %>
+</div>
+
+<% end %>

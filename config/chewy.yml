@@ -1,0 +1,75 @@
+# config/chewy.yml
+# separate environment configs
+
+default: &default
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+
+default_admin: &default_admin
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+  <<: *default
+
+development:
+  <<: *default
+  host: 'localhost:9200'
+
+dev_admin:
+  <<: *default_admin
+
+dev:
+  prefix: 'dev'
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+  <<: *default
+
+docker:
+  <<: *default
+  prefix: 'docker'
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+
+test:
+  <<: *default
+  host: 'localhost:9200'
+  prefix: 'test'
+
+build_admin:
+  <<: *default_admin
+  prefix: 'build'
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+
+build:
+  <<: *default
+  prefix: 'build'
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+
+demo_admin:
+  <<: *default_admin
+  prefix: 'demo'
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+
+demo:
+  <<: *default
+  prefix: 'demo'
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+
+stage_admin:
+  <<: *default_admin
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+
+stage:
+  <<: *default
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+
+training_admin:
+  <<: *default_admin
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+
+training:
+  <<: *default
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+
+production_admin:
+  <<: *default_admin
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>
+
+production:
+  <<: *default
+  host: <%= ENV["ELASTIC_SEARCH_CLUSTER"] %>

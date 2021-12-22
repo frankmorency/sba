@@ -1,0 +1,7 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+
+  h1 This case was referred to #{@referral.first_name} #{@referral.last_name}
+
+  = link_to "Go to dashboard", root_path, class: "usa-button usa-button-big"

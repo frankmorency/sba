@@ -1,0 +1,24 @@
+# staging url of the application
+#web_url: https://stg.certify.sba.gov
+
+# qa url of the application
+#web_url: ENV['WEB_URL']
+#web_url: https://dev.sba-one.net/
+#web_url: https://certify.qa.sba-one.net
+# NOTE TO DEVELOPERS:: Comment out qa.sba-one.net and replace with localhost:3000 for local tests.
+web_url: https://qa.sba-one.net/
+#web_url: http://localhost:3000/
+
+# type of the browser (firefox,chrome,phantomjs,chrome-remote)
+browser: chrome-remote
+
+# mailinator web site
+web_mailinator_url: https://mailinator.com
+
+#database_url for dev and qa
+#db_url: certify-db.dev.sba-one.net
+db_url: certify-db.qa.sba-one.net
+
+# REST endpoint url for different objectives
+#rest_admin_url: https://dev.sba-one.net/admin/reset/contributor?email=
+rest_admin_url: https://qa.sba-one.net/admin/reset/contributor?email=

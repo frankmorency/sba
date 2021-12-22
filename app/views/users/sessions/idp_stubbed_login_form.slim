@@ -1,0 +1,11 @@
+h2 IdP Stubbed Login
+
+p In the Stubbed mode Certify does not rely on IdP for authentication. This page is available only when the 'idp_stubbed' feature flag is true. The stubbed login assists in development and testing.
+p If the user with the email id entered exists, you will be logged in successfully as this user. If not, a new user will be created with first name, last name as the id part of the email. To create a government user, enter an email with domains .gov, .mil or .fed.us.
+
+= form_tag('/idp_stubbed_login',  html: { method: :post }) do
+  p Email
+  = text_field_tag(:email)
+  .actions
+    .button_wrapper
+      button#submit.display-inline type="submit" Login

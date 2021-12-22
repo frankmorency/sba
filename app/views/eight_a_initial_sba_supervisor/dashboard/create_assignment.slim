@@ -1,0 +1,5 @@
+section.usa-grid-full
+  article#main-content
+    h1 = "This case been assigned to #{@user.name}"
+    = render partial: 'unassigned_cases_table', locals: {applications: @applications}
+    = link_to "Back to Dashboard", eight_a_initial_sba_supervisor_dashboard_index_path, class: "usa-button"

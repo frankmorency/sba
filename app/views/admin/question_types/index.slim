@@ -1,0 +1,6 @@
+- @grouped_question_types.each do |type, question_types|
+  h2 = type.demodulize.titleize
+
+  ul
+  - question_types.each do |qt|
+    li = qt.name.titleize

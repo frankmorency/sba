@@ -1,0 +1,112 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Recommendation: Step 2 of 4
+        h1 Attach Documents
+    p.usa-font-lead
+      | Upload your analysis and/or notice, including any updates to previous drafts. You will not be able to upload documents after you submit your recommendation or approval.
+
+    p.usa-font-lead
+      | These documents will be placed in the internal Analyst Documents page; the
+      strong
+        |  firm will not see them.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_for @recommendation,  url: wizard_path, method: :put do |f|
+          = f.hidden_field 'recommend_eligible', value: params["recommendation"]["recommend_eligible"]
+          = f.hidden_field 'recommend_eligible_for_appeal', value: params["recommendation"]["recommend_eligible_for_appeal"]
+          fieldset.questions
+            input#recommendation_made[type="hidden" value="true"]
+            ul#response.usa-unstyled-list
+              li
+                label.bold Analysis
+                .dropzone id="analysis-document-dz-area" style="appearance: none; border: 0.1rem solid #5b616b; border-radius: 0; box-sizing: border-box; color: #212121; display: block; font-size: 1.7rem; min-height: 0px;  line-height: 1.3; margin: 0.2em 0; max-width: 46rem; outline: none; padding: 1rem 0.7em; width: 100%;"
+                  .dz-default.dz-message style="text-align: left; margin: 0;"
+                    span#upload-error-message.usa-alert-error.usa-alert-no_icon.hidden
+                    a> class="dz-clickable usa-button" id="dz-select-analysis-document" Choose file
+                    span#selected_analysis_document_note
+                      = session[:analysis_document].nil? ? 'No file chosen' : session[:analysis_document][:original_file_name]
+              li
+                label.bold Notice
+                .dropzone id="determination-document-dz-area" style="appearance: none; border: 0.1rem solid #5b616b; border-radius: 0; box-sizing: border-box; color: #212121; display: block; font-size: 1.7rem; min-height: 0px;  line-height: 1.3; margin: 0.2em 0; max-width: 46rem; outline: none; padding: 1rem 0.7em; width: 100%;"
+                  .dz-default.dz-message style="text-align: left; margin: 0;"
+                    span#upload-error-message.usa-alert-error.usa-alert-no_icon.hidden
+                    a> class="dz-clickable usa-button" id="dz-select-determination-document" Choose file
+                    span#selected_determination_document_note
+                      = session[:determination_document].nil? ? 'No file chosen' : session[:determination_document][:original_file_name]
+          .actions
+            .actions__main
+              = f.submit "Next"
+              = link_to "Back", wizard_path(:decision)
+              p
+                em Next step: Forward case
+
+javascript:
+  // disable auto discover
+  Dropzone.autoDiscover = false;
+
+  $("#analysis-document-dz-area").dropzone({
+    url: "/documents/review_upload",
+    method: "POST",
+    clickable: "a#dz-select-analysis-document",
+    autoProcessQueue: true,
+    addRemoveLinks: true,
+    maxFilesize: 25,  //mb
+    previewTemplate: "<div class='hide-display'></div>",
+    acceptedFiles: ".doc, .docx",
+    parallelUploads: 2,
+    sending: function (file, xhr, formData) {
+      xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      formData.append('question_name', "analyst_document");
+      formData.append('sba_application_id', "#{@sba_application.id}");
+      formData.append('organization_id', "#{@sba_application.organization.id}");
+      formData.append('document_type', "analysis_letter");
+      formData.append('sba_application_object_type', "#{@sba_application.class.name}");
+    },
+    success: function (file, response) {
+      $("span#selected_analysis_document_note").text(response["document_name"]);
+    },
+    error: function (file, response) {
+      if (response.error === "You need to sign in or sign up before continuing.") {
+        // Redirect to Login
+        window.location.href = "/users/sign_in";
+      } else {
+        $("span#upload-error-message").text(response["message"]);
+        $("span#upload-error-message").show();
+      }
+    }
+  });
+
+  $("#determination-document-dz-area").dropzone({
+    url: "/documents/review_upload",
+    method: "POST",
+    clickable: "a#dz-select-determination-document",
+    autoProcessQueue: true,
+    addRemoveLinks: true,
+    maxFilesize: 25,  //mb
+    previewTemplate: "<div class='hide-display'></div>",
+    acceptedFiles: ".doc, .docx",
+    parallelUploads: 2,
+    sending: function (file, xhr, formData) {
+      xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      formData.append('question_name', "analyst_document");
+      formData.append('sba_application_id', "#{@sba_application.id}");
+      formData.append('organization_id', "#{@sba_application.organization.id}");
+      formData.append('document_type', "determination_letter");
+      formData.append('sba_application_object_type', "#{@sba_application.class.name}");
+    },
+    success: function (file, response) {
+      $("span#selected_determination_document_note").text(response["document_name"]);
+    },
+    error: function (file, response) {
+      if (response.error === "You need to sign in or sign up before continuing.") {
+        // Redirect to Login
+        window.location.href = "/users/sign_in";
+      } else {
+        $("span#upload-error-message").text(response["message"]);
+        $("span#upload-error-message").show();
+      }
+    }
+  });

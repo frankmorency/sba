@@ -1,0 +1,137 @@
+.full-grey 
+  .masthead
+    .usa-grid-full.masthead__content.sba-u-flex-direction--column
+      .usa-width-one-fourth.masthead__content__primary.sba-u-border--0
+        h1.masthead__primary-heading 
+          | Requirements
+        p = "Req ID: " + @agency_requirement.unique_number
+    .usa-grid-full.certify-local-nav
+      ul.usa-nav-primary.usa-accordion
+        li
+          = link_to "General Information", edit_sba_analyst_agency_requirement_path(@agency_requirement), class: "usa-nav-link"
+        li
+          = link_to "Documents",new_sba_analyst_agency_requirement_agency_requirement_document_path(@agency_requirement), class: "usa-nav-link"
+        li
+          = link_to "Firms", new_sba_analyst_agency_requirement_agency_requirement_organization_path(@agency_requirement), class: "usa-nav-link current"
+.sba-l-container.sba-u-padding-x--4
+  .sba-l-row
+    .sba-l-col--12
+      .certify-page-header
+        .certify-page-header__primary
+          h1
+            | Firms
+  .sba-l-row 
+    .sba-u-padding--2.sba-l-col--12.sba-l-md-col--4.sba-u-bgcolor--primary-alt-lightest.sba-u-border--1.sba-u-margin-top--4
+      = form_for @agency_requirement_organization, url: sba_analyst_agency_requirement_agency_requirement_organizations_path(@agency_requirement, @agency_requirement_organization), html: { id: "new_agency_requirement_organization" } do |f|  
+        h2.sba-u-margin--0.sba-u-font-size--h3 Add a firm
+        p Enter the DUNS number of the firm you would like to add to this requirement.
+        ul.sba-c-unstyled-list
+          li
+            label.sba-c-label for="add_duns"  DUNS Number:            
+            input#add_duns.sba-c-input name="duns_number" required="required" type="text" /
+        button.sba-c-button type="submit" style="padding-left: 2.7em; padding-right: 2.7em; height: auto;"
+          svg.sba-c-icon.sba-u-margin-right--1 aria-hidden="true" 
+            use xlink:href=("#{find_asset_path('svg-sprite/sprite.svg')}#plus") xmlns:xlink="http://www.w3.org/1999/xlink" 
+          | Add firm
+    .sba-u-padding--2.sba-l-col--12.sba-l-md-col--8.sba-u-padding-left--6.sba-u-margin-top--4
+      h2.sba-u-margin--0.sba-u-font-size--h3 Associated firm(s)      
+      - if @agency_requirement.agency_requirement_organizations.empty? 
+          p.sba-u-color--muted data-filter-firms="false"  There are no firms attached to this requirement. Please use the form on this page to associate a firm.            
+      - else
+        table.sba-c-table.sba-c-table--borderless data-filter-firms="true" 
+          thead
+            tr
+              th scope="col"  DUNS
+              th scope="col"  Firm name
+              th scope="col" style="text-align: center;"  Actions
+          tbody
+            - @agency_requirement.agency_requirement_organizations.each do |agency_ro|
+              tr
+                td data-table-header="DUNS" scope="row"
+                  = agency_ro&.organization&.duns_number
+                td data-table-header="Type"
+                  = link_to agency_ro&.organization&.name, sba_analyst_dashboard_show_path(enc: $encryptor.encrypt("duns_number=#{agency_ro&.organization&.duns_number}"))
+                td data-table-header="Actions" style="text-align: center;"
+                  = link_to sba_analyst_agency_requirement_agency_requirement_organization_path(@agency_requirement, agency_ro), "aria-title": "Delete", method: "delete",  :data => {:confirm => 'Are you sure you want to remove this firm?'}  do
+                    svg.sba-c-icon.sba-c-icon--red aria-hidden="true"
+                      use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#trash"
+
+javascript:
+  $('header.navigation').css('margin-bottom', '0');
+  $('section.usa-grid-full').css('max-width', '100%');
+
+  $("form#new_agency_requirement_organization").validate({
+
+    rules: {
+        "duns_number": {
+            required: true
+        }
+    },
+
+    errorPlacement: function (label, element) {
+        $("label[for=" + element[0].id + "]").append(label);
+    }
+
+  });
+
+  var submitDUNS = function(elm, requirement_organization_id) {      
+    var duns = $(".add_duns").last().val();
+    $.ajax({
+      type: "GET",
+      url: '/sba_analyst/agency_requirements/get_duns?duns=' + duns,
+    })
+    .then(function (x){
+      $("#firm_name_holder").empty();
+      if(x.name == "No Valid DUNS Entered") {
+        $("#firm_name_holder").append("<span class='error'>"+x.name+"</span>");
+      } else {
+        $("#firm_name_holder").append(x.name);
+        $(".new_agency_firm input").last().val(x.id)        
+      }     
+    });
+  }  
+
+  var deleteRequirement = function(elm, requirement_organization_id) {    
+    $.ajax({
+      type: "GET",
+      url: '/sba_analyst/agency_requirements/delete_firm?o_id=' + requirement_organization_id,
+    })
+    .then(function (x){            
+      $("#organization-row-"+x.id).remove();
+    });    
+    
+  }
+
+  $(document).on('click', 'form .add_fields', function(event) {
+    const time = new Date().getTime();
+    const regexp = new RegExp($(this).data('id'), 'g');
+    $(this).before($(this).data('fields').replace(regexp, time));
+    return event.preventDefault();
+  });  
+
+
+css: 
+  .sba-l-row { 
+    min-width: 100%;
+  }
+
+  input.error, select.error {
+    border: 0.1rem solid #cd2026;
+  }
+  
+  span.duns-label {
+    margin-right: 30px;
+  }
+
+  span.firm-label {
+    margin-right: 30px;
+  }
+
+  label.error {
+    display: inline;
+    padding-left: 4px;
+  }
+  
+  .certify-local-nav {
+    / margin-left: 2em;
+  }

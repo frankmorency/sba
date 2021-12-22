@@ -1,0 +1,126 @@
+table#table1.sba-c-table.sba-c-table--editable[aria-live="polite" aria-atomic="true"]
+  caption
+    | Payments and excessive withdrawals
+  thead
+    tr
+      th[scope="col" data-required="true" data-custom-id="Name"]
+        | Name
+      th[scope="col" data-required="true" data-custom-id="Title"]
+        | Title
+      th.js-sum[scope="col" data-info-type="percent" data-required="true" data-pattern="[0-9]*" data-custom-id="Equity Interest" data-min="0" data-max="100"]
+        | Equity Interest
+      th[scope="col" data-hint-text="This is optional" data-custom-id="Reason"]
+        | Reasons for Payment
+      th.js-sum[scope="col" data-info-type="usd" data-required="true" data-custom-id="Total Payments" data-min="0"]
+        | Total Payments
+      th[scope="col"]
+        | Actions
+  tbody
+    tr#table1_tr0_data
+      th[colspan="6"]
+        em
+          | No items added yet
+button#table1_add_item.sba-c-button[type="button"]
+  | Add item
+
+br
+
+table#table2.sba-c-table.sba-c-table--editable[aria-atomic="true" aria-live="polite"]
+  caption
+    | Payments and excessive withdrawals
+  thead
+    tr
+      th[data-custom-id="Name" data-required="true" scope="col"]
+        | Name
+      th[data-custom-id="Title" data-required="true" scope="col"]
+        | Title
+      th.js-sum[data-custom-id="Equity Interest" data-info-type="percent" data-max="100" data-min="0" data-pattern="[0-9]*" data-required="true" scope="col"]
+        | Equity Interest
+      th[data-custom-id="Reason" data-hint-text="This is optional" scope="col"]
+        | Reasons for Payment
+      th.js-sum[data-custom-id="Total Payments" data-info-type="usd" data-min="0" data-required="true" scope="col"]
+        | Total Payments
+      th[scope="col"]
+        | Actions
+  tfoot
+    tr
+      th[scope="row"]
+        | Totals
+      td
+      td[data-table-header="Equity Interest"]
+        | 23%
+      td
+      td[data-table-header="Total Payments"]
+        | $2,345
+      td
+  tbody
+    tr#table2_tr0_data[hidden="hidden"]
+      th[colspan="6"]
+        em
+          | No items added yet
+    tr#table2_tr1_data.is-added
+      th#table2_tr1_field1_Name_text[scope="row" data-table-header="Name"]
+        | Jean Moreau
+      td#table2_tr1_field2_Title_text[data-table-header="Title"]
+        | Developer
+      td#table2_tr1_field3_Equity_Interest_text[data-table-header="Equity Interest"]
+        | 23%
+      td#table2_tr1_field4_Reason_text[data-table-header="Reasons for Payment"]
+        | Optional text
+      td#table2_tr1_field5_Total_Payments_text[data-table-header="Total Payments"]
+        | $2345
+      td[data-table-header="Actions"]
+        .sba-c-task-panel
+          button.sba-c-button.sba-c-button--transparent.sba-c-task-panel__toggle[type="button" aria-expanded="false" aria-controls="table2_tr1_fields_panel"]
+            svg.sba-c-icon[aria-hidden="true"]
+              use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#ellipsis-h"]
+            span.sba-u-visibility--screen-reader
+              | Toggle menu to edit this row
+          #table2_tr1_fields_panel.sba-c-task-panel__content
+            ul.sba-c-task-panel__menu
+              li.sba-c-task-panel__menu__item
+                a#table2_tr1_edit.sba-c-task-panel__menu__link[href="#" aria-controls="table1_tr1_fields"]
+                  | Edit this item
+              li.sba-c-task-panel__menu__item
+                a#table2_tr1_delete.sba-c-task-panel__menu__link--emergency[href="#"]
+                  | Delete
+    tr#table2_tr1_fields[hidden="hidden"]
+      td[colspan="6"]
+        ul.sba-c-field-list
+          li
+            label.sba-c-label[for="table2_tr1_field1_Name"]
+              | Name
+            input#table2_tr1_field1_Name[type="text" required="true"]
+          li
+            label.sba-c-label[for="table2_tr1_field2_Title"]
+              | Title
+            input#table2_tr1_field2_Title[type="text" required="true"]
+          li
+            label.sba-c-label[for="table2_tr1_field3_Equity_Interest"]
+              | Equity Interest
+            .sba-c-input-ornament-container
+              .sba-c-input-ornament.sba-c-input-ornament--right
+                svg.sba-c-icon[aria-hidden="true"]
+                  use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#percent"]
+              input#table2_tr1_field3_Equity_Interest.sba-u-input-width--3.js-percent[type="number" min="0" max="100" pattern="[0-9]*" required="true"]
+          li
+            label.sba-c-label[for="table2_tr1_field4_Reason"]
+              | Reasons for Payment
+            p#table2_tr1_field4_Reason_hint.sba-c-form-hint
+              | This is optional
+            input#table2_tr1_field4_Reason[type="text" aria-describedby="table2_tr1_field4_Reason_hint"]
+          li
+            label.sba-c-label[for="table2_tr1_field5_Total_Payments"]
+              | Total Payments
+            .sba-c-input-ornament-container
+              .sba-c-input-ornament.sba-c-input-ornament--left
+                svg.sba-c-icon[aria-hidden="true"]
+                  use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#{find_asset_path('landing-icons/sprite.svg')}#dollar-sign"]
+              input#table2_tr1_field5_Total_Payments.sba-u-input-width--10.js-usd[type="number" min="0" required="true"]
+        .sba-c-table--editable__actions
+          button#table2_tr1_save.sba-c-button[aria-controls="table2_tr1_data table2_tr1_fields"]
+            | OK
+          a#table1_tr2_cancel[href="#" aria-controls="table2_tr1_data table2_tr1_fields"]
+            | Cancel
+button#table2_add_item.sba-c-button[type="button"]
+  | Add item

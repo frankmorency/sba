@@ -1,0 +1,40 @@
+.usa-grid-full
+
+  h2 = @info_request.organization_header
+
+  h1 Request for Information
+
+  p.usa-font-lead When creating a request for information, you can use a title as simple as "Requesting Change of Ownership Data." Please be very clear about the type of information you are requesting.
+
+  = form_for @info_request, url: wizard_path, method: :put do |f|
+    = f.hidden_field :organization_id
+
+    = f.label :deliver_to, 'This information request is for'
+    = f.select :deliver_to, @info_request.deliver_to
+
+    = f.label :topic, 'Title'
+    = f.text_field :topic, required: true
+
+    = f.label :message_to_firm_owner, 'Information requested'
+    = f.text_area :message_to_firm_owner, required: true
+
+    h5 Type of response required from firm:
+
+    = f.check_box :text
+    = f.label :text
+    = f.check_box :attachment
+    = f.label :attachment
+
+    br
+
+    = f.submit "Create questionnaire"
+    = link_to 'Back', program_request_for_info_path(:start, information_request: {organization_id: @info_request.organization_id})
+
+
+javascript:
+   $('#new_information_request').submit(function () {
+       if ($('#information_request_text').is(':checked') == false && $('#information_request_attachment').is(':checked') == false) {
+           alert("You must select a text or attachment response");
+           return false;
+       }
+   });

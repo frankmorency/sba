@@ -1,0 +1,54 @@
+= hidden_field_tag :application_id, app.id
+fieldset
+  legend.usa-sr-only If the applicant firm should be placed with the Philadelphia District Office, select one of the analysts below.
+
+  h4 Reassign case to myself
+  .usa-width-one-half
+    ul.usa-unstyled-list
+      li
+        input name="user_id" required="" type="radio" value=("#{current_user.id}") id="ph_#{current_user.id}" /
+        label for="ph_#{current_user.id}"
+          = current_user.name
+
+fieldset
+  h4 #{app.duty_stations.try(:first).try(:name)} District Office Analysts
+  - if @analyst_duty_stations.length > 0
+    .usa-width-one-half
+      ul.usa-unstyled-list
+        - half = (@analyst_duty_stations.length / 2).ceil
+        - @analyst_duty_stations[0..half].each do |analyst|
+          li
+            input name="user_id" required="" type="radio" value=("#{analyst.id}") id="ph_#{analyst.id}" /
+            label for="ph_#{analyst.id}"
+              = "#{analyst.name} (#{analyst.my_eight_a_cases_count} cases)"
+    .usa-width-one-half
+      ul.usa-unstyled-list
+        - if @analyst_duty_stations.length > 0
+          - @analyst_duty_stations[half+1..-1].each do |analyst|
+            li
+              input name="user_id" required="" type="radio" value=("#{analyst.id}") id="ph_#{analyst.id}" /
+              label for="ph_#{analyst.id}"
+                = "#{analyst.name} (#{analyst.my_eight_a_cases_count} cases)"
+  - else
+    | No analysts have been assigned to the #{app.duty_stations.try(:first).try(:name)} District Office
+
+  h4 #{app.duty_stations.try(:first).try(:name)} District Office Supervisors
+  - if @supervisor_duty_stations.length > 0
+    .usa-width-one-half
+      ul.usa-unstyled-list
+        - half = (@supervisor_duty_stations.length / 2).ceil
+        - @supervisor_duty_stations[0..half].each do |analyst|
+          li
+            input name="user_id" required="" type="radio" value=("#{analyst.id}") id="ph_#{analyst.id}" /
+            label for="ph_#{analyst.id}"
+              = "#{analyst.name} (#{analyst.my_eight_a_cases_count} cases)"
+    .usa-width-one-half
+      ul.usa-unstyled-list
+        - if @supervisor_duty_stations.length > 0
+          - @supervisor_duty_stations[half+1..-1].each do |analyst|
+            li
+              input name="user_id" required="" type="radio" value=("#{analyst.id}") id="ph_#{analyst.id}" /
+              label for="ph_#{analyst.id}"
+                = "#{analyst.name} (#{analyst.my_eight_a_cases_count} cases)"
+  - else
+    | No supervisors have been assigned to the #{app.duty_stations.try(:first).try(:name)} District Office

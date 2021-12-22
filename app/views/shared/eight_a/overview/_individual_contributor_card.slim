@@ -1,0 +1,39 @@
+- sub_section.children.each_with_index do |contributor_section, number|
+  - if contributor_section.try(:is_dvd_contributor?)
+    - user = User.find_by(email: contributor_section.email)
+  - else
+    - user = contributor_section.sba_application.creator
+  .usa-width-one-half
+    section
+      .card
+        .card__header
+          h3.card__primary-heading
+            - if can? :ensure_vendor, current_user
+              - if contributor_section.is_dvd_vendor?
+                a href="#main-content" id="#{contributor_section.name}_show_content"
+                  | #{contributor_section.sba_application.organization.users.with_role(:vendor_admin).take.name}
+              - elsif user
+                | #{user.name}
+            - elsif can? :sba_user, current_user
+              - if contributor_section.is_dvd_vendor?
+                = link_to contributor_section.sba_application.organization.users.with_role(:vendor_admin).take.name, sba_application_application_dashboard_sub_application_path(contributor_section.sba_application, contributor_section.sub_application_id)
+              - elsif contributor_section.is_dvd_spouse? || contributor_section.is_dvd_contributor?
+                - if contributor_section.sub_application.nil?
+                  = user.name
+                - else
+                  = link_to contributor_section.sub_application.creator.name,sba_application_application_dashboard_sub_application_path(contributor_section.sba_application, contributor_section.sub_application_id) unless contributor_section.sub_application.nil?
+              - elsif user
+                a href="#main-content" id="#{contributor_section.name}_show_content"
+                  - if contributor_section.is_dvd_partner?
+                    | #{contributor_section.title}
+                  - else
+                    | #{user.name}
+          - if (can? :ensure_vendor, current_user) && contributor_section.is_dvd_contributor?
+            small.usa-color-gray
+              | To protect personal information, you will not be able to view your contributor’s info.
+        .card__content
+          = render partial: 'shared/eight_a/overview/quick_details', locals: {section: contributor_section, style: "usa-color-green", display_submitted: false}
+        - if @permissions.can_view_adhoc_footer?(contributor_section)
+          = render partial: 'shared/eight_a/overview/adhoc_footer', locals: {section: contributor_section}
+        - if @permissions.can_view_section_card_menu?
+          = render partial: 'shared/eight_a/overview/section_card_menu', locals: {permissions: @permissions, review: @review, section: contributor_section, number: "#{index}_#{number}", prefix: 'contributor-'}

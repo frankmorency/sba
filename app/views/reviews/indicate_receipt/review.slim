@@ -1,0 +1,54 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+.sba-l-container
+  .sba-l-row
+    .sba-l-col--12.sba-u-padding-x--2
+      .certify-page-header
+        .certify-page-header__primary
+          span.subheading--large
+            | Appeal Received Outside Certify: Step 4 of 4
+          h1
+            | Review and complete
+      p.usa-font-lead
+        | Please review the information below and complete your recommendation.
+  .sba-l-row
+    .sba-l-sm-col--12.sba-l-md-col--golden-lg.sba-l-lg-col--8.sba-u-padding-x--2
+      = form_tag wizard_path, {method: :put, id: :review}
+        .review-info
+          .review-info__item
+            .review-info__content
+              h2.review-info__heading
+                | Request Received Outside Certify:
+              p[data-print="mailed_in"]
+                = session[:request_type].titleize
+          .review-info__item
+            .review-info__content
+              h2.review-info__heading
+                | Date received
+              p[data-print="date_input"]
+                = session[:receipt_date]
+          .review-info__item
+            .review-info__content
+              h2.review-info__heading Your note
+              - if session[:note_message].blank?
+                p Skipped
+              - else
+                p
+                  strong
+                    ' Subject:
+                  span[data-print="note_subject"]
+                  = session[:note_subject]
+                p
+                  strong
+                    ' Message:
+                  span[data-print="note_text"]
+                  = session[:note_message]
+                p
+                  strong
+                    ' Tags:
+                  span[data-print="note-tags"]
+                  = session[:note_tags].join(", ")
+        .actions
+          .actions__main
+            button.sba-c-button.sba-u-sm-margin-right--3[type="submit"]
+              | Acknowledge receipt
+            = link_to 'Start over', wizard_path(:select_request_type)

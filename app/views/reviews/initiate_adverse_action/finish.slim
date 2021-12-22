@@ -1,0 +1,10 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+  - if session[:adverse_action] != "recommended_voluntary_withdrawal"
+    h1 HQ will now process the termination
+  - else
+    h1 District Office will now process the termination
+
+  = link_to "Dashboard", root_path, class: "usa-button usa-button-big"
+  = link_to "Add SBA note", sba_application_application_dashboard_notes_path(@sba_application.id), class: "usa-button usa-button-big usa-button-outline"

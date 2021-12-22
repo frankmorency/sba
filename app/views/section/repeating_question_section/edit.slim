@@ -1,0 +1,8 @@
+h2 #{@section.title}
+
+= render_section_header(@questionnaire.name, @section)
+
+= section_form do
+  - @questions.each do |question|
+    = render_question question, answered_for: @answered_for
+  = render partial: 'section/base/javascript'

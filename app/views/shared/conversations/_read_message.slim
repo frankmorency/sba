@@ -1,0 +1,28 @@
+.conversation-item.read-message
+  .read-message-marker
+  = render partial: 'shared/conversations/conversation_type', locals: {message: read_message}
+  .conversation-container
+    .conversation-subject
+      = link_to sba_application_conversation_messages_path(conversation_id: read_message['id']) do
+        h3
+          = read_message["subject"]
+    .conversation-details
+      .conversation-name
+        - if current_user.is_vendor_or_contributor?
+          - if current_recipient
+            .conversation-name="#{current_recipient.first_name} #{current_recipient.last_name}"
+          - else
+            .conversation-name="SBA"
+        - else
+          - if read_message["most_recent_message"]
+            .conversation-name="#{(User.find read_message["most_recent_message"]["recipient_id"]).name}"
+
+      .conversation-updated= l(Time.parse(read_message["updated_at"]), format: :default)
+    .conversation-snippet
+      = link_to sba_application_conversation_messages_path(conversation_id: read_message['id']) do
+        - if read_message['most_recent_message'].blank?
+          p.no-message-placeholder
+            = t('messages.no_messages')
+        - else
+          p
+            = truncate("#{ConversationsHelper.safe_html(read_message['most_recent_message']['body'])}", length: 140, omission: '...', escape: false)

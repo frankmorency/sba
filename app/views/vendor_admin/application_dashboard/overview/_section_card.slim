@@ -1,0 +1,29 @@
+- sub_app = section.sub_application
+
+section
+  .card
+    .card__header
+      - if current_user.cannot_view_answers?(@sba_application)
+        h4.card__primary-heading
+          = section.title
+      - elsif @sba_application.submitted? || @sba_application.complete?
+        h4.card__primary-heading[onclick="sendSectionRequestVendor(#{section.id}, #{section.sba_application_id})"]
+          - if section.is_a?(Section::ReconsiderationSection)
+            = vendor_reconsideration_section_display @sba_application, section
+          - else
+            = sub_application_answer_content_link section
+      - else
+        h4.card__primary-heading
+          - if section.is_a?(Section::ContributorSection)
+            = vendor_contributor_section_display @sba_application, section
+          - elsif section.is_a?(Section::ReconsiderationSection)
+            = vendor_reconsideration_section_display @sba_application, section
+          - else
+            - if (!@sba_application.all_reconsiderations_complete? || (@sba_application.current_review && @sba_application.current_review.appeal_intent?))
+              = sub_application_answer_content_link section
+            - else
+              - if sub_app
+                = sub_application_edit_link section
+    .card__content
+      = render partial: 'shared/eight_a/overview/quick_details', locals: {section: section, style: section.status_style, display_submitted: false}
+    = render partial: 'shared/eight_a/overview/adhoc_footer', locals: {section: section}

@@ -1,0 +1,45 @@
+.questions id="answers_#{question.name_with_index}" class="answers_#{question.name}"
+  = field_set_tag do
+    //TODO: This is a hack to allow line breaks in question. Is there a better way to do this? raw might expose to html injection?
+    .sba-c-question__primary-text
+      - wrapper_tag = question.title_wrapper_tag || 'h3'
+      = simple_format(question.display_title(@sba_application).gsub('\n','<br />'), {}, wrapper_tag: wrapper_tag, sanitize: false)
+      = hidden_field_tag question.dom_id('question_text'), question.title
+      = hidden_field_tag question.dom_id('question_name'), question.name
+      = hidden_field_tag question.dom_id('answered_for_type'), answered_for.try(:class)
+      = hidden_field_tag question.dom_id('answered_for_id'), answered_for.try(:id)
+
+    - if questionnaire && File.exists?(Rails.root.join('app', 'views', 'question_support_text', question.name))
+      .sba-c-question__support-text
+        = render partial: "question_support_text/#{question.name}/default", locals: {application: @sba_application}
+
+    .sba-c-response.sba-c-field-list
+      = render partial: question.question_type.partial, locals: {question: question, questionnaire: questionnaire, rule: question.rules.try(:add_attachment).try(:first), answered_for: answered_for }
+
+    - if question.has_disqualifier? && questionnaire.displays_disqualifiers_inline?
+      = render partial: 'disqualifier/show', locals: {question: question, questionnaire: questionnaire}
+
+    - if question.has_attachment_rule? && question.type_name != 'null_with_attachment_required' && question.type_name != "text_field_multiline_with_attachment" && question.type_name != "text_field_multiline_with_attachment_optional"
+      .sba-c-question__support-text
+        = render partial: 'question_rules/add_attachment', locals: {question: question, questionnaire: @questionnaire, rule: question.rules.add_attachment.first}
+        = render partial: 'question_rules/attached_documents', locals: {question: question, answer: answers_for_question(@user, @sba_application, question, answered_for)}
+
+    - if question.has_comment_rule?
+      .sba-c-question__support-text
+        = render partial: 'question_rules/add_comment', locals: {question: question, questionnaire: questionnaire, rule: question.rules.add_comment.first }
+
+    - if @sba_application.is_adhoc? || @sba_application.sub_info_request?
+      br
+      .sba-c-question-footnote
+        h4.sba-c-question-footnote__heading More Information
+        p
+          = simple_format(@sba_application.adhoc_question_details.gsub('\n','<br />'))
+    - elsif !@hide_details && File.exists?(Rails.root.join('app', 'views', 'helpful_info', question.name))
+      br
+      .sba-c-question-footnote
+        h4.sba-c-question-footnote__heading  More Information
+        p
+          - if questionnaire && File.exists?(Rails.root.join('app', 'views', 'helpful_info', question.name, "_#{questionnaire.name}.slim"))
+            = render partial: "helpful_info/#{question.name}/#{questionnaire.name}"
+          - else
+            = render partial: "helpful_info/#{question.name}/default"

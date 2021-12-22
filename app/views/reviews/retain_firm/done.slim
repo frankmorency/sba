@@ -1,0 +1,11 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        h1 ="This firm will be retained in the 8(a) Business Development program."
+    p
+      = link_to "Dashboard", root_path, class: "usa-button usa-button-big"
+      = link_to "Add SBA note", sba_application_application_dashboard_notes_path(@sba_application.id), class: "usa-button usa-button-big usa-button-outline"
+

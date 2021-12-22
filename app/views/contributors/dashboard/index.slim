@@ -1,0 +1,31 @@
+h1 My Dashboard
+.overview-wrap
+  section.usa-width-one-whole
+    article.usa-width-three-fourths
+      section.dashboard-section
+        header.dashboard-section__header
+          h2.dashboard-section__heading 8(a) Business Development Program
+        - if @contributors.blank? && @info_requests.empty?
+          p
+            = program.teaser
+        - else
+          table
+            thead
+              tr
+                th Organization
+                th Type
+                th Created Date
+                th Status
+            tbody
+              - @contributors.each do |contributor|
+                - unless contributor.master_application.blank?
+                  = render partial: 'contributors/dashboard/table', locals: {application: contributor.master_application, sub_application: contributor.section.sub_application, contributor: contributor}
+              - @info_requests.each do |info_request|
+                tr
+                  td = info_request.organization.legal_business_name
+                  td = link_to '8(a) Info Request', sba_application_application_dashboard_overview_index_path(info_request.id)
+                  td = l info_request.created_at.to_date
+                  td = info_request.workflow_state.humanize
+
+
+article.usa-width-one-fourth

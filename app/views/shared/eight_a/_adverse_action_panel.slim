@@ -1,0 +1,20 @@
+ul.task-panel-menu
+  li.task-panel-menu__item
+    a#compose-note.task-panel-menu__link href="javascript:void(0)" Add a note
+  /- if @permissions.can_send_message?
+    li.task-panel-menu__item
+      = link_to "Send message to firm", sba_application_conversations_path(application), class: "task-panel-menu__link"
+  - if @permissions.can_upload_document?
+    li.task-panel-menu__item
+      = link_to 'Upload documents', organization_adverse_action_review_analyst_documents_path(application.organization, adverse_action_review_id: application.case_number), class: 'task-panel-menu__link'
+  - if @permissions.can_refer_case?
+    = link_to 'Refer case', review_refer_case_path(review, :set_office), class: 'task-panel-menu__link'
+  - if @permissions.can_make_recommendation? && !application.has_terminal_8a_cert?
+    li.task-panel-menu__item
+      = link_to 'Make a recommendation', review_make_recommendations_path(review), class: 'task-panel-menu__link'
+  - if @permissions.can_make_determination? && !application.has_terminal_8a_cert?
+    li.task-panel-menu__item
+      = link_to 'Approve this adverse action', review_finalize_adverse_action_path(review, :adverse_action), class: 'task-panel-menu__link'
+  - if @permissions.can_cancel?
+    li.task-panel-menu__item
+      = link_to 'Cancel this case', review_cancel_case_path(review, :add_sba_note), class: 'task-panel-menu__link--emergency'

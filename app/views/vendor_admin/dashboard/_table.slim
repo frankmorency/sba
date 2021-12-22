@@ -1,0 +1,35 @@
+table#certifications style="margin-top: 0px; padding-top: 0px"
+  thead
+    tr
+      th scope="col" nowrap="" Application package
+      th scope="col" Type
+      th scope="col" Program Participation Status
+      th scope="col" Submission Date
+      th scope="col" Expiration Date
+      th scope="col" Decision
+      th scope="col" Action
+
+  = render partial: 'vendor_admin/dashboard/sba_applications', collection: apps, as: :application
+  = render partial: 'vendor_admin/dashboard/annual_reports', collection: annual_reports, as: :annual_report
+  = render partial: 'vendor_admin/dashboard/certifications', collection: certs, as: :certificate
+
+br
+
+- unless (info_requests.empty? || info_requests.nil?)
+  h4 style="margin-bottom: 0px; padding-bottom: 0px" Information requests
+  table#certifications style="margin-top: 0px; padding-top: 0px"
+    thead
+      tr
+        th scope="col" nowrap="" Information Requests
+        th scope="col" Date Received
+        th scope="col" Date Completed
+        th scope="col" Status
+    = render partial: 'vendor_admin/dashboard/info_requests', collection: info_requests, as: :info_request
+
+  br
+
+javascript:
+  $(".confirmation").click(function () {
+      $('.confirmation').prepend('<span>Return to Vendor</span><img src="#{find_asset_path('ajax-loader.gif')}" alt="Wait animation" />')
+      $(".confirmation").hide();
+  });

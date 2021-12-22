@@ -1,0 +1,21 @@
+h1 You are ineligible at this time
+
+h3 Based on the responses you provided, you are not eligible for this program because:
+
+ul
+  - @disqualifiers.each do |disqualifier|
+    li = disqualifier.message
+
+p If your response was mistakenly submitted, you may go back and change your response. You may also save your application as a draft and return later if your circumstances change, or delete this draft application.
+
+ul.usa-unstyled-list
+  li
+    h4
+      i class="fa fa-chevron-left"
+      | &nbsp
+      = link_to 'Go back and change your responses', edit_sba_application_questionnaire_question_section_path(@sba_application, @sba_application.questionnaire.name, @section_name)
+    br
+  li
+    = link_to 'Save the application as a draft and go back to your dashboard', '/vendor_admin/dashboard'
+  li
+    = link_to 'Discard your application', sba_application_path(@sba_application), method: :delete, class: "confirmation delete-cert"

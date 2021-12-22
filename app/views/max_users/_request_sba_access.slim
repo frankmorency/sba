@@ -1,0 +1,26 @@
+.usa-width-one-half.standalone-card
+  p.subheading Requesting Access
+  h1 What program will you be supporting?
+  form.usa-form action="/next_page" method="post"
+    = hidden_field_tag :authenticity_token, form_authenticity_token
+    = hidden_field_tag :hash, @hash.to_json
+    .questions
+      fieldset
+        legend.usa-sr-only Choose your SBA Program
+        ul.usa-unstyled-list
+          li
+            input#program_8a name="program" required="" type="radio" value=("8a") /
+            label for="program_8a" 8(a) Business Development Program
+          /!
+            | <li
+            | <input id="program_HUBZone" type="radio" name="program" value="HUBZone"
+            | <label for="program_HUBZone">HUBZone</label
+            | </li
+          li
+            input#program_WOSB name="program" required="" type="radio" value=("wosb") /
+            label for="program_WOSB"  Women-Owned Small Business (WOSB) Program
+          li
+            input#program_MPP name="program" required="" type="radio" value=("mpp") /
+            label for="program_MPP"  Mentor-Protégé Program (MPP)
+    button.usa-button type="submit"  Next
+    a.usa-button.usa-button-knockout href="#" onclick="javascript:window.history.back();"  Go Back

@@ -1,0 +1,11 @@
+- if section.children.any?
+  ul class=(root ? 'usa-sidenav-list' : 'usa-sidenav-sub_list')
+    - section.children.order(:position).map {|s| SectionPresenter.new(s, @sba_application.progress["current"]) }.each do |sub_section|
+      li
+        - if sub_section.empty_or_viewable? && sub_section.applicable?
+          = link_to sub_section.title, section_path_helper(@sba_application, sub_section, true), id: sub_section.name, class: sub_section.to_css
+        - else
+          = link_to sub_section.title, 'javascript:void(0)', class: sub_section.to_css
+
+        - if sub_section.has_children?
+          = render partial: 'layouts/questionnaire/display_section', locals: {section: sub_section, root: false}

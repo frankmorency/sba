@@ -1,0 +1,7 @@
+.real_estate
+- if answer && answer.details
+  - answer.details.each_with_index do |answer_set, i|
+    h4 Property #{i+1}
+    br
+    = render partial: 'answers/question_types/real_estate_sub_question', locals: {question: questionp, index: i, answer_set: answer_set}
+

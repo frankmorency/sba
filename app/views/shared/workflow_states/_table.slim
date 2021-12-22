@@ -1,0 +1,19 @@
+- sba_applications = SbaApplication.all.order(:id)
+- certificates = Certificate.all.order(:id)
+- reviews = Review.all.order(:id)
+
+table#certifications style="margin-top: 0px; padding-top: 0px"
+  thead
+    tr
+      th scope="col" nowrap="" Id
+      th scope="col" nowrap="" Object Type
+      th scope="col" nowrap="" Parent Section
+      th scope="col" Common Name
+      th scope="col" Current Workflow Status
+      /th scope="col" Previous Workflow Status
+  - unless (sba_applications.nil? || sba_applications.empty?)
+    = render partial: 'shared/workflow_states/sba_applications', collection: sba_applications, as: :sba_application
+  - unless (certificates.nil? || certificates.empty?)
+    = render partial: 'shared/workflow_states/certificates', collection: certificates, as: :certificate
+  - unless (reviews.nil? || reviews.empty?)
+    = render partial: 'shared/workflow_states/reviews', collection: reviews, as: :review

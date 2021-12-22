@@ -1,0 +1,10 @@
+.usa-width-one-whole
+  section.usa-width-one-whole#dashboard
+    article.usa-width-one-whole#dashboard-index
+      p Welcome #{current_user.first_name}
+      | Last logged in at #{current_user.last_sign_in_at}
+      = render partial: 'dashboard/tile_business_profile' if can? :view_business_profile, current_user
+      .usa-width-one-half
+        = render partial: 'dashboard/tile_document' if can? :view_document_library, current_user
+      .usa-width-one-half
+        = render partial: 'dashboard/tile_certifications' if can? :work_on_edwosb_wosb_application, current_user

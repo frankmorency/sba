@@ -1,0 +1,48 @@
+div#business_search
+  .usa-width-one-whole.business_search_result
+  .usa-width-one-whole.results
+    h3 User search
+    = form_tag '', method: 'get' do
+      fieldset.usa-fieldset-inputs.usa-sans
+        ul.usa-unstyled-list
+          li
+            = radio_button_tag(:user_type, 'gov_user', params[:user_type].eql?('gov_user'))
+            = label_tag(:user_type_gov_user, 'Government User')
+          li
+            = radio_button_tag(:user_type, 'vendor_user', params[:user_type].eql?('vendor_user'))
+            = label_tag(:user_type_vendor_user, 'Vendor User')
+        br
+        = label_tag(:email_or_name, 'Email Address or Name')
+        = text_field_tag :ops_query
+      = submit_tag 'Search'
+
+    - unless @users.nil?
+      hr
+      .usa-width-one-whole.business_search_result
+        = render partial: 'ops_support/user/user_search_result', locals: {users: @users, user_type: @user_type}
+        = will_paginate @users
+    h3 Other Support Actions
+    ul.usa-unstyled-list
+      li
+        = link_to 'BDMIS Import Retry', ops_support_bdmis_path, class: 'usa-nav-link'
+      li
+        = link_to 'SAM Data Validation', ops_support_sam_validation_index_path, class: 'usa-nav-link'
+javascript:
+
+  $(document).ready(function(event) {
+    $('#analyst-search').submit(function(){
+      if ($.trim($('#query').val()).length == 0) {
+        alert('Please enter valid search string.');
+        return false;
+      }
+    });
+
+    $("#analyst-search").validate({
+      rules: {
+        "query": {
+          required: true
+        }
+      },
+      errorElement: 'span'
+    });
+  });

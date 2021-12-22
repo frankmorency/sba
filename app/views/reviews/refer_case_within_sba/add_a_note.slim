@@ -1,0 +1,84 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading Refer case
+        h1 Add a note about this referral
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_tag(wizard_path, {method: :put, id: :note_form}) do
+
+          fieldset.questions
+            legend.usa-sr-only New Note
+            label[for="note_subject"] Title
+            input#note_subject type="text" name="note_subject"
+            label[for="note_message"] Note
+            textarea#note_message name="note_message"
+
+          fieldset.question.tags
+            h4.validation-error Tags
+            .usa-width-one-third
+              ul.tag-selection-list
+                li
+                  input#note-tag--BOS-Analysis.tag[type="checkbox" name="note_tags[]" value="BOS Analysis"]
+                  label[for="note-tag--BOS-Analysis"] BOS Analysis
+                li
+                  input#note-tag--Ownership.tag[type="checkbox" name="note_tags[]" value="Ownership"]
+                  label[for="note-tag--Ownership"] Ownership
+                li
+                  input#note-tag--Control.tag[type="checkbox" name="note_tags[]" value="Control"]
+                  label[for="note-tag--Control"] Control
+                  li
+                    input#note-tag--Size.tag[type="checkbox" name="note_tags[]" value="Size"]
+                    label[for="note-tag--Size"] Size
+                  li
+                    input#note-tag--Character.tag[type="checkbox" name="note_tags[]" value="Character"]
+                    label[for="note-tag--Character"] Character
+            .usa-width-one-third
+              ul.tag-selection-list
+                li
+                  input#note-tag--Potential-for-Success.tag[type="checkbox" name="note_tags[]" value="Potential for Success"]
+                  label[for="note-tag--Potential-for-Success"] Potential for Success
+                li
+                  input#note-tag--Economic-Disadvantage.tag[type="checkbox" name="note_tags[]" value="Economic Disadvantage"]
+                  label[for="note-tag--Economic-Disadvantage"] Economic Disadvantage
+                li
+                  input#note-tag--Social-Disadvantage.tag[type="checkbox" name="note_tags[]" value="Social Disadvantage"]
+                  label[for="note-tag--Social-Disadvantage"] Social Disadvantage
+                li
+                  input#note-tag--Eligibility.tag[type="checkbox" name="note_tags[]" value="Eligibility"]
+                  label[for="note-tag--Eligibility"] Eligibility
+          .actions
+            .actions__main
+              = submit_tag 'Next'
+              = link_to 'Go back', '#', :onclick => 'window.history.back();return false;'
+
+javascript:
+    $(function () {
+        $("#note_form").validate({
+            errorPlacement: function (error, element) {
+                if (element.is($(".tag"))) {
+                    $(".validation-error").after(error);
+                } else {
+                    element.after(error);
+                }
+            },
+            rules: {
+                "note_subject": {
+                    required: true
+                },
+                "note_message": {
+                    required: true
+                },
+                "note_tags[]": {
+                    required: true
+                }
+            },
+            messages: {
+                "note_subject": "A subject is required.",
+                "note_message": "A message is required.",
+                "note_tags[]": "Select at least one tag."
+            }
+        });
+    });

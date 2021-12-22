@@ -1,0 +1,1 @@
+Resque.redis = ENV["RESQUE_REDIS_URL"]

@@ -1,0 +1,39 @@
+= render partial: 'layouts/application/sidenav/vendor'
+
+h1 Manage Contracting Officer access
+
+p Contracting Officers or Contracting Specialists from federal agencies may request to view your submitted WOSB or EDWOSB documentation in order to verify your eligibility in the WOSB program. You may approve or reject their request below within 7 days of their request. If you approve the request, they can access your information – including attachments – for 90 days. You may revoke their access at any time.
+
+div.overflow-auto
+  #table-search
+    table.searchable
+      thead
+        tr
+          th scope="col" = sortable 'Name', model: AccessRequest
+          th scope="col" = sortable 'Solicitation #', model: AccessRequest
+          th scope="col" = sortable 'Request expires', model: AccessRequest
+          th scope="col" = sortable 'Access expires', model: AccessRequest
+          th scope="col" = sortable 'Status', model: AccessRequest
+          - if current_user.can? :grant_access_to_vendor_profile
+            th scope="col" Actions
+
+      - unless @access_requests.first && @access_requests.first.id.nil?
+        - @access_requests.each do |req|
+          tr
+            td
+              = mail_to req.user.email, req.user.name, class: 'mailto-link'
+              br
+              = req.user.max_bureau || "SBA"
+            td = req.solicitation_number
+            td = l(req.request_expires_on) if req.request_expires_on
+            td = l(req.access_expires_on) if req.access_expires_on
+            td = req.status.titleize
+            - if current_user.can? :grant_access_to_vendor_profile
+              td
+                - if req.requested?
+                  = button_to 'Accept', vendor_admin_access_request_accept_path(req.id), method: :put, 'data-confirm': "Are you sure you want to accept access?"
+                  = link_to 'Deny', vendor_admin_access_request_reject_path(req.id), class: "error", method: :put, 'data-confirm': "Are you sure you want to reject access?"
+                - elsif req.accepted?
+                  = link_to 'Revoke', vendor_admin_access_request_revoke_path(req.id), method: :put, 'data-confirm': "Are you sure you want to revoke access?"
+        = will_paginate(@access_requests) unless @access_requests.empty?
+br

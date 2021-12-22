@@ -1,0 +1,39 @@
+- if File.exists?(Rails.root.join('app', 'views', 'questionnaires', @sba_application.questionnaire.name, '_heading.slim'))
+  = render partial: "questionnaires/#{@sba_application.questionnaire.name}/heading"
+- else
+  = render partial: 'questionnaires/master_application/heading'
+
+div.usa-width-one-whole
+  div.usa-width-two-thirds
+    - @first_section.sub_application_sections(current_user).in_groups_of(2, false).each_with_index do |section_array, index|
+      .usa-width-one-whole.cards
+        br
+        - section_array.each do |section|
+          .usa-width-one-half
+            = render partial: 'vendor_admin/application_dashboard/overview/section_card', locals: {section: section}
+
+      - if @sba_application.submitted? || @sba_application.has_reconsideration_sections? || @sba_application.complete?
+        - section_array.each do |section|
+          .usa-width-one-whole.hide id="#{section.name}_content"
+            div
+              h2 #{section.title}
+              a href="javascript:void(0);" id="#{section.name}_show_cards" class="close_8a_detail"
+                |  close
+            - unless section.sub_application.nil?
+              div id="#{section.name}_content_holder"
+
+    - if @sba_application.submitted? || @sba_application.returned? || @sba_application.has_reconsideration_sections? || @sba_application.complete?
+      - @first_section.children.where(type: 'Section::ContributorSection').each do |section|
+        - section.children.each_with_index do |sub_section, index|
+          - if sub_section.has_children?
+            .usa-width-one-whole.cards
+              br
+              - if @sba_application.submitted? || @sba_application.returned? || @sba_application.has_reconsideration_sections? || @sba_application.complete?
+                = render partial: 'vendor_admin/application_dashboard/overview/individual_contributor_card', locals: {index: index, section: section, sub_section: sub_section}
+              - else
+                = render partial: 'contributors/application_dashboard/overview/individual_contributor_card', locals: {index: index, section: section, sub_section: sub_section, contributor_section: sub_section.children.first}
+        = render partial: 'shared/eight_a/sub_section_children', locals: {section: section, path: 'vendor_admin/application_dashboard/overview/section_answers'}
+  div.usa-width-one-third
+    br
+    - if @sba_application.show_signature_section?
+      = render partial: 'vendor_admin/application_dashboard/overview/sign'

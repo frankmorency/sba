@@ -1,0 +1,61 @@
+= render partial: 'shared/eight_a/masthead/index_no_links', locals: {application: @master_application}
+
+.usa-grid-full style="max-width:1250px"
+  .certify-page-header
+    .certify-page-header__primary
+      = link_to "<< Back to application overview", sba_application_application_dashboard_overview_index_path(@master_application)
+      br
+      br
+      h1 Additions to #{@sba_application.questionnaire.title}
+
+.usa-grid-full
+  div class='usa-width-one-whole'
+    - @adhoc_sections.in_groups_of(2, false).each_with_index do |section_array, index|
+      - group = 0
+      .usa-width-one-whole.cards
+        br
+        - section_array.each do |section|
+          .usa-width-one-half
+            section
+              .card
+                .card__header
+                  - section_number = group.even? ? 2*index+1 : 2*(index+1)
+                  h4.card__primary-heading
+                    - sub_app = section.sub_application
+                    - if section.is_a?(Section::ContributorSection)
+                      = link_to section.title, edit_sba_application_questionnaire_contributor_section_path(sub_app, sub_app.questionnaire, section)
+                    - elsif sub_app && sub_app.submitted? && current_user.is_vendor_or_contributor?
+                      = ad_hoc_application_answer_content_link section
+                    - elsif sub_app
+                      - current_section = sub_app.current_section || sub_app.first_section
+                      = link_to sub_app.adhoc_question_title, "/sba_applications/#{sub_app.id}/questionnaires/#{sub_app.questionnaire.name}/#{current_section.underscore_type}/#{current_section.name}/edit"
+                .card__content
+                  = render partial: 'shared/eight_a/overview/quick_details', locals: {section: section, style: section.status_style, display_submitted: false}
+                = render partial: 'shared/eight_a/overview/adhoc_footer', locals: {section: section}
+            - group += 1
+
+      - if @sba_application.submitted?
+        - section_array.each do |section|
+          .usa-width-one-whole.hide id="#{section.name}_content"
+            div
+              h2 #{section.sub_application.adhoc_question_title}
+              a href="javascript:void(0);" id="#{section.name}_show_cards" class="close_8a_detail"
+                |  close
+            - unless section.sub_application.nil?
+              = render partial: 'vendor_admin/application_dashboard/overview/section_answers', locals: {editable: false, business_partner_summaries: [], sba_application: section.sub_application, role: nil}
+
+
+javascript:
+  $(document.body).on("click", "[id$=_show_content]", function (event) {
+      var card_id = $(this).attr("id")
+      var content_id = card_id.replace("_show_content", "_content");
+      $('#' + content_id).removeClass("hide");
+      $(".cards").addClass("hide")
+  });
+
+  $(document.body).on("click", "[id$=_show_cards]", function (event) {
+      var content_id = $(this).attr("id")
+      var card_id = content_id.replace("_show_cards", "_content");
+      $('#' + card_id).addClass("hide");
+      $(".cards").removeClass("hide")
+  });

@@ -1,0 +1,115 @@
+#document_library name="#{question.id}"
+  fieldset.usa-fieldset-inputs.usa-sans
+    legend.usa-sr-only Documents
+    table.display-table
+      thead
+        tr
+          th scope='col' Name
+          th scope='col' Type
+          th scope='col' Date
+          th scope='col' Comments
+      - @documents = current_organization.documents.where('is_active = ? AND document_type_id IS NOT ? AND user_id = ?', true, nil, current_user.id)
+      - n = 0
+      - @documents.each do |document|
+        tr id="#{document.id}" name="document_library_#{question.id}"
+          td#document_library_file_name
+            ul.usa-unstyled-list
+              li
+                input id="#{question.id}_truth_#{n}" name="selector" type="checkbox" value="truth" class="#{question_name}" title='Document selection checkbox' /
+                label for="#{question.id}_truth_#{n}"  = document.original_file_name
+          td#document_library_document_type
+            = DocumentType.find(document.document_type_id).name if DocumentType.find(document.document_type_id)
+          td#document_library_document_creation_date
+            = document.created_at.strftime("%m/%d/%Y")
+          td#document_library_document_comment
+            = document.comment
+        - n = n + 1
+    .right-align
+      .button_wrapper
+        button#document_library_associate.usa-button-disabled[name="#{question_name}" disabled=""] Associate
+        a.delete-cert#document_library_cancel style="font-weight:normal" name="#{question_name}" Cancel
+
+javascript:
+  $(document).ready(function () {
+
+    // Deselect any previously selected documents
+
+    jQuery.each( $('tr[name="document_library_#{question.id}"]'), function(i, document) {
+      document.querySelector('input[name="selector"]').checked = false;
+    });
+
+    // When at least one document is selected, enable Associate button
+    $('input.#{question_name}[name="selector"]').on("click", function(event) {
+      event.stopPropagation();
+      var checkbox = $(this);
+      if (checkbox.prop('checked') && $("button#document_library_associate[name='#{question_name}']").attr('class') == 'usa-button-disabled') {
+        $("button#document_library_associate[name='#{question_name}']").attr('class', 'usa-button');
+        $("button#document_library_associate[name='#{question_name}']").prop('disabled', false);
+      }
+
+      var num_docs_selected = $("input.#{question_name}[name='selector']:checked").length;
+      if (num_docs_selected < 1){
+        $("button#document_library_associate[name='#{question_name}']").attr('class', 'usa-button-disabled');
+        $("button#document_library_associate[name='#{question_name}']").prop('disabled', true);
+      }
+    });
+
+    //Click Cancel button
+    $('#document_library_cancel[name="#{question_name}"]').on("click", function(event) {
+      event.preventDefault();
+      $('.box1[name="#{question.id}"]').hide();
+      $('.box2[name="#{question.id}"]').hide();
+    });
+
+    // Click Associate button
+    $('#document_library_associate[name="#{question_name}"]').on("click", function(event) {
+      event.preventDefault();
+
+      // assemble document data as json
+      var documents_array = '';
+      var index = 0;
+
+      jQuery.each( $('tr[name="document_library_#{question.id}"]'), function(i, document) {
+        if (document.querySelector('input[name="selector"]').checked){
+
+          var file_name = document.querySelector("#document_library_file_name").textContent;
+          var document_type = document.querySelector("#document_library_document_type").textContent;
+          var document_creation_date = document.querySelector("#document_library_document_creation_date").textContent;
+          var document_comment = document.querySelector("#document_library_document_comment").textContent;
+
+          if (index == 0) {
+            var document_json = '{\"name\":\"' + file_name + '\",\"document_id\":' + document.id + ',\"document_type\":\"'+ document_type + '\",\"date\":\"'+ document_creation_date + '\",\"comment\":\"'+ document_comment + '\"}';
+          } else{
+            var document_json = ',{\"name\":\"' + file_name + '\",\"document_id\":' + document.id + ',\"document_type\":\"'+ document_type + '\",\"date\":\"'+ document_creation_date + '\",\"comment\":\"'+ document_comment +'\"}';
+          }
+          documents_array+= document_json;
+          index++;
+        }
+      });
+      documents = jQuery.parseJSON('['+documents_array+']');
+
+      // Attach selected documents to tentatively_attached table
+      jQuery.each(documents, function(i, document) {
+        var content="<td>"+document['name']+"</td>" +
+                  "<td>"+document['document_type']+"</td>" +
+                  "<td>"+document['date']+"</td>" +
+                  "<td>"+document['comment']+"</td>" +
+                  "<td><a class='remove' href='javascript:void(0)' id=\"" +document['document_id']+ "\">Remove</a></td>";
+
+          $('table#tentatively_attached[name="#{question.id}"] tbody').append("<tr id=\"" +document['document_id']+ "\">"+content+'</tr>');
+
+          //Essential! Required to make sure newly associated documents are saved when Save and Continue button pressed
+          $('table#tentatively_attached[name="#{question.id}"]').after("<input type=\"hidden\" id=\"answers_#{question.id}_document_ids_\" name=\"answers[#{question.id}][document_ids][]\" value=\""+document['document_id']+"\">");
+      });
+      // hide document library
+      $('.box1[name="#{question.id}"]').hide();
+      // make the document list visible
+      $('#document_list[name="#{question.id}"]').css('display', 'inline');
+      // make the newly associated docs visible
+      $('#to_be_attached[name="#{question.id}"]').css('display', 'inline');
+      //set the hidden input tag value attribute to pass validation
+      $('input[name="answers[#{question.id}][attachment]"]').val("has_attachments");
+      // remove the attachment error msg if showing
+      $('span#answers_#{question.id}_attachment-error').remove();
+    });
+  });

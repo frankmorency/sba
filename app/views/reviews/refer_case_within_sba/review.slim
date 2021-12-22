@@ -1,0 +1,42 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+  span.subheading Refer case
+  h1 Review and complete referral
+
+  .review-info
+    .review-info__item
+      h2.review-info__heading Business Unit
+      p
+      - if session[:refer_to].include? "district_office"
+        'District Office
+      - else
+        '#{session[:refer_to]&.gsub('_', ' ')&.titleize}
+
+    .review-info__item
+      h2.review-info__heading Referred to
+      p
+      '#{@referral.first_name} #{@referral.last_name}
+
+    .review-info__item
+      .review-info__content
+        h2.review-info__heading Note
+        p
+          strong
+            ' Subject:
+          span[data-print="refer_note_subject"]
+          = session[:refer_subject]
+        p
+          strong
+            ' Message:
+          span[data-print="refer_note_text"]
+          = session[:refer_message]
+        p
+          strong
+            ' Tags:
+          span[data-print="note-tags"]
+          = session[:refer_tags].join(", ")
+
+  = form_tag(wizard_path, {method: :put, id: :review_form}) do
+    = submit_tag 'Refer this case'
+    = link_to "Start over", wizard_path(:refer_to)

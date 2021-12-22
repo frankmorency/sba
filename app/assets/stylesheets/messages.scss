@@ -1,0 +1,94 @@
+@import "variables.scss";
+
+// START expected from global styles
+h1,h2,h3,h4,h5,h6,p {
+  font-family: $font-sans;
+}
+// END expected from global styles
+
+.back-to-all {
+  padding-right: 0;
+  margin-right: 0;
+  width: auto;
+}
+.back-to-all a {
+  text-decoration: none;
+  color: $primary;
+}
+.back-to-all a:hover {
+  text-decoration: none;
+  color: $primary-darker;
+}
+.message-reply {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.message-reply button[name="show-reply"] {
+  margin-right: 0;
+}
+.message-reply-box {
+  width: 100%;
+}
+.message-reply-box-options {
+  display: flex;
+  align-items: center;
+  float: right;
+}
+.message-reply form {
+  flex-direction: column;
+  align-items: flex-end;
+}
+.message-reply input {
+  height: auto;
+  margin: 0;
+}
+.messages-list {
+  max-width: 76rem;
+  margin-top: 1.5rem;
+  color: $gray-dark;
+}
+.message-topic h2{
+  margin-bottom: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid $gray-lightest;
+  font-size: 2rem;
+}
+.message {
+  margin-bottom: 1rem;
+  padding: 1.25rem;
+  border: 2px solid $gray-lightest;
+}
+.message-body {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  word-break: break-word;
+}
+.message-header {
+  font-size: 1.5rem;
+}
+.message-sender {
+  background-color: $gray-lightest;
+}
+.message-recipient {
+  background-color: none;
+}
+
+/* Quill JS settings*/
+#new_message_form .ql-toolbar {
+  border-color: #212121;
+  border-width: 1px;
+  border-style: solid;
+}
+#new_message_body {
+  height: 25rem;
+  border-color: #212121;
+  border-width: 0 1px 1px;
+  border-style: solid;
+  font-size: 1.7rem;
+}
+@media screen and (min-width: 600px) {
+  .messages-list {
+    margin-left: 3rem;
+  }
+}

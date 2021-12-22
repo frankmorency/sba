@@ -1,0 +1,9 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+
+.usa-grid-full
+
+  h1 This case has been returned to the firm.
+
+  p.usa-font-lead You returned this application at #{l Time.now}. The firm has been notified.
+  
+  = button_to 'Return to dashboard', root_path, method: :get

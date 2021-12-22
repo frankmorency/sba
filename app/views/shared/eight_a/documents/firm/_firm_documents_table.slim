@@ -1,0 +1,16 @@
+.table-header
+  .table-info
+    p
+      strong
+        | #{firm_documents.size} documents
+  table
+    thead
+      tr
+        th Document Name
+        th Uploaded By
+        th Type
+        th Date Uploaded
+        th Comments
+    tbody
+      - firm_documents.each do |firm_document|
+        = render partial: 'shared/eight_a/documents/firm/firm_documents_row', locals: {firm_document: firm_document, current_organization: current_organization}

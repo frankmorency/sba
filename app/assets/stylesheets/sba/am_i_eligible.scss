@@ -1,0 +1,299 @@
+#am-i {
+  a {// need tweak
+    color: #0071bc;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .may-be-eligible:before {
+    font-family: 'FontAwesome';
+    color: black;
+    position: relative;
+    content: "\f14a";
+    display: inline;
+  }
+
+  .may-not-be-eligible:before {
+    font-family: 'FontAwesome';
+    color: black;
+    position: relative;
+    xleft: -5px;
+    content: "\f057";
+    display: inline;
+  }
+
+  .may-be-eligible-just-maybe:before {
+    font-family: 'FontAwesome';
+    color: black;
+    position: relative;
+    xleft: -5px;
+    content: "\f059";
+    display: inline;
+  }
+
+  .ans-box {
+    xmargin-top:30px;
+    display:block;
+  }
+
+  .bottom-border {
+    border-width: 0px 0 1px 0;
+    border-style: solid;
+    border-color: #e1e1e1;
+    padding: 15px 0px 15px 15px;
+  }
+
+  .change-ans:before {
+    font-family: 'FontAwesome';
+    color: #0071bc;
+    position: relative;
+    content: "\f040";
+    display: inline;
+  }
+
+  .para-max-width {
+    max-width:750px;
+  }
+
+  h2 {
+    margin-top: 0;
+  }
+
+  p,.lead-para {
+    margin-top: -5px;
+    font-family: "Source Sans Pro";
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.5em;
+  }
+
+  p,.normal {
+    font-family: "Source Sans Pro";
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.5em;
+  }
+
+  span {
+    font-family:'Source Sans Pro Regular', 'Source Sans Pro';
+    font-weight:400;
+    color: #666666;
+  }
+
+  .you-may-not-be-eligible-box {
+    display:none;
+  }
+
+  .success-box {
+    background-color: #eaf5e4;
+    padding: 25px 25px 25px 25px;
+    margin:0px 0 30px 0;
+    border: 2px solid #4aa564;
+    overflow: auto;
+    max-width: 750px;
+  }
+
+  .failure-box {
+    background-color: #feeff1;
+    padding: 25px 25px 25px 25px;
+    margin:0px 0 30px 0;
+    border: 2px solid #8b0516;
+    max-width: 750px;
+  }
+
+  #special.failure-box {
+    margin-top: 30px;
+  }
+
+  .copy,.details {
+    font-family:'Source Sans Pro Regular', 'Source Sans Pro';
+  }
+
+  .copy {
+    font-size:19px;
+    display: block;
+  }
+
+  h4.copy {
+    font-size:22px;
+    font-weight: 400;
+    margin-top:0px;
+  }
+
+  .details {
+    font-size:17px;
+    .bold {
+      font-weight: 700;
+      margin-top:0;
+    }
+  }
+
+  p.details {
+    margin-top: 0;
+  }
+
+  .edit-answer:before {
+    font-family: 'FontAwesome';
+    color: blue;
+    position: relative;
+    content: "\ff040";
+    display: inline;
+  }
+  .question .a {
+    background-color: white;
+  }
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 2px solid #efefef;
+    margin: 1em 0;
+    padding: 0;
+  }
+
+  i {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  i.outside-i {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .details {
+    a {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+  article .questions:hover {
+    background-color: white;
+  }
+  .questions {
+    border: 0px solid white;
+    background-color: transparent;
+    box-shadow: 0 0 0 white;
+    padding: 0;
+    margin: 0;
+  }
+  .questions:hover {
+    border: 0px solid white;
+    background-color: transparent;
+    box-shadow: 0 0 0 white;
+    padding: 0;
+    margin: 0;
+  }
+  .questions {
+    border: 0;
+  }
+  .button_to {
+    margin-top: 30px;
+  }
+  #naics_fed_set_asides {
+    .no {
+      font-size: 19px;
+    }
+    .no {
+      b {
+      }
+    }
+  }
+  .makeitonehundredpercent {
+    width:100%;
+  }
+
+  form.button_to {
+    width: 100%;
+    text-align: right;
+    margin-top: -10px;
+  }
+
+  form input[type="submit"] {
+    display: inline;
+  }
+
+  .question-box {
+    border: 1px solid #e1e1e1;
+    padding:30px;
+    margin:30px 0 0 0;
+    display:inline-block;
+  }
+
+  .change-color {
+    color:#0071bc;
+  }
+
+  .text-center {
+    text-align:center;
+  }
+
+  .grey-box-text {
+    background-color: #f3f3f3;
+    padding: 40px 30px 0px 30px;
+    min-height: 300px;
+    text-align: center;
+    @media screen and (max-width: 1100px) {
+      min-height: 350px;
+    }
+    @media screen and (max-width: 930px) {
+      min-height: 400px;
+    }
+    @media screen and (max-width: 830px) {
+      min-height: 450px;
+    }
+    @media screen and (max-width: 830px) {
+      min-height: 600px;
+    }
+    @media screen and (max-width: 600px) {
+      min-height: 200px;
+    }
+    @media screen and (max-width: 600px) {
+      p {
+        padding: 20px;
+      }
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+   .float-right {
+    float: right;
+  }
+
+  .results-based {
+    display: none;
+    margin-top: 30px;
+  }
+
+  .fail-margin {
+    margin-top: 30px;
+  }
+
+  .email-result-button {
+    display:inline;
+  }
+
+  .button-margin-left {
+    margin-left: 5px;
+  }
+
+  .question-boolean-box {
+    border: 1px solid #e1e1e1;
+    padding:30px;
+    margin:30px 0 0 0;
+    display:inline-block;
+  }
+
+  .details-margin-top {
+    margin-top: -27px;
+  }
+
+  .change-ans-center {
+    text-align: center;
+  }
+}

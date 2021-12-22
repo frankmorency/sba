@@ -1,0 +1,24 @@
+table#table1.sba-c-table.sba-c-table--editable[aria-live="polite" aria-atomic="true"]
+  caption
+    | Payments and excessive withdrawals
+  thead
+    tr
+      th[scope="col" data-required="true" data-custom-id="Name"]
+        | Name
+      th[scope="col" data-required="true" data-custom-id="Title"]
+        | Title
+      th.js-sum[scope="col" data-info-type="percent" data-required="true" data-pattern="[0-9]*" data-custom-id="Equity Interest" data-min="0" data-max="100"]
+        | Equity Interest
+      th[scope="col" data-hint-text="This is optional" data-custom-id="Reason"]
+        | Reasons for Payment
+      th.js-sum[scope="col" data-info-type="usd" data-required="true" data-custom-id="Total Payments" data-min="0"]
+        | Total Payments
+      th[scope="col"]
+        | Actions
+  tbody
+    tr#table1_tr0_data
+      th[colspan="6"]
+        em
+          | No items added yet
+  button#table1_add_item.sba-c-button[type="button"]
+    | Add item

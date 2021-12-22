@@ -1,0 +1,74 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+.usa-grid-full
+  span.subheading #{@adverse_action_title}: Step 1 of 4
+  h1
+    ' Forward this case
+
+  p.usa-font-lead
+    ' Select who you would like to forward this case to.
+
+  = form_tag(wizard_path, {method: :put, id: :hq_supervisor}) do
+    - if session[:adverse_action] != "recommended_voluntary_withdrawal"
+      fieldset.questions.sba-u-border-top--1
+        h4 8(a) Analyst
+        - @list_users[{"HQ_PROGRAM"=>{"8a"=>["analyst"]}}]&.each_with_index do |user|
+          = radio_button_tag(:individual_id, user.id)
+          - tag_title = "#{user.name}"
+          = label_tag("individual_id_#{user.id}", tag_title, value: user.id)
+        - @list_users[{"HQ_CE"=>{"8a"=>["analyst"]}}]&.each_with_index do |user|
+          = radio_button_tag(:individual_id, user.id)
+          - tag_title = "#{user.name}"
+          = label_tag("individual_id_#{user.id}", tag_title, value: user.id)
+      fieldset.questions.sba-u-border-top--1
+        h4 8(a) Supervisor
+        - @list_users[{"HQ_PROGRAM"=>{"8a"=>["supervisor"]}}].each_with_index do |user|
+          = radio_button_tag(:individual_id, user.id)
+          - tag_title = "#{user.name}"
+          = label_tag("individual_id_#{user.id}", tag_title, value: user.id)
+        - @list_users[{"HQ_CE"=>{"8a"=>["supervisor"]}}]&.each_with_index do |user|
+          = radio_button_tag(:individual_id, user.id)
+          - tag_title = "#{user.name}"
+          = label_tag("individual_id_#{user.id}", tag_title, value: user.id)
+      fieldset.questions.sba-u-border-top--1
+        h4 AA/BD
+        - @list_users[{"HQ_AA"=>{"8a"=>["supervisor"]}}]&.each_with_index do |user|
+          = radio_button_tag(:individual_id, user.id)
+          - tag_title = "#{user.name}"
+          = label_tag("individual_id_#{user.id}", tag_title, value: user.id)
+    - else
+      fieldset.questions.sba-u-border-top--1
+        h4 Directors/Deputy Directors
+        - @list_users[{"DISTRICT_OFFICE_DIRECTOR"=>{"8a"=>["supervisor"]}}]&.each_with_index do |user|
+          = radio_button_tag(:individual_id, user.id)
+          - tag_title = "#{user.name}"
+          = label_tag("individual_id_#{user.id}", tag_title, value: user.id)
+        - @list_users[{"DISTRICT_OFFICE_DEPUTY_DIRECTOR"=>{"8a"=>["supervisor"]}}]&.each_with_index do |user|
+          = radio_button_tag(:individual_id, user.id)
+          - tag_title = "#{user.name}"
+          = label_tag("individual_id_#{user.id}", tag_title, value: user.id)
+    br style='clear: both;'
+    - if @list_users.empty?
+      p None found
+      = link_to 'Go back', '#', :onclick => 'window.history.back();return false;'
+    - else
+      .actions style='clear: both;'
+        .actions__main
+          = submit_tag 'Next'
+          = link_to 'Go back', '#', :onclick => 'window.history.back();return false;'
+
+javascript:
+  $(function () {
+      $("#note_form").validate({
+          errorPlacement: function (error, element) {
+              $(".actions").before(error);
+          },
+          rules: {
+              "individual_id": {
+                  required: true
+              }
+          },
+          messages: {
+              "individual_id": "Select an individual"
+          }
+      });
+  });

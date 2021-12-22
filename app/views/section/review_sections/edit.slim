@@ -1,0 +1,11 @@
+h2 Review
+p Please review below answers and Submit.
+
+.print-summary
+  = form_tag *questionnaire_form_params(@sba_application, @section) do
+    = render partial: 'sba_applications/q_and_a', locals: {editable: true, business_partner_summaries: @business_partner_summaries, sba_application: @sba_application, role: nil}
+    - if @questionnaire_id == 'reconsideration_attachment'
+      = render partial: 'application_dashboard/reconsideration_questionnaires/reconsideration_warning'
+    - unless @sba_application.has_disqualifying_answers? && @questionnaire.is_not_version_of?('eight_a_eligibility')
+      = submit_tag "Submit", class: 'review', data: (@questionnaire.confirm_review? ? {confirm: 'Please verify all the information in your application, and make sure you have attached all documents required. Once you click "Accept" on the following Signature page, you cannot edit fields or upload additional documents.'} : nil)
+      = link_to 'Go back', '#', :onclick => 'window.history.back();return false;'

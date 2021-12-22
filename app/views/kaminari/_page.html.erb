@@ -1,0 +1,16 @@
+<%# Link showing page number
+  - available local variables
+    page:          a page object for "this" page
+    url:           url to this page
+    current_page:  a page object for the currently displayed page
+    total_pages:   total number of pages
+    per_page:      number of items to fetch per page
+    remote:        data-remote
+-%>
+
+<%if page.current?-%>
+	<div class="sba-c-pagination__link sba-c-pagination__link--current" aria-current="page" aria-label="Page <%=page%>(current page)"><%=page%></div>
+<%else-%>
+    <a class="sba-c-pagination__link <%=rel = page.rel if page.rel%>" href = <%= url %>  <%=rel = page.rel if page.rel%> aria-label = "Page <%=page%>" ><%= page %>  </a>
+<%end-%>
+  

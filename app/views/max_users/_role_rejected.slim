@@ -1,0 +1,8 @@
+.usa-width-one-half.standalone-card
+  h1 Your Request Has Been Rejected
+  p.usa-font-lead
+    | Your request to access certify.SBA.gov has been rejected. If you think this was done in error, you may submit another request for access.
+  form.usa-form action="/next_page" method="post"
+    = hidden_field_tag :authenticity_token, form_authenticity_token
+    = hidden_field_tag :hash, { request: :new }.to_json
+    button.usa-button type="submit"  Make a new request

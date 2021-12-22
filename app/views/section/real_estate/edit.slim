@@ -1,0 +1,9 @@
+h2 #{@section.title}
+
+= render_section_header @questionnaire.name, @section
+
+= section_form do
+  = render_question "has_#{@real_estate_type}", answered_for: @answered_for
+  = render_question @questions.find {|q| q.name == @real_estate_type }, answered_for: @answered_for
+
+  = render partial: 'section/base/javascript'

@@ -1,0 +1,26 @@
+.usa-grid-full
+  br
+  h1
+    ' Thank you,
+    span[data-print="user_first_name"]
+      = @user.first_name
+    | !
+  p.usa-font-lead
+    ' You will receive an email with a verification link at
+    strong[data-print="user_email"]
+      = @user.email
+    |  in the next 48 hours.
+  h2
+    | If you don’t get an email from us…
+  ul
+    li
+      ' Add
+      strong
+        | certify@sba.gov
+      |  to your contacts or approved list.
+    li
+      | Check your spam folder
+    li
+      ' Check your email address above. If it is not typed correctly, please
+      = link_to "create a new account", new_user_registration_path
+      | .

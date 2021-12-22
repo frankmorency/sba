@@ -1,0 +1,78 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+= render partial: 'shared/eight_a/fun_bar', locals: {application: @sba_application }
+
+.usa-grid-full style="max-width:1250px"
+  .certify-page-header
+    .usa-width-one-third
+      .certify-page-header__primary
+        h1 Analyst Documents
+    .usa-width-two-thirds
+      .certify-page-header__secondary
+        - if ! defined?(@permissions) || @permissions.can_upload_document?
+          .dropzone id="analyst-document-dz-area"
+            .dz-default.dz-message
+              span#upload-error-message.usa-alert-error.usa-alert-no_icon.hidden
+              a> class="dz-clickable usa-button usa-button-big" id="dz-select-analyst-document" Upload
+
+.usa-grid-full
+  = render partial: 'shared/eight_a/documents/analyst/index'
+
+- locals = {application: @sba_application}
+- if @sba_application.is_really_a_review?
+  - locals[:note_post_path] = organization_adverse_action_review_notes_path(@sba_application.organization, adverse_action_review_id: @sba_application.case_number)
+
+= render partial: 'shared/note_popup/index', locals: locals
+
+javascript:
+    $('#documents_tab').addClass('current')
+
+    // disable auto discover
+    Dropzone.autoDiscover = false;
+
+    $("#analyst-document-dz-area").dropzone({
+        url: "/documents/upload",
+        method: "POST",
+        clickable: "a#dz-select-analyst-document",
+        autoProcessQueue: true,
+        addRemoveLinks: true,
+        maxFilesize: 25,  //mb
+        previewTemplate: "<div class='hide-display'></div>",
+        acceptedFiles: "application/pdf, .pdf, .xls, .xlsx, .doc, .docx",
+        parallelUploads: 2,
+        sending: function (file, xhr, formData) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+            formData.append('question_name', "analyst_document");
+            formData.append('sba_application_id', "#{@sba_application.id}");
+            formData.append('organization_id', "#{@sba_application.organization.id}");
+            formData.append('really_review', "#{@sba_application.is_really_a_review?}");
+        },
+        success: function (file, response) {
+            window.location.reload(true);
+        },
+        error: function (file, response) {
+            if (response.error === "You need to sign in or sign up before continuing.") {
+                // Redirect to Login
+                window.location.href = "/users/sign_in";
+            } else {
+                $("span#upload-error-message").text(response["message"]);
+                $("span#upload-error-message").show();
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        $('#view_archived_documents').on('click', function () {
+            $("#active_documents").addClass("hide");
+            $("#inactive_documents").removeClass("hide")
+        });
+        $('#view_active_documents').on('click', function () {
+            $("#inactive_documents").addClass("hide");
+            $("#active_documents").removeClass("hide")
+        });
+    });
+
+    $(document).ready(function () {
+        $('#analyst-document-dz-area').removeClass('dropzone');
+        $('.certify-page-header').css('margin-top', '15px');
+        $('article h1').css('margin-top', '20px');
+    });

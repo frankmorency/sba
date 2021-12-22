@@ -1,0 +1,48 @@
+section.usa-width-one-whole
+- if @edit_profile
+  h1 Edit Profile
+  = render partial: 'users/registrations/edit_profile'
+- else
+  h1 Edit Password
+  p.usa-font-lead
+    | Your password must contain at least 12 characters: one lowercase character, one uppercase character, 1 digit and 1 special character.
+  article.usa-width-one-half
+    = form_for(resource, as: resource_name, url: registration_path(resource_name), html: {method: :put}) do |f|
+      - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+        div
+          | Currently waiting confirmation for: #{resource.unconfirmed_email}
+
+      .field
+        = f.label :existing_passphrase
+        i &#40;we need your current password to confirm your changes&#41;
+        br
+        = f.password_field :current_password, autocomplete: 'off'
+      .field
+        = f.label :new_passphrase
+        a.usa-show_multipassword title="Show my typing" href="#" aria-controls="password" Show my typing
+        = f.password_field :password, autocomplete: 'off'
+      .field.usa-text-small#text_strength
+        b Password strength
+        | &nbsp; - &nbsp;
+      .field
+        = f.label :new_passphrase_confirmation
+        = f.password_field :password_confirmation, autocomplete: "off"
+      .field
+        .hidden_field 
+        = f.hidden_field_tag :hidden_duns, current_user.organization.duns
+        - if @current_user.roles_map["Legacy"]["VENDOR"][0] == "admin"
+          = f.label_tag(:mpin, 'You must enter your MPIN to update your profile.')
+          = f.password_field_tag :mpin, nil, autocomplete: 'off', required: true
+      .actions
+        .button_wrapper
+          button#submit.usa-button-disabled.display-inline disabled="" type="submit" Update
+        = link_to 'Back to My Profile', vendor_admin_my_profile_index_path
+
+    javascript:
+      $(document).ready(function () {
+
+          enableSubmitButton();
+
+      var myPasswordStrengthMeter = new PasswordStrengthMeter();
+      myPasswordStrengthMeter.open('user_password');
+      });

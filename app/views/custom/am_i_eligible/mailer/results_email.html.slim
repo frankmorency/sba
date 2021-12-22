@@ -1,0 +1,134 @@
+p style="font-family:'Source Sans Pro','Helvetica','Arial',sans-serif"
+p Hello prospective SBA Program participant,
+p We are glad you visited certify.SBA.gov to find out if you may be eligible for an SBA Small Business Program. Here are your results so you can get started when you are ready:
+p
+
+- case @results.class.to_s
+- when 'String'
+  #special.failure-box.usa-width-one-whole style="display:block; background-color: #feeff1; padding: 25px 25px 25px 25px; margin: 0px 0 30px 0; border: 2px soad #8b0516; max-width: 750px;"
+    span.message
+    = @results
+- else
+  - @results.each_pair do |certification, eligibility|
+    - case certification
+    - when 'wosb'
+        - if eligibility["value"] == "true"
+          #am-i
+            #success.usa-width-one-whole style="display:block"
+              #wosb.you-may-not-be-eligible-box.success-box style="background-color: #eaf5e4; padding: 25px 25px 25px 25px; margin: 0px 0 30px 0; border: 2px solid #4aa564; overflow: auto; max-width: 750px;"
+                h3 Women-Owned Small Business (WOSB)
+                .eligible
+                  p
+                    b Based on the information you provided, you may be eligible for the WOSB Program.
+                  p
+                    a href="https://certify.sba.gov/questionnaires/wosb/sba_applications/new" Get started on your self-certification process now
+                  p
+                    a href="https://certify.sba.gov/prepare#wosb-anc" target="_blank" Learn more about the documentation you will need and how to prepare to apply:
+                  p
+                    a href="https://www.sba.gov/content/women-owned-small-business-wosb-program-certification" target="_blank" Learn more about the WOSB Contract Program
+                  .usa-width-one-whole style="float: left; display: block; margin-right: 0; width: 100%;"
+                    .usa-width-one-half style="float: left; display: block; margin-right: 0; width: 50%;"
+                      p
+                        b Proof of Citizenship
+                      p
+                        b Partnership Agreement
+                      p
+                        b S-Corp / Enterprise
+                    .usa-width-one-half
+                      p
+                        b Tax Returns (2 years)
+                      p
+                        b Stocks and Ledgers
+        - else
+          #am-i
+            #success.usa-width-one-whole style="display:block"
+              #wosb.you-may-not-be-eligible-box.failure-box style="background-color: #feeff1; padding: 25px 25px 25px 25px; margin: 0px 0 30px 0; border: 2px solid #8b0516; max-width: 750px;"
+                h3 Women-Owned Small Business (WOSB)
+                .not_eligible
+                  = raw(@results[:wosb])
+
+    - when 'edwosb'
+        - if eligibility["value"] == "true"
+          #am-i
+            #success.usa-width-one-whole style="display:block"
+              #edwosb.you-may-not-be-eligible-box.success-box style="background-color: #eaf5e4; padding: 25px 25px 25px 25px; margin: 0px 0 30px 0; border: 2px solid #4aa564; overflow: auto; max-width: 750px;"
+                h3 Economically Disadvantaged Women-Owned Small Business (EDWOSB)
+                .eligible
+                  p
+                    b Based on the information you provided, you may be eligible for the EDWOSB program.
+                  p
+                    a href="https://certify.sba.gov/questionnaires/edwosb/sba_applications/new" target="_blank" Get started on the self-certification process now
+                  p
+                    a href="https://certify.sba.gov/prepare#edwosb-anc" target="_blank" Learn more about the documentation you will need and how to prepare to apply:
+                  p
+                    a href="https://www.sba.gov/contracting/government-contracting-programs/women-owned-small-businesses" target="_blank" Learn more about the EDWOSB Contract Program
+                  .usa-width-one-whole style="float: left; display: block; margin-right: 0; width: 100%;"
+                    .usa-width-one-half style="float: left; display: block; margin-right: 0; width: 50%;"
+                      p
+                        b Proof of Citizenship
+                      p
+                        b Partnership Agreement
+                      p
+                        b S-Corp / Enterprise
+                    .usa-width-one-half
+                      p
+                        b Tax Returns (2 years)
+                      p
+                        b Stocks and Ledgers
+        - else
+          #am-i
+            #success.usa-width-one-whole style="display:block"
+              #edwosb.you-may-not-be-eligible-box.failure-box style="background-color: #feeff1; padding: 25px 25px 25px 25px; margin: 0px 0 30px 0; border: 2px solid #8b0516; max-width: 750px;"
+                h3 Economically Disadvantaged Women-Owned Small Business (EDWOSB)
+                .not_eligible
+                  = raw(@results[:edwosb])
+
+    - when 'eighta'
+        - if eligibility["value"] == "true"
+          #am-i
+            #success.usa-width-one-whole style="display:block"
+              #eighta.you-may-not-be-eligible-box.success-box style="background-color: #eaf5e4; padding: 25px 25px 25px 25px; margin: 0px 0 30px 0; border: 2px solid #4aa564; overflow: auto; max-width: 750px;"
+                h3 8(a)
+                .eligible
+                  p
+                    b Based on the information you provided, you may be eligible for the 8(a) BD Program.
+                  p
+                    a href="https://www.sba.gov/contracting/government-contracting-programs/8a-business-development-program/how-apply/steps-applying-8a-program" target="_blank" Get started on the certification process now
+                  p
+                    a href="https://www.sba.gov/contracting/government-contracting-programs/8a-business-development-program/how-apply/8a-application-checklist" target="_blank" Learn more about the documentation you will need and how to prepare to apply
+                  p
+                    a href="https://www.sba.gov/contracting/government-contracting-programs/8a-business-development-program" target="_blank" Learn more about the 8(a) BD Program
+        - else
+          #am-i
+            #success.usa-width-one-whole style="display:block"
+              #eighta.you-may-not-be-eligible-box.failure-box style="background-color: #feeff1; padding: 25px 25px 25px 25px; margin: 0px 0 30px 0; border: 2px solid #8b0516; max-width: 750px;"
+                h3 8(a)
+                .not_eligible
+                  = raw(@results[:eighta])
+
+    - when 'hubzone'
+        - if eligibility["value"] == "true"
+          #am-i
+            #success.usa-width-one-whole style="display:block"
+              #hubzone.you-may-not-be-eligible-box.success-box style="background-color: #eaf5e4; padding: 25px 25px 25px 25px; margin: 0px 0 30px 0; border: 2px solid #4aa564; overflow: auto; max-width: 750px;"
+                h3 Historically Underutilized Business Zone (HUBZone) Program
+                .eligible
+                  p
+                    b Based on the information you provided, you may be eligible for the HUBZone Program.
+                  p
+                    a href="https://www.sba.gov/contracting/government-contracting-programs/hubzone-program" target="_blank" Learn more about the HUBZone Program
+                  p
+                    a href="https://www.sba.gov/contracting/government-contracting-programs/hubzone-program/applying-hubzone-program" target="_blank" Learn more about the documentation you will need and how to prepare to apply
+        - else
+          #am-i
+            #success.usa-width-one-whole style="display:block"
+              #hubzone.you-may-not-be-eligible-box.failure-box style="background-color: #feeff1; padding: 25px 25px 25px 25px; margin: 0px 0 30px 0; border: 2px solid #8b0516; max-width: 750px;"
+                h3 Historically Underutilized Business Zone (HUBZone) Program
+                .not_eligible
+                  = raw(@results[:hubzone])
+
+p SBA will be here to guide you through each step of the process.
+
+p Regards,
+p Office of Government Contracting
+p U.S. Small Business Administration (SBA)

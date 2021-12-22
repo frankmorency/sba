@@ -1,0 +1,105 @@
+= render partial: 'shared/eight_a/masthead/index', locals: {application: @sba_application, organization: @organization }
+.sba-l-container
+  .sba-l-row
+    .sba-l-col--12.sba-u-padding-x--2
+      .certify-page-header
+        .certify-page-header__primary
+          h1
+            | Appeal the SBA’s decision
+      p.usa-font-lead
+        | The Office of Hearings and Appeals (OHA) will decide your appeal. You can’t apply for reconsideration if you lose the appeal. 
+        strong
+          | To appeal, SBA must receive an appeal petition containing the following information by 5:00 p.m. Eastern Time 45 days from the date of your decline letter.
+  .sba-l-row
+    .sba-l-sm-col--12.sba-l-md-col--golden-lg.sba-l-lg-col--8.sba-u-padding-x--2
+      = form_tag intent_acknowledgment_sba_application_application_dashboard_sub_application_reconsideration_questionnaires_path(@sba_application, @sub_application), id: 'appeal_intent', name: 'appeal_intent', method: 'post' do
+        ol
+          li
+            ' The basis of OHA’s jurisdiction in handling your appeal. Look in your decline letter in your
+            = link_to 'Messages', sba_application_conversations_path(@sba_application), target: "_blank"
+            |  tab for the reason your firm was denied entry into the 8(a) program. If your firm was denied entry based on any reason other than social disadvantage, economic disadvantage, ownership, or control, then OHA may not have authority to decide your appeal. 
+          li
+            | A copy of your decline letter and the date you received it.
+          li
+            | A brief description of your case and the legal arguments that your firm meets the requirements of the 8(a) program.
+          li
+            | The outcome you wish to see from your appeal.
+          li
+            | Your name, address, phone, fax (if you have one), email, and signature (or your lawyer’s name, contact information, and signature if your lawyer is handling the appeal).
+          li
+            | A statement of why you believe the SBA’s decision is arbitrary, unreasonable, or contrary to law. Refer to specific parts of your decline letter and related documents or emails.
+          li
+            | A certificate of service stating how, when, and to whom your appeal was sent. The certificate should state: 
+            p.sba-u-margin-x--3
+              | “I certify that on [date], I served the foregoing [type of submission] by [email, mail, Express Mail, personal delivery, commercial delivery service, fax] upon the following.” Next, list the name and address of each party served, including the SBA’s Director of Business Development and the Associate General Counsel for Procurement Law, and either the fax number or the e-mail address (if applicable). The individual serving the submission must sign the certificate and either print or type his or her name and title.
+        .sba-c-alert
+          .sba-c-alert__icon
+            svg.sba-c-icon[aria-hidden="true"]
+              use[xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/certify-prototype/assets/svg-sprite/sprite.svg#info-circle"]
+          .sba-c-alert__body
+            h3.sba-c-alert__heading
+              | Important information
+            p.sba-c-alert__text
+              | Once you appeal, SBA will not accept a request for reconsideration. OHA’s decision on your appeal will be the final decision.
+            p.sba-c-alert__text.sba-u-margin-top--2
+              | For instructions, including how to format and the length of your appeal, read 
+              a[href="https://www.ecfr.gov/cgi-bin/text-idx?SID=c9f63df273ec8ecdaca045ed53c33938&amp;mc=true&amp;node=pt13.1.124&amp;rgn=div5#se13.1.124_1206" target="_blank"]
+                | 13 CFR § 124.206
+              | , 
+              a[href="https://www.ecfr.gov/cgi-bin/text-idx?SID=c9f63df273ec8ecdaca045ed53c33938&amp;mc=true&amp;node=pt13.1.134&amp;rgn=div5#se13.1.134_1203" target="_blank"]
+                | 13 CFR § 134.203
+              | , 
+              a[href="https://www.ecfr.gov/cgi-bin/text-idx?SID=c9f63df273ec8ecdaca045ed53c33938&amp;mc=true&amp;node=pt13.1.134&amp;rgn=div5#se13.1.134_1402" target="_blank"]
+                | 13 CFR § 134.402
+              | , and 
+              a[href="https://www.ecfr.gov/cgi-bin/text-idx?SID=c9f63df273ec8ecdaca045ed53c33938&amp;mc=true&amp;node=pt13.1.134&amp;rgn=div5#se13.1.134_1204" target="_blank"]
+                | 13 CFR § 134.204(d)
+              | .
+        h3
+          | Email your appeal to all 3 of these offices
+        ol
+          li
+            | Office of Hearings and Appeals: 
+            a[href="mailto:OHAFilings@sba.gov"]
+              | OHAFilings@sba.gov
+          li
+            | Director, Office of Business Development: 
+            a[href="mailto:8aBD2@sba.gov"]
+              | 8aBD2@sba.gov
+          li
+            | Associate General Counsel for Procurement Law: 
+            a[href="mailto:mailto:8aBD2@sba.gov"]
+              | OPLService@sba.gov
+        .sba-u-margin-bottom--3
+          ul.sba-c-unstyled-list
+            li
+              input#assert_approval.sba-c-checkbox[type="checkbox" name="confirm_intent_checkbox" value="true" required="required" data-msg="Please fill this field"]
+              label.sba-c-label[for="assert_approval"]
+                | I understand that after clicking “Confirm intent” below does not constitute an appeal to the U.S. Government. I am required to submit my appeal to OHA directly within 45 days of the date of my decline letter.
+        .actions
+          .actions__main
+            button.sba-c-button.sba-u-sm-margin-right--3[type="submit"]
+              | Confirm intent
+            a[href="javascript:window.history.back();"]
+              | Go back
+            p
+              em
+javascript:
+  $(document).ready(function () {
+
+    $('#appeal_intent').validate({
+      rules: {
+        "confirm_intent_checkbox": {
+          required: true
+        }
+      },
+      errorPlacement: function (error, element) {            
+        error.appendTo($("label[for='assert_approval']"));
+      },      
+      messages: {
+        "confirm_intent_checkbox": {
+          required: "Please check this box if you want to proceed."
+        }
+      }
+    });
+  })

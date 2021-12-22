@@ -1,0 +1,40 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large
+          | Cancel case: Step 2 of 2
+        h1
+          | Finish canceling this case
+    p.usa-font-lead
+      | Please review the information you’ve provided and complete canceling the case below.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        .certify-grid-wrap
+          .certify-width-two-thirds
+            .review-info
+              .review-info__item
+                .review-info__content
+                  h2.review-info__heading
+                    | Note to SBA
+                  p
+                    strong
+                      ' Subject:
+                    span[data-print="note_subject"]
+                    = session[:note_subject]
+                  p[data-print="note"]
+                  p
+                    strong
+                      ' Note:
+                    span[data-print="note_message"]
+                    = session[:note_message]
+                  p
+                    strong
+                      ' Tags:
+                    span[data-print="note-tags"]
+                    = session[:note_tags].join(", ")
+        p
+          = form_tag(wizard_path, {method: :put}) do
+            = submit_tag "Cancel case", class: "usa-button sba-c-button--danger sba-u-margin-right--2"
+            = link_to "Start over", wizard_path(:add_sba_note)

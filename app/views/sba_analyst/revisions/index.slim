@@ -1,0 +1,29 @@
+= render partial: 'versions/banner', locals: {application: @sba_application} unless @sba_application.version_number == 1
+
+.usa-width-one-whole.review_outer
+  .usa-width-one-fourth.review_nav
+    = render partial: 'sba_analyst/reviews/nav', locals: {active: :revision_history}
+
+  .usa-width-three-fourths.review_main
+    h1 Revision History
+
+    h2 = @sba_application.organization.name
+
+    table
+      thead
+        tr
+          th Version
+          th Application Status
+          th Under Review Status
+          th Date Submitted
+
+      - @revisions.each do |revision|
+        tr
+          td
+            - if revision.is_current?
+              = revision.display_version_number
+            - else
+              = link_to_application_version revision.display_version_number, revision
+          td = revision.status
+          td NA
+          td = revision.formatted_submission_date

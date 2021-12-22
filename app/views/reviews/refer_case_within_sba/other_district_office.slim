@@ -1,0 +1,31 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+.usa-grid-full
+  span.subheading Refer case
+  h1 Select a District Office
+  p.usa-font-lead This case will be assigned to the supervisor of that District Office.
+  = form_tag(wizard_path, {method: :put, id: :district_office_form}) do
+    = select_tag :duty_station_id,
+            options_for_select(@district_offices.map {|ds| [ds.name, ds.id]}),
+            include_blank: true
+    .actions
+      .actions__main
+        = submit_tag 'Next'
+        = link_to 'Cancel', '#', :onclick => 'window.history.back();return false;'
+
+javascript:
+    $(function () {
+        $("#district_office_form").validate({
+            errorPlacement: function (error, element) {
+                $("select").last().after(error);
+            },
+            rules: {
+                "duty_station_id": {
+                    required: true
+                }
+            },
+            messages: {
+                "duty_station_id": "Select a District Office"
+            }
+        });
+    });

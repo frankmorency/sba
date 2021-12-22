@@ -1,0 +1,23 @@
+table.eight_a_sections {
+  tr {
+    td {
+      font-size: 1em;
+      font-weight: bolder;
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    td.in_progress {
+      color: blue;
+    }
+
+    td.complete {
+      color: green;
+    }
+  }
+}
+
+label p {
+  display: inline;
+}

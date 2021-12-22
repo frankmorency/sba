@@ -1,0 +1,23 @@
+Control Details: Firm Control,Leased Facility,Review Submit
+
+Firm Control: 
+ agreements that might impact ownership or control_as_no: Does the applicant firm have any existing agreements that might impact ownership or control?
+ support or bonding support to the applicant firm_as_no: Do any other firms or individuals provide financial support or bonding support to the applicant firm?
+ permits to the applicant firm_as_no: Do any other firms or individuals provide licensing, certifications, or permits to the applicant firm?
+ disadvantaged status the highest compensated in the applicant firm_as_yes: Is the individual claiming disadvantaged status the highest compensated in the applicant firm?
+ Please upload all business bank account signature cards.: Please upload all business bank account signature cards.,dz-select-eight_a_control_signature_cards,Upload_Document.pdf
+ share any resources with any other firms_as_no: Is the applicant firm co-located with another firm at any of its locations or does it share any resources with any other firms?
+ lease or use office space or other facilities from any other firm_as_yes: Does the applicant firm lease or use office space or other facilities from any other firm?
+ Submit: Firm Control 
+ Complete Status: eight_a_firm_control,Firm Control
+
+
+Leased Facility:
+ familial relationship with the owner of the leased facility_as_no: Do any Principals of the applicant firm have a financial or any other interest in or familial relationship with the owner of the leased facility?
+ Submit: Leased Facility
+ Complete Status: eight_a_control_leased_facility,Leased Facility
+ 
+
+Review Submit: 
+ Submit Control: Review
+ Success: 8(a) Control Application section is complete

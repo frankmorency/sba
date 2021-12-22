@@ -1,0 +1,48 @@
+#homepage
+  = render partial: 'layouts/application/msg'
+  .usa-width-one-whole
+    img class="back-img-mobile" src="#{find_asset_path('landing-icons/banner.jpg')}" alt="Background Image"
+  .usa-width-one-whole.back-img aria-label="Image of small business team members welcoming you to the certify.SBA.gov application, where you can register your business to compete for US Federal government contracts."
+    .usa-width-two-thirds.bottom-margin-fix
+      .welcome-block
+        h2 Welcome to certify.SBA.gov
+        .usa-font-lead-home-page <font size=4>Apply for and manage your 8(a)Business Development Program and All Small Mentor-Protégé Program certification online from our easy-to-use dashboard.<br>
+                       <p>
+                       <span style="color: #cc0000; font-weight: bold;">*New!*  8(a) Participants</span> - Click the <span style="color: purple; font-weight: bold;">purple</span> box above for Guidance Concerning Up to One Year Participation Extension for Certain 8(a) Participants.<br>
+                       <p>
+                       <span style="color: #cc0000; font-weight: bold;">*UPDATED!* Attention Self-Certified WOSB Firms!</span> Self-certified WOSB records are no longer available. SBA encourages firms eligible for the WOSB and EDWOSB programs to apply for SBA certification by <span style="color: #339966; font-weight: bold;">clicking the green button</span> at the upper right corner of this page.
+
+    .usa-width-one-third
+      .login-block
+        - vendor_url = ""
+        - max_url = ""
+        - if Feature.active?(:idp)
+          - if Feature.active?(:idp_stubbed)
+            - vendor_url = max_url = "idp_stubbed_login_form"
+          - else
+            - vendor_url = "vendor_login_landing"
+            - max_url = "max_login_landing"
+        - else
+          - vendor_url = "/users/sign_in"
+          - max_url = "/max_gov"
+        form action="#{vendor_url}"  method="get"
+          .button_wrapper
+            button type="submit" class="button-full"  Login
+          p Or
+        form action="#{vendor_url}"  method="get"
+          .button_wrapper
+            button.usa-color-gold Get started
+        a href="#{max_url}" Federal government employees: <br>Login or create an account <br>
+        <br>
+        a href="https://sbaone.atlassian.net/wiki/spaces/CKB/pages/1014005761/Change+My+Email" Firm Users - Change My Login Email
+
+  .usa-width-one-whole.row_block
+    .usa-width-one-half
+      h3 Am I Eligible?
+      p <p style="text-align: left"> Answer a few questions to discover if your company should pursue participation in SBA’s contracting programs. Are you eligible to join the Woman Owned Small Business (WOSB) Program, HUBZone Program, or 8(a) Business Development Program? <br/><a href="/am-i-eligible">Find out</a></p>
+  
+    .usa-width-one-half
+      h3 Have Program-Specific Questions?
+      p <p style ="text-align:left">Reach program experts directly by sending your email to the applicable program: <br><ul><li style ="text-align:left"><a href="mailto:8Aquestions@sba.gov">8(a) Applicants</a></li><li style ="text-align:left"><a href="mailto:WOSB@sba.gov">Women Owned Small Business (WOSB) Applicants</a></li><li style ="text-align:left"><a href="mailto:allsmallmpp@sba.gov">All Small Mentor Protégé Program (ASMPP)</a></li><li style ="text-align:left"><a href="mailto:hubzone@sba.gov">HUBZone Applicants</a></li></ul></p>
+  .usa-width-one-whole.currently-grey-box
+    br

@@ -1,0 +1,79 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ */
+
+  .DTE_Header_Content {
+    font-size: 1.2em;
+    font-weight: 400;
+    color:#205493;
+    font-family:"Merriweather", "Georgia", "Times New Roman", serif
+  }
+
+  .DTE_Field {
+    width: 550px;
+    padding:0 20 px 20 px 20 px
+  }
+
+  div.DTE_Body div.DTE_Body_Content div.DTE_Field > div.DTE_Field_Input{
+    width: 100%;
+    float: left;
+    position: relative;
+    z-index: 100000;
+  }
+
+  div.DTE_Body div.DTE_Body_Content div.DTE_Field > label {
+    padding-top: 0;
+  }
+
+  .DTE_Form_Buttons{
+    padding-left: 25px;
+  }
+
+  .DTE_Body_Content {
+    min-height: 70%;
+    max-height: 80%;
+  }
+
+  div.DTED_Lightbox_Container {
+    width: 70%;
+  }
+
+  div.DTED_Lightbox_Wrapper{
+    width: 50%
+  }
+
+  .DTE_Form_Buttons{
+
+  }
+
+  div.DTE_Bubble div.DTE_Bubble_Liner{
+    width: 500px
+  }
+
+  div.DTE_Bubble div.DTE_Bubble_Liner div.DTE_Bubble_Table div.DTE_Form_Buttons{
+    vertical-align: top
+  }
+
+  div.DTE button.btn, div.DTE div.DTE_Form_Buttons button{
+    background-image: none;
+    padding: 10px 15px;
+    text-shadow: none;
+    border: 0;
+  }
+
+  div.DTE button.btn, div.DTE div.DTE_Form_Buttons button:hover{
+    background-image: none;
+    padding: 10px 15px;
+    text-shadow: none;
+    border: 0;
+  }

@@ -1,0 +1,4 @@
+h2 #{@section.title}
+= render_section_header(@questionnaire.name, @section)
+= render partial: 'form', locals: {questionnaire: @questionnaire, questions: @questions}
+= render partial: 'section/base/javascript'

@@ -1,0 +1,79 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Determination: Step 5 of 5
+        h1 Review and Complete
+    p.usa-font-lead After you submit your recommendation, this case will be removed from your workload.
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        .review-info
+          .review-info__item
+            .review-info__content
+              h2.review-info__heading Determination
+              - if @determination.determine_eligible == "true"
+                p Eligible
+              - else
+                p Ineligible
+                - if @determination.determine_eligible_for_appeal == "true"
+                  p Appeal rights: Yes
+                - else
+                  p Appeal rights: No
+
+          .review-info__item
+            .review-info__content
+              h2.review-info__heading Documents
+              p
+                strong
+                  ' Analysis (Form 1392):
+                span data-print="analysis_doc"
+                = session[:analysis_document].nil? ? 'No file chosen' : session[:analysis_document][:original_file_name]
+              p data-print="note"
+              p
+                strong
+                  ' Determination Letter:
+                span data-print="determination_doc"
+                = session[:determination_document].nil? ? 'No file chosen' : session[:determination_document][:original_file_name]
+          .review-info__item
+            .review-info__content
+              h2.review-info__heading Forward to
+              p
+                = @determination.individual.name
+
+          .review-info__item
+            .review-info__content
+              h2.review-info__heading Note to SBA
+              p
+                strong
+                  ' Subject:
+                span[data-print="determination_note_subject"]
+                = session[:determination_subject]
+              p
+                strong
+                  ' Message:
+                span[data-print="determination_note_text"]
+                = session[:determination_message]
+              p
+                strong
+                  ' Tags:
+                span[data-print="note-tags"]
+                = session[:determination_tags].join(", ") if session[:determination_tags]
+
+  = form_for @determination,  url: wizard_path, method: :put do |f|
+    = f.hidden_field 'determine_eligible', value: params["eight_a_determination"]["determine_eligible"]
+    = f.hidden_field 'determine_eligible_for_appeal', value: params["eight_a_determination"]["determine_eligible_for_appeal"]
+    = f.hidden_field 'individual_id', value: params["eight_a_determination"]["individual_id"]
+
+    p[style="display: flex; align-items:center;"]
+      = f.submit "Save and continue", class: "save-continue-button"
+      img src="#{find_asset_path('save-continue-loader.gif')}" class="save-continue-loader" style="margin-bottom:25.5px; margin-left:0px; margin-right:8.5px; margin-top: 25px;"
+      = link_to "Start over", wizard_path(:decision)
+
+javascript:
+    $(".save-continue-loader").css('display', 'none');
+    $(".save-continue-button").click(function () {
+        $(".save-continue-button").hide();
+        $(".save-continue-loader").css('display', 'inline');
+    });

@@ -1,0 +1,5 @@
+ignore,special_conditions,permission,questionnaire,review_state,is_case_owner,is_reviewer,vendor_user,contributor_user,sba_supervisor_8a_district_office,sba_supervisor_8a_hq_aa,sba_supervisor_8a_hq_program,sba_supervisor_8a_cods,sba_analyst_8a_hq_program,sba_analyst_8a_cods,sba_supervisor_user,  sba_analyst_8a_district_office, sba_director_8a_district_office, sba_deputy_director_8a_district_office
+,,can_add_note,eight_a,unassigned,T,T,,,,T,T,T,T,T,T,
+,,can_add_note,eight_a,screening,T,T,,,,T,T,T,T,T,T,
+,,can_add_note,flabberdoodle,screening,T,T,,,,T,T,T,T,T,T,
+,,can_add_note,eight_a,processing,T,T,,,,T,T,T,T,T,T,

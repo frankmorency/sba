@@ -1,0 +1,31 @@
+
+//TODO: Still few methods has to be moved to call backs
+javascript:
+
+  var #{unique_id}_editor;
+
+  $(document).ready(function () {
+
+    var #{unique_id}_tabledata = {};
+
+    // Create or update the tabledata localStorage entry
+    if (($("##{unique_id}").val() !== "null") && ($("##{unique_id}").val() !== "")) {
+      #{unique_id}_tabledata = JSON.parse($("##{unique_id}").val());
+    }
+
+    var #{unique_id}_layout = new #{layout}();
+
+    $("##{unique_id}_table").DataTable({
+      data: $.map(#{unique_id}_tabledata, function (value, key) {
+        return value;
+      }),
+      columns: #{unique_id}_layout.columns(),
+      select: true,
+      responsive: true,
+      searching: false,
+      paging: false,
+      info: false,
+      footerCallback: #{unique_id}_layout.footer_callback
+    });
+
+  });

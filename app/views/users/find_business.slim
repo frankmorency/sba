@@ -1,0 +1,74 @@
+#business_search
+  .usa-grid-full
+    h1 Connect your SAM.gov data to Certify
+  .usa-grid-full
+    p Your SAM.gov data will be used to determine eligibility. Your SAM.gov account must be active to connect to certify.SBA.gov. Please make sure your SAM.gov data is current when you submit your Certify application. Changes to SAM.gov can take up to <b><u>72 hours</b></u> to display in certify.SBA.gov.
+    p Note: all fields below are required.
+  .usa-grid-full
+    = form_tag find_business_path, id: 'find_business', method: 'post' do
+      .usa-width-one-whole
+        .usa-width-one-half
+          b
+            label for="search_duns_number" DUNS Number
+          span#duns-number-error
+          = text_field_tag 'search[duns_number]', params[:search] ? params[:search][:duns_number] : nil, minlength: 9, maxlength: 9
+          p.usa-text-small &#40;9 DIGIT NUMBER no spaces or dashes&#41;
+        .usa-width-one-half
+
+      .usa-width-one-whole
+        .usa-width-one-half
+          b
+            label for="search_ssn_ein" TIN Number
+          span#ssn-ein-error
+          = text_field_tag 'search[ssn_ein]', params[:search] ? params[:search][:ssn_ein] : nil, minlength: 9, maxlength: 9
+          p.usa-text-small &#40;9 DIGIT NUMBER no spaces or dashes&#41;
+        .usa-width-one-half
+
+      .usa-width-one-whole
+        .usa-width-one-half
+          b
+            label for="search_mpin" MPIN
+          span#mpin-error
+          = text_field_tag 'search[mpin]', params[:search] ? params[:search][:mpin] : nil, minlength: 4, maxlength: 12
+          p.usa-text-small &#40;4-12 DIGITS&#44; case&#8208;sensitive&#41;
+          p
+        .usa-width-one-half
+
+      .usa-width-one-whole
+        p SBA will only accept submissions and digital signatures from qualifying business owners. If you are NOT the business owner, please do not proceed. In order to protect personal financial information entered into the system, only the qualifying business owner will have access to their business records.
+        p If you need assistance in obtaining your correct TIN/MPIN. Please contact the Federal Service Desk Monday - Friday 8 a.m. to 8 p.m. EST via #{link_to 'Live Chat', 'https://fsd.gov/fsd-gov/loginchat.do'} or by phone at 866-606-8220.
+        button#find_business Search
+  .usa-grid-full
+    - if @sam_organizations
+      = render partial: 'users/business_search_result', locals: {sam_organizations: @sam_organizations}
+
+      p
+        .error WARNING:
+        | Do not click "Connect data" if you are not the qualifying business owner.
+
+javascript:
+  $(document).ready(function () {
+
+    $("#find_business").validate({
+      rules: {
+        "search[ssn_ein]": {
+          required: true,
+          digits: true,
+          minlength: 9,
+          maxlength: 9
+        },
+        "search[duns_number]": {
+          required: true,
+          digits: true,
+          minlength: 9,
+          maxlength: 9
+        },
+        "search[mpin]": {
+          required: true
+          minlength: 4,
+          maxlength: 12
+        }
+      },
+      errorElement: 'span'
+    });
+  });

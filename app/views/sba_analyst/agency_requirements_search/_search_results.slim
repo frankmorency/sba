@@ -1,0 +1,46 @@
+- if results.count < 1
+  h3
+    | No requirements could be found
+- else
+  .sba-u-margin-bottom--1
+  - results.each do |agency_req|
+    .sba-c-card.sba-u-padding--2
+      h2.sba-u-margin--0.sba-u-font-size--h3
+        = link_to agency_req.title, sba_analyst_agency_requirement_path(agency_req.id)
+        span.sba-u-color--gray.sba-u-font-weight--normal
+          = "(#{agency_req.unique_number})" if agency_req.unique_number
+      .sba-l-row
+        .sba-l-col--6.sba-u-padding-right--2
+          p.sba-u-margin--0.sba-u-font-size--small
+            strong Agency:
+            span.sba-u-color--gray
+              = agency_req.agency_office['name'] if agency_req.agency_office
+          p.sba-u-margin--0.sba-u-font-size--small
+            strong Type:
+            span.sba-u-color--gray
+              = agency_req.agency_contract_type['name'] if agency_req.agency_contract_type
+        .sba-l-col--6.sba-u-padding-right--2
+          p.sba-u-margin--0.sba-u-font-size--small
+            strong Code:
+            span.sba-u-color--gray
+              - if agency_req.agency_offer_code
+                = agency_req.agency_offer_code['name']
+              - else
+                | --
+          p.sba-u-margin--0.sba-u-font-size--small
+            strong NAICS:
+            span.sba-u-color--gray
+              - if agency_req.naics
+                = agency_req.naics
+              - else
+                | --
+
+          p.sba-u-margin--0.sba-u-font-size--small
+            strong Associated firm(s):
+            span.sba-u-color--gray
+              - if agency_req.agency_requirement_organizations.empty?
+                | No
+              - else
+                | Yes
+
+  = paginate results, :remote => true

@@ -1,0 +1,86 @@
+| Hello prospective SBA Program participant,
+| We are glad you visited certify.SBA.gov to find out if you may be eligible for an SBA Small Business Program. Here are your results so you can get started when you are ready:
+
+- case @results.class.to_s
+- when 'String'
+  = @results
+- else
+  - @results.each_pair do |certification, eligibility|
+    - case certification
+    - when 'wosb'
+        - if eligibility["value"] == "true"
+          | Women-Owned Small Business (WOSB)
+
+          | Based on the information you provided, you may be eligible for the WOSB Program.
+
+          | Get started on your self-certification process now: https://certify.sba.gov/questionnaires/wosb/sba_applications/new
+
+          | Learn more about the WOSB Contract Program: https://www.sba.gov/content/women-owned-small-business-wosb-program-certification
+
+          | Learn more about the documentation you will need and how to prepare to apply: https://certify.sba.gov/prepare#wosb-anc
+          | Proof of Citizenship
+          | Partnership Agreement
+          | S-Corp / Enterprise
+          | Tax Returns (2 years)
+          | Stocks and Ledgers
+        - else
+          | Women-Owned Small Business (WOSB)
+
+          = raw(@results[:wosb])
+
+    - when 'edwosb'
+        - if eligibility["value"] == "true"
+          | Economically Disadvantaged Women-Owned Small Business (EDWOSB)
+
+          | Based on the information you provided, you may be eligible for the EDWOSB program.
+
+          | Get started on the self-certification process now: https://certify.sba.gov/questionnaires/edwosb/sba_applications/new
+
+          | Learn more about the WOSB Contract Program: https://www.sba.gov/contracting/government-contracting-programs/women-owned-small-businesses
+
+          | Learn more about the documentation you will need and how to prepare to apply: https://certify.sba.gov/prepare#edwosb-anc
+          | Proof of Citizenship
+          | Partnership Agreement
+          | S-Corp / Enterprise
+          | Tax Returns (2 years)
+          | Stocks and Ledgers
+        - else
+          | Economically Disadvantaged Women-Owned Small Business (EDWOSB)
+
+          = raw(@results[:edwosb])
+
+    - when 'eighta'
+        - if eligibility["value"] == "true"
+          | 8(a)
+
+          | Based on the information you provided, you may be eligible for the 8(a) BD Program.
+
+          | Get started on the certification process now: https://www.sba.gov/contracting/government-contracting-programs/8a-business-development-program/how-apply/steps-applying-8a-program
+
+          | Learn more about the documentation you will need and how to prepare to apply: https://www.sba.gov/contracting/government-contracting-programs/8a-business-development-program/how-apply/8a-application-checklist
+
+          | Learn more about the 8(a) BD Program: https://www.sba.gov/contracting/government-contracting-programs/8a-business-development-program
+        - else
+          | 8(a)
+
+          = raw(@results[:eighta])
+
+    - when 'hubzone'
+        - if eligibility["value"] == "true"
+          | Historically Underutilized Business Zone (HUBZone) Program
+
+          | Based on the information you provided, you may be eligible for the HUBZone Program.
+
+          | Learn more about the HUBZone Program: https://www.sba.gov/contracting/government-contracting-programs/hubzone-program
+
+          | Learn more about the documentation you will need and how to prepare to apply: https://www.sba.gov/contracting/government-contracting-programs/hubzone-program/applying-hubzone-program
+        - else
+          | Historically Underutilized Business Zone (HUBZone) Program
+
+          = raw(@results[:hubzone])
+
+| SBA will be here to guide you through each step of the process.
+
+| Regards,
+| Office of Government Contracting
+| U.S. Small Business Administration (SBA)

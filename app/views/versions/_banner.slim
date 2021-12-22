@@ -1,0 +1,12 @@
+- if application.is_current?
+  .usa-alert.usa-alert-info.usa-alert-info-height
+    .usa-width-two-thirds
+      .usa-alert-body
+        - if application && application.application_submitted_at
+          h3.usa-alert-heading New version (v#{application.version_number}) created #{l application.application_submitted_at.to_date}
+        - else
+          h3.usa-alert-heading New version (v#{application.version_number})
+        p.usa-alert-text You are currently viewing the most recent version of this application
+    .usa-width-one-third.right-view-prev-ver
+      - if application.has_previous_revision?
+        = link_to_application_version 'View previous version', application.previous_revision

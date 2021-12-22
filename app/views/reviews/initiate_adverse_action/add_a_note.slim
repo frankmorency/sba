@@ -1,0 +1,57 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading #{@adverse_action_title}: Step 3 of 4
+        h1 Add a note
+        p Provide details about your recommendation
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_tag(wizard_path, {method: :put, id: :note_form}) do
+
+          fieldset.questions
+            legend.usa-sr-only New Note
+            label[for="note_subject"] Title
+            input#note_subject type="text" name="note_subject"
+            label[for="note_message"] Note
+            textarea#note_message name="note_message"
+
+          fieldset.question.tags
+            h4.validation-error Tags
+            = generate_note_tags(@sba_application, 2, false)
+          .actions
+            .actions__main
+              = submit_tag 'Next'
+              = link_to 'Cancel', '#', :onclick => 'window.history.back();return false;'
+            .actions__secondary
+              = link_to 'Skip', next_wizard_path(adverse_action: @adverse_action), {class: 'sba-c-button sba-c-button--inverse'}
+
+javascript:
+    $(function () {
+        $("#note_form").validate({
+            errorPlacement: function (error, element) {
+                if (element.is($(".tag"))) {
+                    $(".validation-error").after(error);
+                } else {
+                    element.after(error);
+                }
+            },
+            rules: {
+                "note_subject": {
+                    required: true
+                },
+                "note_message": {
+                    required: true
+                },
+                "note_tags[]": {
+                    required: true
+                }
+            },
+            messages: {
+                "note_subject": "A title is required.",
+                "note_message": "A note is required.",
+                "note_tags[]": "Select at least one tag."
+            }
+        });
+    });

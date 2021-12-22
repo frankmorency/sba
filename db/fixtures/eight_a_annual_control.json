@@ -1,0 +1,44 @@
+[
+  {
+    "section": "outside_assistance",
+    "answers": {
+      "outside_assistance_q1": {
+        "question_name": "outside_assistance_q1",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      },
+      "outside_assistance_q2": {
+        "question_name": "outside_assistance_q2",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no",
+        "attachment": "no_attachments_needed"
+      }
+    }
+  },
+  {
+    "section": "compensation",
+    "answers": {
+      "compensation_q1": {
+        "question_name": "compensation_q1",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "My firm is entity owned, so this question doesn't apply to me.",
+        "attachment": "no_attachments_needed"
+      }
+    }
+  },
+  {
+    "section": "affiliates_s1",
+    "answers": {
+      "affiliates_q1": {
+        "question_name": "affiliates_q1",
+        "answered_for_type": "",
+        "answered_for_id": "",
+        "value": "no"
+      }
+    }
+  }
+]

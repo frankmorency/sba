@@ -1,0 +1,45 @@
+= form_tag sba_analyst_review_assessments_path(@review) do |ass|
+  = hidden_field_tag :owner, @person_section.answered_for_id
+  .usa-width-one-whole.review_outer
+    .usa-width-one-fourth.review_nav
+      = render partial: 'sba_analyst/reviews/nav', locals: {active: :financial_review, business_partner: @business_partner_summaries}
+
+    .usa-width-three-fourths.review_main
+      .usa-width-one-whole
+        - @business_partner_summaries.each_with_index do |partner, i|
+          h1 = "#{partner[:partner].first_name} #{partner[:partner].last_name}"
+
+          .tab-content
+            = render partial: 'section/personal_summaries/financial_personal_summary', locals: {business_partner: partner[:partner], assets: partner[:assets],
+                    liabilities: partner[:liabilities], agi: partner[:agi],
+                    income: partner[:income], reviewer_mode: true, app: @sba_application}
+
+            .usa-width-one-whole
+              .usa-width-two-thirds
+                h3 Financial Summary Notes
+                p Provide any additional information, including any manual adjustments to Net Worth and AGI, etc.
+
+              - if can? :manage_assessment, current_user
+                .usa-width-one-third
+                  - assessment = @person_section.assessment_accessor
+                  = fields_for 'assessments[]', assessment do |ass|
+                    = render partial: 'assessments/form', locals: {ass: ass, assessment: assessment, statuses: @statuses}
+                    br
+
+                  - first_assessment = @person_section.assessments.select(&:persisted?).first
+
+                  - if @person_section.assessments.select(&:persisted?).count < 2 && first_assessment.try(:short?)
+                    = render partial: 'assessments/assessment', object: first_assessment, locals: {brief: false}
+                  - elsif first_assessment
+                    div id="assessments_brief_#{@person_section.id}"
+                      = render partial: 'assessments/assessment', object: first_assessment, locals: {brief: true}
+                      = link_to "Show more", "#", class: 'expand_notes', "data-identifier": @person_section.id
+                      br
+                      br
+                    div.hide-display id="assessments_long_#{@person_section.id}"
+                      = render collection: @person_section.assessments.select(&:persisted?), partial: 'assessments/assessment', locals: {brief: false}
+                      = link_to 'Show less', "#", class: 'collapse_notes', "data-identifier": @person_section.id
+
+            = render partial: 'section/personal_summaries/summary_details', locals: {business_partner: partner[:partner], assets: partner[:assets],
+                    liabilities: partner[:liabilities], agi: partner[:agi],
+                    income: partner[:income], financial_questions_by_section: @financial_questions_by_section, answered_for_id: @person_section.answered_for_id}

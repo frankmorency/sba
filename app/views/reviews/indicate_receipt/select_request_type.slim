@@ -1,0 +1,29 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+.sba-l-container
+  .sba-l-row
+    .sba-l-col--12.sba-u-padding-x--2
+      .certify-page-header
+        .certify-page-header__primary
+          span.subheading--large
+            | Appeal Received Outside Certify: Step 1 of 4
+          h1
+            | Appeal Received Outside Certify
+  .sba-l-row
+    .sba-l-sm-col--12.sba-l-md-col--golden-lg.sba-l-lg-col--8.sba-u-padding-x--2
+      = form_tag wizard_path, {method: :put, id: :request_type}
+        fieldset.questions
+          h4
+            | Please click below once an appeal is submitted outside of Certify.
+          ul#response.usa-unstyled-list
+            / li
+            /   input#mailed_in_reconsideration[type="radio" name="mailed_in" value="request_for_reconsideration" required=""]
+            /   label[for="mailed_in_reconsideration"]
+            /     | Request for reconsideration
+            li
+              input#mailed_in_appeal[type="radio" name="mailed_in" value="appeal" required=""]
+              label[for="mailed_in_appeal"]
+                | Appeal
+        .actions
+          .actions__main
+            = submit_tag "Next"
+            = link_to 'Cancel', sba_application_application_dashboard_overview_index_path(sba_application_id: @sba_application.id)

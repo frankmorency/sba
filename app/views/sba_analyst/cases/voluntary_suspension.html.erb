@@ -1,0 +1,65 @@
+
+<h3>Voluntary Suspensions</h3>
+<br>
+<ul class="usa-nav-primary">
+  <li>
+      <%= link_to "8(a)", eight_a_sba_analyst_cases_path, class: "usa-nav-link current" %>
+  </li>
+  <li>
+    <%= link_to "ASMPP", mpp_sba_analyst_cases_path, class: "usa-nav-link" %>
+
+  </li>
+  <li>
+    <%= link_to "WOSB", wosb_sba_analyst_cases_path, class: "usa-nav-link" %>
+
+  </li>
+  <li>
+    <%= link_to "VS", voluntary_suspension_sba_analyst_cases_path, class: "usa-nav-link current" %>
+
+  </li>
+</ul>
+<hr>
+
+<div class="sba-l-container">
+  <div class="sba-l-row">
+    <div class="sba-l-col--3">
+    </div>
+    <div class="sba-l-col--9">
+      <h3><%= (params[:status] || "submitted").capitalize %></h3>
+    </div>
+  </div>
+  <div class="sba-l-row">
+    <div class="sba-l-col--3">
+
+      <ul class="voluntary-suspensions-ul">
+        <li><%= link_to "Submitted", voluntary_suspension_sba_analyst_cases_path(status: "submitted"), class: "usa-nav-link" %></li>
+        <li><%= link_to "Extended", voluntary_suspension_sba_analyst_cases_path(status: "extended"), class: "usa-nav-link" %></li>
+        <li><%= link_to "Denied", voluntary_suspension_sba_analyst_cases_path(status: "denied"), class: "usa-nav-link" %></li>
+      </ul>
+    </div>
+    <div class="sba-l-col--9">
+      <table>
+        <tr>
+          <th><strong>Organization Name</strong></th>
+          <th><strong>Duns Number</strong></th>
+          <th><strong>Created At</strong></th>
+          <th><strong>Option</strong></th>
+          <th><strong>Action</strong></th>
+        </tr>
+        <% @voluntary_suspensions.each do |vs| %>
+        <tr>
+          <td><%= vs.organization.firm_name %></td>
+          <td><%= vs.organization.duns_number %></td>
+          <td><%= vs.created_at %></td>
+          <td><%= vs.option %></td>
+          <td>
+            <%= link_to("Review", sba_analyst_voluntary_suspension_path(vs)) if vs.submitted? %>
+          </td>
+        </tr>
+        <% end %>
+      </table>
+      <%= link_to "VS", voluntary_suspension_sba_analyst_cases_path, class: "usa-nav-link current" %>
+
+    </div>
+  </div>
+</div>

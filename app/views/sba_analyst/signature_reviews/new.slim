@@ -1,0 +1,34 @@
+= render partial: 'versions/banner', locals: {application: @sba_application} unless @sba_application.version_number == 1
+
+= form_for @assessment, url: sba_analyst_review_assessments_path(@review) do |assess|
+  .usa-width-one-whole.review_outer
+    .usa-width-one-fourth.review_nav
+      = render partial: 'sba_analyst/reviews/nav', locals: {active: :signature_review}
+
+    .usa-width-three-fourths.review_main
+
+      h1 Signature review
+      .usa-width-two-thirds.review_left.wide
+        - @signature_terms.each_with_index do |term, i|
+          input.signed type="checkbox" id="legal_#{i}" checked="checked"
+          label for="legal_#{i}" #{term.process(binding)}
+        = assess.submit 'Save and commit', disabled: @review.determination_made?
+
+      - if can? :manage_assessment, current_user
+        .usa-width-one-third.review_right.narrow
+          = render partial: 'assessments/form', locals: {ass: assess, assessment: @assessment, statuses: @statuses }
+          br
+          = render collection: @assessments.select(&:persisted?), partial: 'assessments/assessment', locals: {brief: false}
+
+javascript:
+  $('#note_link').click(function() {
+    $('#note').toggle();
+  });
+
+  $('.review_left input[type="checkbox"]').click(function(event) {
+    event.preventDefault();
+  });
+
+  $('.review_left label').click(function (event) {
+    event.preventDefault();
+  });

@@ -1,0 +1,38 @@
+- if @certificates.empty? && @applications.empty?
+  span There are currently no programs
+- else
+
+  h2 8(a)
+  = render partial: 'shared/status_badges', locals: {states: @eight_a_certs.map(&:workflow_state)}
+  - if @adverse_actions.empty? && @eight_a_apps.empty? && @eight_a_certs.empty? && @eight_a_init_draft_apps.empty? && @info_requests.empty?
+    h4.sba-u-md-margin-top--0 This firm does not participate in or have any active applications for the 8(a) program.
+  - else
+    - if !@adverse_actions.empty? || !@eight_a_apps.empty? || !@eight_a_certs.empty? || !@eight_a_init_draft_apps.empty?
+      h4 Application packages
+      = render 'dashboard/eight_a_table'
+    - unless @info_requests.empty?
+      h2.sba-u-md-margin-top--4 Information Requests
+      = render partial: 'dashboard/info_request_table', locals: {info_requests: @info_requests}
+
+  h2 Women-Owned Small Business
+  = render partial: 'shared/status_badges', locals: {states: @wosb_certs.map(&:workflow_state)}
+  - if !@wosb_certs.empty? || !@wosb_draft_apps.empty?
+    h4 Application packages
+    = render 'dashboard/wosb_table'
+  - else
+    h4 This firm does not participate in or have any active applications for the WOSB program.
+
+  h2 Mentor Protégé
+  = render partial: 'shared/status_badges', locals: {states: @mpp_certs.map(&:workflow_state)}
+  - if !@mpp_certs.empty? || !@annual_reports.empty? || !@mpp_draft_apps.empty?
+    h4 Application packages
+    = render 'dashboard/mpp_table'
+  - else
+    h4.sba-u-md-margin-top--0 This firm does not participate in or have any active applications for the ASMPP program.
+
+  h2.sba-u-md-margin-top--4 Documents
+javascript:
+    $(".confirmation").click(function () {
+        $('.confirmation').prepend('<span>Return to Vendor</span><img src="#{find_asset_path('ajax-loader.gif')}" alt="Wait animation" />')
+        $(".confirmation").hide();
+    });

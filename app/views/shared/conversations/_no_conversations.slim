@@ -1,0 +1,8 @@
+.usa-grid.no-conversations
+  i.fa.fa-inbox aria-hidden="true"
+  h2= t('messages.empty.title')
+  p= t('messages.empty.subhead')
+  - if @permissions.can_send_message?
+    = link_to t('messages.new.title'), new_sba_application_conversation_path(sba_application_id: "#{params[:sba_application_id]}"), class: 'usa-button', method: :get
+  - else
+    = link_to t('messages.new.title'), '#', class: 'usa-button usa-button-disabled', method: :get

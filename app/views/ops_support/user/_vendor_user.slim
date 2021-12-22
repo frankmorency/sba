@@ -1,0 +1,58 @@
+.usa-width-one-whole.usa-content
+  h1 Vendor user profile
+  h2 #{@user.name}
+  .div
+    ul#selector
+      li
+        strong Email:
+        | #{@user.email}
+      li
+        strong Phone:
+        | #{@user.phone_number}
+
+
+.usa-width-one-whole.usa-content
+  h1 Vendor assignments
+  .div
+    table
+      thead
+        tr
+          th Organization
+          th Role
+          th Action
+
+      - ars = @user.access_requests.select{|ar| ar.status == "accepted" }
+      - ars.each do |ar|
+        tr
+          td = link_to ar.organization.name.to_s, sba_analyst_dashboard_show_path(enc: $encryptor.encrypt("duns_number=#{ar.organization.duns_number}&tax_identifier=#{ar.organization.tax_identifier}")) if ar && ar.organization
+          td = ar.role_name
+          td
+            = link_to "Disassociate", ops_support_user_desassociate_organization_path(ar.user, access_request_id: ar.id), data: { confirm: "Are you sure?" } , method: :delete
+            br = link_to "Reset Password", '#',id:'reset_passphrase_link', remote: true
+            span#reset_passphrase_span style='display:none'
+              = form_tag  ops_support_user_reset_path(@user.id), method: 'post' do
+                = text_field_tag  'reset_passphrase_input', nil, placeholder: 'Enter new password...', autocomplete: 'off'
+                .button_wrapper
+                  = submit_tag "Reset", data: { confirm: "Are you sure?" }
+                  a#cancel.cancel-co-review href='#' style='color:#cd2026;' Cancel
+                  html <br /><em> (Click <a href = "https://www.rempe.us/diceware/#eff", target = "_blank"> here</a> for the Strong Password Generator.)</em>
+
+      - if ars.empty?
+        tr
+          td colspan="4" This user does not have any assignments
+
+javascript:
+    $(document).ready(function () {
+        $('#reset_passphrase_link').on("click", function (event) {
+            event.preventDefault();
+
+            $('span#reset_passphrase_span').css('display', 'inline');
+            $('#reset_passphrase_link').hide();
+        });
+        $('a#cancel').on("click", function (event) {
+            event.preventDefault();
+            $('span#reset_passphrase_span').css('display', 'none');
+            $('#reset_passphrase_link').show();
+            $('#reset_passphrase_input').val('')
+        });
+    });

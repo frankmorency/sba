@@ -1,0 +1,21 @@
+div id="#{question.dom_id}"
+  = hidden_field_tag question.dom_id, 'yes', name: question.dom_id
+
+  - if question.has_attachment_rule?
+    = render partial: 'question_rules/add_attachment', locals: {question: question, questionnaire: @questionnaire, rule: question.rules.add_attachment.first}
+    = render partial: 'question_rules/attached_documents', locals: {question: question, answer: answers_for_question(@user, @sba_application, question, answered_for)}
+
+
+    - if question.has_comment_rule? && question.type_name != 'yesno_with_comment_required'
+      = render partial: 'question_rules/add_comment', locals: {question: question, questionnaire: questionnaire, rule: question.rules.add_comment.first}
+
+javascript:
+  $(function() {
+    $("#answers\\[#{question.id}\\]\\[attachment\\]").show();
+
+    var document_visibility = $('#document_list[name="#{question.id}"]').css('display');
+
+    if ("#{rule.mandatory?}" && document_visibility != 'inline'){
+      $('input[name="answers[#{question.id}][attachment]"]').val("");
+    }
+  });

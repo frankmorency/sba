@@ -1,0 +1,63 @@
+div
+  br  
+  fieldset
+    | FROM:    
+    input[type="text" value="#{question.value}" name="answers[#{question.id}][start_date]" id="start_date-#{question.id}" pattern="~(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d~" aria-label="#{question.name}" placeholder="mm/dd/yyyy" required="true"]
+    label[for="start_date-{question.id}" class="hide last"]
+      = question.title
+  fieldset
+    | TO:
+    input[type="text" value="#{question.value}" name="answers[#{question.id}][end_date]" id="end_date-#{question.id}" pattern="~(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d~" aria-label="#{question.name}" placeholder="mm/dd/yyyy" required="true"]
+    label[for="end_date-{question.id}" class="hide last"]
+      = question.title
+
+-if !question.value.nil?
+  input[type="hidden" id="hidden-start_date-#{question.id}" name="#{question.dom_id}[start_date]" value="#{question.answers[0].value["value"]["start_date"]}"]
+  input[type="hidden" id="hidden-end_date-#{question.id}" name="#{question.dom_id}[end_date]" value="#{question.answers[0].value["value"]["end_date"]}"]
+-else 
+  input[type="hidden" id="hidden-start_date-#{question.id}" name="#{question.dom_id}[start_date]"]
+  input[type="hidden" id="hidden-end_date-#{question.id}" name="#{question.dom_id}[end_date]"]
+javascript:
+  $(document).ready(function(){
+        
+    $( "#end_date-#{question.id}" ).datepicker({           
+      beforeShow: function( input, inst){
+        $(inst.dpDiv).addClass('sba-c-calendar-picker');
+      },                     
+      dateFormat: 'mm/dd/yy',
+      onSelect: function(date) {        
+        $(this).trigger("blur")        
+        $("input#hidden-"+this.id).val(this.value)
+      },
+      changeYear: true 
+    })
+    
+    $( "#start_date-#{question.id}" ).datepicker({           
+      beforeShow: function( input, inst){
+        $(inst.dpDiv).addClass('sba-c-calendar-picker');
+      },                     
+      dateFormat: 'mm/dd/yy',
+      onSelect: function(date) {        
+        $(this).trigger("blur")     
+        $("input#hidden-"+this.id).val(this.value)   
+      },
+      changeYear: true 
+    })
+
+    $("#start_date-#{question.id}").blur(function(){
+      $("input#hidden-"+this.id).val(this.value)   
+    });
+    $("#end_date-#{question.id}").blur(function(){
+      $("input#hidden-"+this.id).val(this.value)   
+    });
+
+  });
+
+-if !question.value.nil?
+  javascript:
+    $(document).ready(function(){
+      var startValue = "#{JSON.parse(question.value)['start_date']}";
+      var endValue = "#{JSON.parse(question.value)['end_date']}";
+      $( "#start_date-#{question.id}" ).val(startValue);
+      $( "#end_date-#{question.id}" ).val(endValue); 
+    });

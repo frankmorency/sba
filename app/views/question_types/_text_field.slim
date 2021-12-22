@@ -1,0 +1,37 @@
+br
+div id="#{question.dom_id}"
+  - qt = question.question_type
+
+  - if qt.is_single?
+    input id="input-type-text-#{question.id}" name="#{question.dom_id}" type='text' required='required' minlength="#{qt.chars(:min)}" maxlength="#{qt.chars(:max)}" value="#{question.value}"
+  - else
+    textarea id="input-type-textarea-#{question.id}" name="#{question.dom_id}" required='required' minlength="#{qt.chars(:min)}"
+      = question.value
+
+    - if question.has_attachment_rule?
+      = render partial: 'question_rules/add_attachment', locals: {question: question, questionnaire: @questionnaire, rule: question.rules.add_attachment.first}
+      = render partial: 'question_rules/attached_documents', locals: {question: question, answer: answers_for_question(@user, @sba_application, question, answered_for)}
+
+javascript:
+  function checklength(selector) {
+    return $(selector).val().length
+  }
+
+  $(document).ready(function(){
+    $("#answers\\[#{question.id}\\]\\[attachment\\]").show();
+
+    var document_visibility = $('#document_list[name="#{question.id}"]').css('display');
+
+    if ("#{rule && rule.mandatory?}" && document_visibility != 'inline') {
+        $('input[name="answers[#{question.id}][attachment]"]').val("");
+    }
+
+    if( $('#input-type-text-#{question.id}').length > 0){
+      $('#input-type-text-#{question.id}').change(function(){
+        if(checklength('#input-type-text-#{question.id}') >= max_size_#{question.id}){
+          message = "You have entered #{qt.chars(:max)} characters. Please make sure none of your input has been truncated."
+          $('#message-#{question.id}').html(message).css("color", "red");
+        }
+      });
+    }
+  });

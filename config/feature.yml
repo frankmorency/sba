@@ -1,0 +1,179 @@
+production:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: true
+    activity_log: true
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false  
+    agency_requirements: true
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+development:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: true
+    activity_log: true
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false
+    agency_requirements: true
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+docker:
+  features:
+    eight_a: true
+    elasticsearch: true
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false
+    agency_requirements: false
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+test:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: false
+    activity_log: false
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false
+    agency_requirements: false
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+build:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: false
+    activity_log: false
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false
+    agency_requirements: false
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+build_admin:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: false
+    activity_log: false
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false
+    agency_requirements: false
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+stage_admin:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: true
+    activity_log: true
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false
+    agency_requirements: true
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+production_admin:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: true
+    activity_log: true
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false  
+    agency_requirements: true
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+demo_admin:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: true
+    activity_log: true
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false  
+    agency_requirements: true
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+demo:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: true
+    activity_log: true
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false
+    agency_requirements: true
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+stage:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: true
+    activity_log: true
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false
+    agency_requirements: true
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+training:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: true
+    activity_log: true
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false
+    agency_requirements: false
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false
+
+training_admin:
+  features:
+    eight_a: true
+    elasticsearch: true
+    notifications: true
+    activity_log: true
+    request_for_info: true
+    asmpp: false
+    sba_workload_queue: false
+    agency_requirements: false
+    adverse_actions: true
+    idp: false
+    idp_stubbed: false

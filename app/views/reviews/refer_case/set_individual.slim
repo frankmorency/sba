@@ -1,0 +1,42 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+- @referral = Referral.new(params[:referral])
+
+.usa-grid-full
+
+  h1
+    ' Who in
+    ' #{@referral.office.title}
+    ' should get this case
+
+  p.usa-font-lead When you refer the case, this person will be notified by email
+
+  h4
+    ' Please select someone in
+    ' #{@referral.office.title}.
+
+  = form_for @referral, url: wizard_path, method: :put do |f|
+    = f.hidden_field :office_id, value: @referral.office.id
+    - @office_users.each do |user|
+      = f.radio_button :individual_id, user.id
+      = f.label :individual_id, user.name, value: user.id, class: 'radio_label'
+
+    = f.submit "Next"
+    = link_to 'Start Over', sba_application_application_dashboard_overview_index_path(@sba_application.id)
+
+javascript:
+    $(function() {
+        $("#new_referral").validate({
+            errorPlacement: function (error, element) {
+                $(".radio_label").last().after(error);
+            },
+            rules: {
+                "referral[individual_id]": {
+                    required: true
+                }
+            },
+            messages: {
+                "referral[individual_id]": "Select an individual"
+            }
+        });
+    });

@@ -1,0 +1,70 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+
+section.usa-grid-full
+  article#main-content
+    .certify-page-header
+      .certify-page-header__primary
+        span.subheading--large Determination: Step 1 of 5
+        h1 Make a Determination
+    .certify-grid-wrap
+      .certify-width-two-thirds
+        = form_for @determination, url: wizard_path, method: :put do |f|
+          fieldset.questions
+            h4 = "What is your determination on #{ @review.organization.name} participation in the 8(a) Business Development Program?"
+            ul#response.usa-unstyled-list
+              li#reconsider_yes_li
+                = f.radio_button "determine_eligible", true, id: "reconsider_yes"
+                label for="reconsider_yes"  Eligible
+              li#reconsider_no_li
+                = f.radio_button "determine_eligible", false, id: "reconsider_no"
+                label for="reconsider_no"  Ineligible
+
+                #followup.usa-extend--hidden.form-followup aria-hidden="true"
+                  fieldset.questions
+                    h4
+                      label for="attachment_type"  Does this case have appeal rights?
+                    ul.usa-unstyled-list
+                      li
+                        = f.radio_button "determine_eligible_for_appeal", true, id: "reconsideration_yes"
+                        label for="reconsideration_yes"  Yes
+                      li
+                        = f.radio_button "determine_eligible_for_appeal", false, id: "reconsideration_no"
+                        label for="reconsideration_no"  No
+
+          .actions
+            .actions__main
+              = f.submit "Next", class: "usa-button", id: "submition-btn"
+              = link_to "Cancel", sba_application_application_dashboard_overview_index_path(@sba_application)
+
+
+javascript:
+  $(document).ready(function() {
+
+    $("#followup").hide();
+
+    $("#reconsider_yes_li").click(function(){
+      if( $("#reconsider_yes").prop('checked') ){
+        $("#followup").hide();
+      }
+    });
+
+    $("#reconsider_no_li").click(function(){
+      if( $("#reconsider_no").prop('checked') ){
+        $("#followup").show();
+      }
+    });
+
+    $("#submition-btn").click(function(event){
+      if( !$("#reconsider_yes").prop('checked') && !$("#reconsider_no").prop('checked')){
+        event.preventDefault();
+        alert("You must make a determination.");
+      }
+      if($("#reconsider_no").prop('checked')){
+        if( !$("#reconsideration_yes").prop('checked') && !$("#reconsideration_no").prop('checked') )
+        {
+          event.preventDefault();
+          alert("You must specify if the case is eligible for appeal.");
+        }
+      }
+    });
+  });

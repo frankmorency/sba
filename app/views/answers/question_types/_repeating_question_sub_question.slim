@@ -1,0 +1,14 @@
+.repeating_question.repeating_question_real id="#{question.name}_#{index}"
+  .panel
+    .usa-grid-full
+
+      - if editable
+        .usa-width-three-fourths
+          = render partial: 'answers/question_types/repeating_sub_question_repeater', locals: {question: question, answer_set: answer_set, index: index}
+
+      - else
+        = render partial: 'answers/question_types/repeating_sub_question_repeater', locals: {question: question, answer_set: answer_set, index: index}
+
+      - if editable && !current_user.is_sba?
+        .usa-width-one-fourth
+          = link_to 'Change answer', section_path_helper(@sba_application, question.section, true)

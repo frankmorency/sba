@@ -1,0 +1,6 @@
+div
+  .usa-width-one-whole.usa-content
+    - if @user.can? :ensure_vendor, @user
+      = render partial: 'ops_support/user/vendor_user'
+    - else
+      = render partial: 'ops_support/user/gov_user'

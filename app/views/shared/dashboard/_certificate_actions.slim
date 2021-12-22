@@ -1,0 +1,8 @@
+- if certificate.is_under_reconsideration?
+  = cert_reconsideration_actions certificate
+- else
+  = certificate_summary_link(certificate, current_organization) unless current_user.can? :ensure_vendor
+
+  = certificate_action_links(certificate, current_user)
+  '
+  = certificate_annual_review_links(certificate, current_user)

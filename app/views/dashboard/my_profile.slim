@@ -1,0 +1,9 @@
+.usa-width-one-whole
+section.usa-width-one-whole#dashboard
+  article.usa-width-one-whole.profile-style#dashboard-index
+    = render partial: 'dashboard/my_profile' if can?( :view_personal_profile, current_user)
+    .usa-width-one-whole
+      = render partial: 'dashboard/tile_associated_business' if( can? :view_business_profile, current_user)
+li
+  a
+    Take Action

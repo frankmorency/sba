@@ -1,0 +1,40 @@
+ul.task-panel-menu
+  - if @permissions.can_accept_for_processing?
+    strong
+      = link_to 'Begin processing this case', review_begin_processing_path(@review, :start), class: 'task-panel-menu__link'
+  - if @permissions.can_return_to_owner?
+    strong
+      = link_to 'Return to case owner', review_return_to_case_owner_index_path(@review), class: 'task-panel-menu__link'
+  - if @permissions.can_add_note?
+    li.task-panel-menu__item
+      a#compose-note.task-panel-menu__link href="javascript:void(0)" Add a note
+  - if @permissions.can_send_message?
+    li.task-panel-menu__item
+      = link_to "Send message to firm", sba_application_conversations_path(@sba_application), class: "task-panel-menu__link"
+  - if @permissions.can_return_master_application?
+    - if @sba_application.is_annual?
+      = link_to 'Send deficiency letter', sba_application_deficiency_letter_index_path(@sba_application), class: 'task-panel-menu__link', id: 'add_note_action'
+    - else
+      = link_to 'Return to firm for revisions', sba_application_return_master_application_index_path(@sba_application), class: 'task-panel-menu__link', id: 'add_note_action'
+  - if @permissions.can_return_sub_application?
+    li.task-panel-menu__item
+      a.task-panel-menu__link href="#"  Return to firm for revisions
+  - if @permissions.can_upload_document?
+    li.task-panel-menu__item
+      = link_to 'Upload documents', sba_application_application_dashboard_analyst_documents_path(@sba_application), class: 'task-panel-menu__link'
+  - if @permissions.can_indicate_reconsideration_or_appeal_received?
+    = link_to "Appeal received outside of Certify", review_indicate_receipt_path(@review, :select_request_type), class: 'task-panel-menu__link'
+  - if @permissions.can_refer_case?
+    = link_to 'Refer case', review_refer_case_path(@review, :set_office), class: 'task-panel-menu__link'
+  - if @permissions.can_make_recommendation?
+    li.task-panel-menu__item
+      = link_to 'Make recommendation', review_make_recommendations_path(@review), class: 'task-panel-menu__link'
+  - if @permissions.can_make_determination?
+    li.task-panel-menu__item
+      = link_to 'Make determination', review_make_determinations_path(@review), class: 'task-panel-menu__link'
+  - if @permissions.can_reassign_case?
+    = link_to 'Reassign case', review_reassign_case_path(@review, :assign), class: 'task-panel-menu__link'
+  - if @permissions.can_change_due_date?
+    li.task-panel-menu__item
+      a.task-panel-menu__link href="#"  Change due date
+  = render partial: "shared/eight_a/can_close_case"

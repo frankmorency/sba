@@ -1,0 +1,141 @@
+.sba-l-container
+  .sba-l-row
+    .sba-l-col--12.sba-u-padding-x--2
+      .certify-page-header
+        .certify-page-header__primary
+          h1
+            | All requirements
+  .sba-l-row
+  = form_for :requirement, url: sba_analyst_agency_requirements_search_index_path, html: {id: "requirements-search", method: :get, remote: true }  do |f|
+    .sba-l-col--12.sba-u-padding-x--2
+      .sba-l-row
+        .sba-u-measure--wide[role="search" action="search"]
+          div.usa-search.usa-search-big.sba-c-search--large
+            label.usa-sr-only[for="search-field-big"]
+              | Search big
+            = f.text_field :search, {id: "search-field-big", type: "search", placeholder: "Search requirement title, DUNS, NAICS", value: @search}
+            = f.submit "Search", class: "usa-button", id: "search-submit-btn", name: 'submit_search', onclick: "sendAjaxSearchRequest(this, '/sba_analyst/agency_requirements_search/search', 'form#requirements-search')"
+      .sba-l-row.sba-u-margin-x--neg2
+        .sba-l-sm-col--12.sba-l-md-col--golden-sm.sba-l-lg-col--4.sba-u-padding-x--2
+          div
+            h2.sba-u-font-size--h3
+              | Filter requirements
+            fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+              legend.sba-c-facet-set__legend
+                | Agency info
+              ul.sba-c-unstyled-list
+                li
+                  label.sba-c-label[for="requirement_sba_office"]
+                    | SBA Offices
+                  = f.select :sba_office, options_for_select(DutyStation.all_names.unshift("All offices").map {|name| [name, name]}, @sba_office), {}, class: "search-input", onchange: "ajaxSearchChange(this, '/sba_analyst/agency_requirements_search/search', 'form#requirements-search')"
+                li
+                  label.sba-c-label[for="requirement_agency"]
+                    | Agency
+                  .ui-widget.sba-c-combobox
+                    = f.select :agency, options_for_select(AgencyOffice.order(:name).map {|office| [office.display_name, office.name]}, @agency), {include_blank: true}, class: "search-input"
+            fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+              legend.sba-c-facet-set__legend
+                | Contract info
+              ul.sba-c-unstyled-list
+                li
+                  label.sba-c-label[for="requirement_contract_type"]
+                    | Contract Type
+                  = f.select :contract_type, options_for_select(AgencyContractType.order(:name).map {|type| [type.name, type.name]}, @contract_type), {include_blank: true}, class: "search-input", class: "search-input", onchange: "ajaxSearchChange(this, '/sba_analyst/agency_requirements_search/search', 'form#requirements-search')"
+                li
+                  label.sba-c-label[for="requirement_contract_status"]
+                    | Contract status
+                  = f.select :contract_status, options_for_select([["All", ''],  ["Not Awarded", false], ["Awarded", true]], @contract_awarded), {}, class: "search-input", onchange: "ajaxSearchChange(this, '/sba_analyst/agency_requirements_search/search', 'form#requirements-search')"
+            fieldset.sba-c-facet-set.sba-c-fieldset.sba-c-fieldset--inputs
+              legend.sba-c-facet-set__legend
+                | Offer info
+              ul.sba-c-unstyled-list
+                li
+                  label.sba-c-label[for="requirement_code"]
+                    | Code
+                  = f.select :code, options_for_select(AgencyOfferCode.order(:name).map {|type| [type.name, type.name]}, @code), {include_blank: true}, class: "search-input", onchange: "ajaxSearchChange(this, '/sba_analyst/agency_requirements_search/search', 'form#requirements-search')"
+        .sba-l-sm-col--12.sba-l-md-col--golden-lg.sba-l-lg-col--8.sba-u-padding-x--2.sba-u-lg-padding-left--6
+          .sba-u-display--flex.sba-u-justify-content--between
+            h2.sba-u-font-size--h3
+              span#case-numbers
+                = get_pagination_number(@current_page, @agency_reqs.total, AgencyRequirementsSearch::MAX_SEARCH_RESULTS)
+            div
+              label.sba-u-visibility--screen-reader[for="sort"]
+                | Sort by
+              = f.select :sort, options_for_select(@sort_options.map {|option| [option[:name], option[:value]]}, @sort), {}, {onchange: "ajaxSearchChange(this, '/sba_analyst/agency_requirements_search/search', 'form#requirements-search')", class: "search-input"}
+          .sba-u-display--flex.sba-u-justify-content--between
+            span#search-breadcrumb-pills
+              - @pills&.each do |pill|
+                - if pill[0] == "contract_status"
+                  - if pill[1] == "true"
+                    - pill[1] =  "Awarded"
+                  - else
+                    - pill[1] =  "Not Awarded"
+                .sba-c-facet-pill[id="pill-requirement_#{pill[0]}"]
+                  = "#{pill[1]}"
+                  button.sba-c-facet-pill__close-button[type="button" title="Close" onclick="removeSearchPill(this, '/sba_analyst/agency_requirements_search/search', 'form#requirements-search')"] X
+              - if @pills.nil? || @pills&.empty?
+                = link_to("Clear all", "", {id: "search__pills__reset", class: "sba-c-facet-pills__reset hidden", onclick: "resetSearchPills(this, '/sba_analyst/agency_requirements_search/search', 'form#requirements-search'); return false;"})
+              - else
+                = link_to("Clear all", "", {id: "search__pills__reset", class: "sba-c-facet-pills__reset", onclick: "resetSearchPills(this, '/sba_analyst/agency_requirements_search/search', 'form#requirements-search'); return false;"})
+            div.download-csv-button
+              = link_to download_sba_analyst_agency_requirements_search_index_path(format: "csv"), class: "sba-c-button sba-c-button--inverse", "aria-title": "Export" do
+                svg.sba-c-icon.sba-c-icon--blue.sba-u-margin-right--1 data-tooltip-text="Export CSV" aria-hidden="true"
+                  use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#download"
+                | Download CSV of current page
+          div#search-results
+            = render partial: "search_results", locals: {results: @agency_reqs}
+
+javascript:
+  $('header.navigation').css('margin-bottom', '0');
+  $('section.usa-grid-full').css('max-width', '100%');
+
+  $(function () {
+    $("#requirement_agency").combobox({
+        select: function (event, ui) {
+          $("#requirement_agency").trigger("change");
+          ajaxSearchChange(this, '/sba_analyst/agency_requirements_search/search', 'form#requirements-search');
+        },
+    });
+    $("#combobox_requirement_agency").addClass('search-input');
+  });
+
+css:
+
+  .download-csv-button {
+    min-width: 18em;
+  }
+
+  .sba-l-container {
+    margin-left: 0 !important;
+  }
+  .sba-u-font-size--small strong {
+    margin-right: 3px;
+  }
+
+  .sba-c-card span.sba-u-font-weight--normal {
+      margin-left: 4px;
+  }
+
+  .certify-local-nav {
+    margin-top: -8px;
+  }
+
+  .masthead__content {
+    padding-top: 0.5rem !important;
+  }
+
+  .certify-local-nav {
+    margin-top: -8px;
+  }
+
+  input::-webkit-input-placeholder {
+    color: rgb(117, 117, 117);
+  }
+
+  label {
+    margin-top: 0;
+  }
+
+  .usa-accordion-content {
+    padding: 0;
+  }

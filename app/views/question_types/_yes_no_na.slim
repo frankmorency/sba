@@ -1,0 +1,9 @@
+div id="#{question.dom_id}"
+  = radio_button_tag question.dom_id, "yes", question.value == 'yes', name: question.dom_id
+  = label_tag "#{question.dom_id}_yes", "Yes", class: 'yes'
+
+  = radio_button_tag question.dom_id, "no", question.value == 'no', name: question.dom_id
+  = label_tag "#{question.dom_id}_no", "No", class: 'no'
+
+  = radio_button_tag question.dom_id, "na", question.value == 'na', name: question.dom_id
+  = label_tag "#{question.dom_id}_na", "N/A", class: 'na last'

@@ -1,0 +1,2 @@
+default: --tags ~@wip --no-source --color --format pretty  --format html --out features/tmp/test-results/<%= Time.now.strftime("%Y%m%d-%H%M%S")%>--results.html
+

@@ -1,0 +1,98 @@
+p
+h3 Search Results
+- if sam_organizations.empty?
+  h3  No Match Found
+  .usa-width-one-whole.business_search_result.usa-content
+    h5 Your records in SAM.gov must be in the “Active” status to be able to access your records in certify.SBA.gov. Please check your DUNS, TIN/EIN and MPIN to make sure they match exactly as they are displayed in SAM.gov. The DUNS and EIN should be numbers only (no spaces or dashes) and your MPIN is case sensitive.
+    h5 NOTE: Any changes to SAM.gov can take up to <b><u>72 hours</b></u> to display in certify.SBA.gov.
+    p
+- elsif !sam_organizations.empty?
+.usa-width-one-whole.business_search_result.usa-content
+
+  - sam_organizations.each do |sam_organization|
+      .usa-width-one-whole.business_search_result
+        = form_tag associate_business_path, id: 'associate_business', method: 'post' do
+          = hidden_field_tag 'duns_number', $encryptor.encrypt(sam_organization.duns)
+          = hidden_field_tag 'tax_identifier', $encryptor.encrypt(sam_organization.tax_identifier_number)
+          = hidden_field_tag 'tax_identifier_type', sam_organization.tax_identifier_type
+          = hidden_field_tag 'legal_business_name', sam_organization.legal_business_name
+
+          .usa-width-one-whole
+            h4
+              = sam_organization.legal_business_name
+
+          .usa-width-one-whole
+            .usa-width-one-half
+              span.bs_field
+                b DBA:
+              span
+                = sam_organization.dba_name
+            .usa-width-one-half
+
+          .usa-width-one-whole
+            .usa-width-one-half
+              span.bs_field
+                b DUNS:
+              span
+                = sam_organization.duns
+              br
+              span.bs_field
+                b Government Business Contact:
+                span
+                  = "#{sam_organization.govt_bus_poc_first_name} #{sam_organization.govt_bus_poc_last_name}"
+              br
+              span.bs_field
+                b Email:
+              span
+                = sam_organization.govt_bus_poc_email
+              br
+              span.bs_field
+                b Phone:
+              span
+                = sam_organization.govt_bus_poc_us_phone
+            .usa-width-one-half
+
+          .usa-width-one-whole
+            .usa-width-one-half
+              span.bs_field
+                b Address:
+              span
+                = sam_organization.sam_address_1
+                = tag(:br) unless sam_organization.sam_address_1.blank?
+                = sam_organization.sam_address_2
+                = tag(:br) unless sam_organization.sam_address_2.blank?
+                = "#{sam_organization.sam_city}, #{sam_organization.sam_province_or_state} #{sam_organization.sam_zip_code_5}"
+              p
+
+            .usa-width-one-half
+
+          - if sam_organization.has_been_claimed?
+            .usa-width-one-whole
+              label <b>This business has been claimed. Contact us at <a href="/help">Certify Help Desk</a> if you feel this is an error.</b>
+          - else
+            .usa-width-one-whole
+              .usa-width-one-half
+                label
+                  | Carefully select your business type, as it determines which questions we will ask you. (An entity-owned firm is owned by, or is a wholly owned subsidiary of, an American Indian Tribe, an Alaska Native Corporation, a Community Development Corporation, or a Native Hawaiian Organization.
+
+                  span#business-type-error
+                  = select_tag 'business_type', options_for_select([["","default"],["LLC", "llc"], ["Corporation", "corp"], ["S-Corporation", "s-corp"], ["Partnership", "partnership"], ["Sole Proprietorship", "sole_prop"]],"").html_safe
+                  span#business_type-error.error style=("display:none;") This field is required
+
+            .usa-width-one-whole
+              p
+              = button_tag 'Connect data', id: 'connect', data: {confirm: 'Warning:  By clicking the “Finish” button, you affirm you own the business and are authorized to represent it and sign any legal and binding agreements for this business. Any intentional or negligent misrepresentation of the information contained in Certify may result in criminal, civil or administrative sanctions including, but not limited to, fines of up to $500,000 and imprisonment of up to 10 years, or both, as set forth in 15 U.S.C. § 645 and 18 U.S.C. § 1001 and any other applicable criminal laws.'}
+
+javascript:
+  $(document).ready(function () {
+    $('#connect').attr('disabled', true);
+    $("#business_type").change(function (event) {
+        var selected_business_type = $('#business_type').val();
+        if (selected_business_type=='default'){
+          $('#connect').attr('disabled', true);
+        } else {
+          $('#connect').attr('disabled', false);
+        }
+    });
+  });
+  

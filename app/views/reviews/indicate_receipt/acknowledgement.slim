@@ -1,0 +1,12 @@
+= render partial: 'shared/eight_a/masthead/index_no_links'
+.sba-l-container
+  .sba-l-row
+    .sba-l-col--12.sba-u-padding-x--2
+      .certify-page-header
+        .certify-page-header__primary
+          h1
+            | This action has been logged in Certify
+  .sba-l-row
+    .sba-l-sm-col--12.sba-l-md-col--golden-lg.sba-l-lg-col--8.sba-u-padding-x--2
+      p
+        = link_to 'View dashboard', sba_application_application_dashboard_overview_index_path(sba_application_id: @sba_application.id), {class: 'sba-c-button'}

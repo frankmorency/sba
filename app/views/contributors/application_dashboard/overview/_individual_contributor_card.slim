@@ -1,0 +1,38 @@
+.usa-width-one-whole.cards
+  br
+  h2 #{sub_section.overview_tile_display_title}
+  .usa-width-one-half
+    section
+      .card
+        .card__header
+          h3.card__primary-heading
+            - user = User.find_by(email: contributor_section.email)
+            - if @sba_application.submitted?
+              - if user
+                a href="javascript:void(0);" id="#{contributor_section.name}_show_content"
+                  | #{user.name}
+            - else
+              - unless contributor_section.sub_application.nil?
+                - if current_user.is_contributor?
+                  - sba_application = contributor_section.sub_application
+                  - questionnaire = contributor_section.sub_application.questionnaire
+                  - section_question = contributor_section.sub_application.questionnaire.sections.select {|s| s.review_position == 1}
+                  = link_to user.name, edit_sba_application_questionnaire_question_section_path(contributor_section.sub_application,questionnaire, section_question)
+                - else
+                  = user.try :name
+
+        .card__content
+          table.quick-details
+            tbody
+              tr.larger
+                th Status:
+                td
+                  span.usa-color-green #{contributor_section.status.humanize}
+              tr
+                th Last Update:
+                td #{contributor_section.updated_at.strftime("%m/%d/%y")}
+              tr
+                th Started:
+                td #{contributor_section.created_at.strftime("%m/%d/%y")}
+        - if @permissions.can_view_adhoc_footer?(contributor_section)
+          = render partial: 'shared/eight_a/overview/adhoc_footer', locals: {section: contributor_section}

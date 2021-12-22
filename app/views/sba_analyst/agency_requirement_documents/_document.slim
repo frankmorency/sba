@@ -1,0 +1,11 @@
+tr
+	th data-table-header="Document" scope="row" 
+	  = link_to_if document.av_status == "OK", document.original_file_name, sba_analyst_agency_requirement_agency_requirement_document_download_path(agency_requirement, document)
+	td data-print="type" data-table-header="Type"  
+	  = document.document_type
+	td data-print="doc_comments" data-table-header="Comments"  
+	  = document.comment
+	td style="text-align: center;" data-table-header="Actions"
+	  = link_to sba_analyst_agency_requirement_agency_requirement_document_path(agency_requirement, document), "aria-title": "Delete", data: {confirm: "Are you sure you want to remove this document?"}, method: "delete"  do
+	    svg.sba-c-icon.sba-c-icon--red aria-hidden="true"
+	      use xlink:href="#{find_asset_path('svg-sprite/sprite.svg')}#trash"

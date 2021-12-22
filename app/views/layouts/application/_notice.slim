@@ -1,0 +1,62 @@
+- if flash[:success]
+  .sba-u-bgcolor--gray-lightest.sba-u-padding--1
+    .usa-grid-full
+      .usa-grid-one-whole
+        .notice_wrapper
+          .sba-c-alert.sba-c-alert--success
+            .usa-alert.usa-alert-success
+              .usa-alert-body
+                h3.usa-alert-heading
+                  = session[:flash_title] || 'Success'
+                p.usa-alert-text = flash[:success].html_safe
+
+- elsif flash[:alert]
+  .notice_wrapper.sba-u-padding--1
+    .sba-c-alert.sba-c-alert--warn
+      .usa-alert.usa-alert-warning
+        .usa-alert-body
+          h3.usa-alert-heading
+            = session[:flash_title] || 'Alert'
+          p.usa-alert-text
+            = flash[:alert].html_safe
+
+- elsif flash[:error]
+  .notice_wrapper
+    .sba-c-alert.sba-c-alert--error
+      .usa-alert.usa-alert-error role="alert"
+        .usa-alert-body
+          h3.usa-alert-heading
+            = session[:flash_title] || 'Error'
+          p.usa-alert-text
+            = flash[:error].html_safe
+
+- elsif flash[:info]
+  .notice_wrapper
+    .sba-c-alert
+      .usa-alert.usa-alert-info
+        .usa-alert-body
+          h3.usa-alert-heading
+            = session[:flash_title] || 'Info'
+          p.usa-alert-text
+            = flash[:info].html_safe
+
+- elsif flash[:notice]
+  .notice_wrapper
+    .sba-c-alert.sba-c-alert--warn
+      .usa-alert.usa-alert-warning
+        .usa-alert-body
+          h3.usa-alert-heading
+            = session[:flash_title] || 'Notice'
+          p.usa-alert-text
+            = flash[:notice].html_safe
+
+- elsif flash[:fileadded]
+  .alert-full-grey
+    .alert-center-notice
+      .notice_wrapper
+        .success_notice.success_notice_border
+          .usa-alert.usa-alert-success.alert_margin
+            .usa-alert-body
+              h3.usa-alert-heading
+                = session[:flash_title] || 'File added!'
+              p.usa-alert-text = flash[:fileadded].html_safe

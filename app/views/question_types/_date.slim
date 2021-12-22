@@ -1,0 +1,19 @@
+input[type="text" value="#{question.value}" name="#{question.dom_id}" id="date-#{question.id}" pattern="~(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d~" aria-label="#{question.name}" placeholder="mm/dd/yyyy" required="true"]
+= label_tag question.dom_id, question.title, class: 'hide last'
+
+javascript:
+  $(document).ready(function(){    
+
+    $( "#date-#{question.id}" ).datepicker({           
+      beforeShow: function( input, inst){
+        $(inst.dpDiv).addClass('sba-c-calendar-picker');
+      },                     
+      dateFormat: 'mm/dd/yy',
+      onSelect: function(date) {        
+        $(this).trigger("blur")        
+      },
+      changeYear: true 
+    })
+    
+    $( "#date-#{question.id}" ).val("#{question.value}");    
+  });

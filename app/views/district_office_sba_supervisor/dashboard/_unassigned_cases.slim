@@ -1,0 +1,7 @@
+section.dashboard-section
+  header.dashboard-section__header
+    h2.dashboard-section__heading Unassigned Cases
+    - if @applications.blank? || @applications.nil?
+      | There are currently no unassigned cases.
+    - else
+      = render partial: 'unassigned_cases_table', locals: {applications: @applications}

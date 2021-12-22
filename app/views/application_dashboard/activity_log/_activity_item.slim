@@ -1,0 +1,3 @@
+li.timeline__item
+  = render partial: "application_dashboard/activity_log/activity_item_time", locals: {activity_item: activity_item}
+  p= activity_item["body"]
